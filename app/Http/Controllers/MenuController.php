@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
+use App\Models\Category;
 use App\Models\Menu;
 use Illuminate\Http\Request;
+use App\Models\Kategori;
 
 class MenuController extends Controller
 {
@@ -16,13 +18,15 @@ class MenuController extends Controller
     {
         $kategori = $request->query('kategori');
 
-        $menus = Menu::when($kategori, function ($query, $kategori) {
-            return $query->whereHas('kategori', function ($q) use ($kategori) {
-                $q->where('nama', $kategori);
-            });
-        })->get();
+        $kategoris = Category::with(['menus' => function ($query) use ($kategori) {
+            if ($kategori) {
+                $query->where('kategori_id', function ($q) use ($kategori) {
+                    $q->select('id')->from('categories')->where('nama', $kategori);
+                });
+            }
+        }])->get();
 
-        return view('home', compact('menus'));
+        return view('home', compact('kategoris'));
     }
 
     /**
