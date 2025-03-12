@@ -15,7 +15,7 @@
             @php $kategoriId = Str::slug($kategori->nama); @endphp
             <li class="me-2">
                 <a href="javascript:void(0)" onclick="showCategory('{{ $kategoriId }}')"
-                    class="inline-block p-4 rounded-t-lg kategori-tab {{ $index == 0 ? 'text-blue-600 bg-gray-100 active' : 'hover:text-gray-600 hover:bg-gray-50' }}"
+                    class="inline-block p-4 rounded-t-lg kategori-tab {{ $index == 0 ? 'text-blue-600 bg-gray-100 active' : '' }}"
                     id="tab-{{ $kategoriId }}">
                     {{ $kategori->nama }}
                 </a>
