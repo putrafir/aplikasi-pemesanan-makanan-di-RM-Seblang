@@ -24,11 +24,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+$request->authenticate();
+        $user = Auth::user();
+        // dd($user);
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return $this->redirectBasedOnRole($user->role);
     }
 
     /**
@@ -43,5 +46,19 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    protected function redirectBasedOnRole(string $role): RedirectResponse
+    {
+        $role = Auth::user()->role;
+
+        if ($role === 'kasir') {
+            return redirect()->route('kasir.dashboard');
+        }elseif ($role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        
+
+        // return redirect()->route('dashboard');
     }
 }
