@@ -13,4 +13,22 @@ class KasirController extends Controller
         $transaksis = Transaksi::all();
         return view('kasir.pesanan', compact('transaksis'));
     }
+
+    public function prosesBayar(Request $request, $id)
+{
+    // Validasi
+    $request->validate([
+        'metode' => 'required|in:tunai,qris',
+        'jumlah_uang' => 'required|numeric|min:0',
+    ]);
+
+    $transaksi = Transaksi::findOrFail($id);
+    $transaksi->metode_pembayaran = $request->metode;
+    $transaksi->jumlah_uang = $request->jumlah_uang;
+    $transaksi->status = 'dibayar';
+    $transaksi->save();
+
+    return redirect()->back()->with('success', 'Pembayaran berhasil diproses.');
+}
+
 }
