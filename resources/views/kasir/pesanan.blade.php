@@ -148,8 +148,13 @@
                             <td class="px-6 py-4">
                                 <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id])}}"
                                     class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
-                                <a href="#"
-                                    class=" px-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">Bayar</a>
+                                    <form action="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
+                                        @csrf
+                                        <button type="submit" class="px-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                            Bayar
+                                        </button>
+                                    </form>
+
                             </td>
                         </tr>
                     @endforeach
