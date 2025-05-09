@@ -20,6 +20,7 @@ class KeranjangController extends Controller
         $totalBayar = $keranjangs->sum('total_harga');
         return view('customer.keranjang', compact('keranjangs', 'totalBayar'));
     }
+    
     public function addToCart(Request $request)
     {
         $request->validate([
