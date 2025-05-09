@@ -65,9 +65,10 @@ class KeranjangController extends Controller
         $sessionId = $request->session()->getId();
 
 
-
         $keranjangs = Keranjang::where('session_id', $sessionId)->get();
-
+        $request->validate([
+            "nomor_meja"=>"unique:transaksis,nomor_meja,required",
+        ]);
         if ($keranjangs->isEmpty()) {
             return redirect()->back()->with('error', 'Keranjang kosong, tidak ada yang bisa dibayar.');
         }
