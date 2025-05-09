@@ -9,6 +9,7 @@ class Pesanan extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'nama_pelanggan',
         'nomor_meja',
@@ -29,5 +30,15 @@ class Pesanan extends Model
         return $this->items->sum(function ($item) {
             return $item->harga * $item->jumlah;
         });
+
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaksi::class);
+    }
+
+    public function details()
+    {
+        return $this->hasMany(PesananDetail::class, 'pesanan_id', 'id');
+
     }
 }
