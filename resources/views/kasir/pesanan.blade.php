@@ -148,7 +148,19 @@
                                 {{ $transaksi->nomor_meja }}
                             </td>
                             <td class="px-6 py-4">
+<<<<<<< HEAD
                                 {{ $transaksi->kembalian ?? '-' }}
+=======
+                                <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id])}}"
+                                    class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
+                                    <form action="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
+                                        @csrf
+                                        <button type="submit" class="px-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                            Bayar
+                                        </button>
+                                    </form>
+
+>>>>>>> 01edfae54a35cced32582eff16c621ea0e86b721
                             </td>
 
                             <td class="px-6 py-4 flex gap-2">
