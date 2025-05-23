@@ -10,11 +10,11 @@ class Pesanan extends Model
     use HasFactory;
 
     protected $fillable = [
-        'nama_pelanggan',
+        'session_id',
         'nomor_meja',
         'status',
-        'metode_pembayaran',
-        'total_harga'
+        'total_harga',
+    'metode_pembayaran'
     ];
 
     // Relasi: Pesanan memiliki banyak item

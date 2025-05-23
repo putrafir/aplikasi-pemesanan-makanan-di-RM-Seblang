@@ -14,16 +14,16 @@ class CreatePesanansTable extends Migration
     public function up()
     {
         Schema::create('pesanans', function (Blueprint $table) {
-
             $table->id();
-            $table->string('nama_pelanggan');
-            $table->decimal('total_harga', 10, 2)->nullable(); // Menambahkan kolom total_harga
-            $table->string('status')->default('belum dibayar');
             $table->string('nomor_meja')->nullable();
+            $table->enum('status', ['belum dibayar', 'dibayar', 'keranjang'])->default('belum dibayar');
+            $table->decimal('total_harga', 10, 2);
             $table->string('metode_pembayaran')->nullable();
             $table->timestamps();
         });
     }
+
+
 
     /**
      * Pembatalan migrasi.
@@ -32,6 +32,8 @@ class CreatePesanansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pesanans');
+        Schema::table('pesanans', function (Blueprint $table) {
+            $table->dropColumn(['status', 'metode_pembayaran', 'total']);
+        });
     }
 }

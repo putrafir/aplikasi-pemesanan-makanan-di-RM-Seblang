@@ -10,38 +10,37 @@ class PesananSeeder extends Seeder
 {
     public function run()
     {
-        // Buat 5 pesanan contoh
-        for ($i = 1; $i <= 5; $i++) {
-            // Data item untuk setiap pesanan
-            $items = [
-                [
-                    'nama' => 'Makanan ' . $i,
-                    'harga' => rand(10000, 30000),
-                    'jumlah' => rand(1, 3)
-                ],
-                [
-                    'nama' => 'Minuman ' . $i,
-                    'harga' => rand(5000, 15000),
-                    'jumlah' => rand(1, 2)
-                ]
-            ];
+        // // Ambil semua pesanan yang sudah ada
+        // $pesananList = Pesanan::all();
 
-            // Hitung total harga pesanan dari semua item
-            $total = collect($items)->sum(function ($item) {
-                return $item['harga'] * $item['jumlah'];
-            });
+        // foreach ($pesananList as $pesanan) {
+        //     // Cek apakah pesanan sudah punya item, kalau belum baru tambahkan item
+        //     if ($pesanan->items()->count() == 0) {
+        //         $items = [
+        //             [
+        //                 'nama' => 'Makanan untuk ' . $pesanan->nama_pelanggan,
+        //                 'harga' => rand(10000, 30000),
+        //                 'jumlah' => rand(1, 3)
+        //             ],
+        //             [
+        //                 'nama' => 'Minuman untuk ' . $pesanan->nama_pelanggan,
+        //                 'harga' => rand(5000, 15000),
+        //                 'jumlah' => rand(1, 2)
+        //             ]
+        //         ];
 
-            // Buat pesanan utama
-            $pesanan = Pesanan::create([
-                'nama_pelanggan' => 'Pelanggan ' . $i,
-                'nomor_meja' => 'Meja ' . $i,
-                'total_harga' => $total,
-                'status' => 'belum dibayar',
-                'metode_pembayaran' => null, // akan diisi saat pembayaran
-            ]);
+        //         $pesanan->items()->createMany($items);
 
-            // Simpan semua item ke tabel terkait dengan pesanan
-            $pesanan->items()->createMany($items);
-        }
+        //         // Hitung ulang total harga dari item
+        //         $total = collect($items)->sum(function ($item) {
+        //             return $item['harga'] * $item['jumlah'];
+        //         });
+
+        //         // Update total harga di pesanan
+        //         $pesanan->update([
+        //             'total_harga' => $total
+        //         ]);
+        //     }
+        // }
     }
 }

@@ -15,13 +15,15 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->decimal('harga', 10, 2);
-            $table->integer('jumlah');
             $table->foreignId('pesanan_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('menu_id')->nullable(); // opsional, untuk relasi
+            $table->string('nama');
+            $table->integer('jumlah');
+            $table->decimal('harga', 10, 2);
             $table->timestamps();
         });
     }
+
 
     /**
      * Pembatalan migrasi.

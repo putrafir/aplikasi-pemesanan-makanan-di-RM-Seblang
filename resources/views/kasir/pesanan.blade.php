@@ -127,6 +127,9 @@
                         <th scope="col" class="px-6 py-3">
                             Nomor Meja
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            kembalian
+                        </th>
 
                         <th scope="col" class="px-6 py-3">
                             Action
@@ -144,24 +147,38 @@
                             <td class="px-6 py-4">
                                 {{ $transaksi->nomor_meja }}
                             </td>
-
                             <td class="px-6 py-4">
-                                <a href="#"
-                                    class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
-                                    <form action="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
-                                        @csrf
-                                        <button type="submit" class="px-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                            Bayar
-                                        </button>
-                                    </form>
-
+                                {{ $transaksi->kembalian ?? '-' }}
                             </td>
+
+                            <td class="px-6 py-4 flex gap-2">
+                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
+                                    class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
+                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}">
+                                    <button type="submit"
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                        Bayar
+                                    </button>
+                                    </form>
+                            </td>
+
                         </tr>
                     @endforeach
 
 
                 </tbody>
             </table>
+
+            @if (session()->has('success'))
+                <div class="bg-white">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session()->has('error'))
+                <div class="bg-white">
+                    {{ session('error') }}
+                </div>
+            @endif
         </div>
 
     </div>
