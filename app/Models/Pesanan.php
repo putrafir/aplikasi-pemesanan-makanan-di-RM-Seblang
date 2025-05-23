@@ -30,6 +30,7 @@ class Pesanan extends Model
         return $this->items->sum(function ($item) {
             return $item->harga * $item->jumlah;
         });
+    }
 
     public function transaksi()
     {
