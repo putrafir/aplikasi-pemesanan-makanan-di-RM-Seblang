@@ -128,6 +128,9 @@
                             Nomor Meja
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            kembalian
+                        </th>
+                        <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -150,6 +153,9 @@
                                 {{ $transaksi->nomor_meja }}
                             </td>
                             <td class="px-6 py-4">
+                                {{ $transaksi->kembalian ?? '-' }}
+                            </td>
+                            <td class="px-6 py-4">
                                 <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id])}}"
                                     class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
                                 <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
@@ -161,7 +167,7 @@
                                     @method('PUT')
                                     <input type="hidden" name="status_baru" value="{{ $transaksi->status === 'aktif' ? 'nonaktif' : 'aktif' }}">
                                     <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status === 'aktif' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }}">
-                                        {{ $transaksi->status === 'aktif' ? 'Tandai Selesai' : 'Selesai' }}
+                                        {{ $transaksi->status === 'aktif' ? 'Belum Diantar' : 'Sudah Diantar' }}
                                     </button>
                                 </form>
                             </td>
@@ -181,6 +187,16 @@
 
                 </tbody>
             </table>
+            @if (session()->has('success'))
+                <div class="bg-white">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session()->has('error'))
+                <div class="bg-white">
+                    {{ session('error') }}
+                </div>
+            @endif
         </div>
 
     </div>
