@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateMenuRequest;
 use App\Models\Category;
 use App\Models\Menu;
 use Illuminate\Http\Request;
-use App\Models\Kategori;
 
 class MenuController extends Controller
 {

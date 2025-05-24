@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\KasirController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
@@ -36,11 +37,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/kasir/dashboard', function () {
         return view('kasir.dashboard');
     })->name('kasir.dashboard');
+
+    Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
+
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
-
-    Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
+    Route::get('/admin/menu', [AdminController::class, 'index'])->name('admin.menu');
+    Route::get('/admin/tambah/menu', [AdminController::class, 'tambahMenu'])->name('admin.tambah.menu');
+    Route::post('/admin/store/menu', [AdminController::class, 'storeMenu'])->name('admin.store.menu');
+    Route::get('/admin/edit/menu/{id}', [AdminController::class, 'editMenu'])->name('admin.edit.menu');
+    Route::post('/admin/update/menu', [AdminController::class, 'updateMenu'])->name('admin.update.menu');
+    Route::get('/admin/delete/menu/{id}', [AdminController::class, 'deleteMenu'])->name('admin.delete.menu');
 });
 
 

@@ -83,22 +83,18 @@
                         <div data-nama="{{ strtolower($menu->nama) }}"
                             class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg">
                             <a href="#">
-                                <img class="p-4 rounded-t-lg w-full h-40 object-cover"
-                                    src="/docs/images/products/apple-watch.png" alt="{{ $menu->nama }}" />
+                                <img class="p-4 rounded-t-lg w-full h-40 object-contain"
+                                    src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
                             </a>
-                            <div class="px-5 pb-5">
-                                <a href="#">
+                            <div class="mt-4">
+                                <div class="text-left  pl-4">
                                     <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}
                                     </h5>
-                                </a>
-                                <div class="flex items-center mt-2.5 mb-5">
-                                    <span
-                                        class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-sm">5.0</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-3xl font-bold text-gray-900">
+                                    <span class="text-2xl font-bold text-gray-900">
                                         @php echo number_format($menu->harga, 0, ',', '.'); @endphp
                                     </span>
+                                </div>
+                                <div class="mt-3 flex justify-center">
                                     <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
@@ -109,6 +105,7 @@
                                     </form>
                                 </div>
                             </div>
+
                         </div>
                     @endforeach
                 </div>
