@@ -4,6 +4,8 @@ use App\Http\Controllers\KasirController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PesananController;
+use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
@@ -41,6 +43,15 @@ Route::middleware('auth')->group(function () {
     })->name('admin.dashboard');
 
     Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
+    Route::post('/keranjang/checkout-pesanan', [KeranjangController::class, 'checkoutToPesanan'])->name('keranjang.checkoutPesanan');
+    Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('kasir.bayar');
+    Route::put('/pesanan/{id}/bayar/', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
+    Route::post('/kasir/pesanan/{id}/konfirmasi', [PesananController::class, 'konfirmasi'])->name('pesanan.konfirmasi');
+    Route::post('/transaksi/bayar/{pesananId}', [TransaksiController::class, 'prosesBayar'])->name('transaksi.bayar');
+    Route::get('/kasir/pesanan/{id}/detail', [KasirController::class, 'detail'])->name('kasir.pesanan.detail');
+    Route::delete('/kasir/pesanan/{id}', [KasirController::class, 'destroy'])->name('kasir.destroy');
+    Route::put('/kasir/transaksi/{id}/status', [TransaksiController::class, 'updateStatus'])->name('kasir.transaksi.updateStatus');
+    Route::put('/kasir/transaksi/{id}/status/bayar', [TransaksiController::class, 'updateStatusBayar'])->name('kasir.transaksi.updateStatusBayar');
 });
 
 
