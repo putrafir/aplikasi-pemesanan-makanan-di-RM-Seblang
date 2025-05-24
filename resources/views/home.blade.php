@@ -83,8 +83,8 @@
                         <div data-nama="{{ strtolower($menu->nama) }}"
                             class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg">
                             <a href="#">
-                                <img class="p-4 rounded-t-lg w-full h-40 object-cover"
-                                    src="/docs/images/products/apple-watch.png" alt="{{ $menu->nama }}" />
+                                <img class="p-4 rounded-t-lg w-full h-90 aspect-square object-cover"
+                                    src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
                             </a>
                             <div class="px-5 pb-5">
                                 <a href="#">
