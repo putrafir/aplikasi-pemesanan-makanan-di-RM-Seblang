@@ -9,6 +9,13 @@ use App\Models\Transaksi;
 
 class TransaksiController extends Controller
 {
+    public function index()
+    {
+        // Mengambil semua data transaksi dari database
+        $transaksis = Transaksi::all();  // Atau bisa juga dengan query yang lebih spesifik
+        return view('kasir.pesanan', compact('transaksis'));
+    }
+
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
