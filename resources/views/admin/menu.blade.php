@@ -139,17 +139,20 @@
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-4 py-3">
+                        <th scope="col" class="px-6 py-3">
                             Nama Menu
                         </th>
-                        <th scope="col" class="px-4 py-3">
+                        <th scope="col" class="px-6 py-3">
                             Deskripsi
                         </th>
-                        <th scope="col" class="px-4 py-3">
+                        <th scope="col" class="px-6 py-3">
                             Harga
                         </th>
-                        <th scope="col" class="px-4 py-3">
+                        <th scope="col" class="px-6 py-3">
                             Kategori
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Stok
                         </th>
                         <th scope="col" class="px-4 py-3">
                             Aksi
@@ -171,7 +174,17 @@
                                 {{ $menu->harga }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $menu->kategori_id }}
+                                {{ $menu->kategori->nama }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <form action="{{ route('admin.update.stok', $menu->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="stok_baru" value="{{ $menu->stok === 'habis' ? 'tersedia' : 'habis' }}">
+                                    <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $menu->stok === 'habis' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-stok">
+                                        {{ $menu->stok === 'habis' ? 'Habis' : 'Tersedia' }}
+                                    </button>
+                                </form>
                             </td>
 
                             <td class="px-6 py-4">

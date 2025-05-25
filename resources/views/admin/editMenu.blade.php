@@ -163,11 +163,15 @@
 
 
         <!-- Stok -->
-        <div>
+        {{-- <div>
             <label for="stok" class="block text-sm font-medium text-gray-700">Stok</label>
-            <input type="number" id="stok" name="stok" min="0" value="{{ $menu->stok }}"
-                class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:border-blue-500">
-        </div>
+            <select id="stok" name="stok" min="0"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="">-- Pilih Stok --</option>
+                <option value="habis" {{ $menu->stok == 'habis' ? 'selected' : '' }}>Habis</option>
+                <option value="tersedia" {{ $menu->stok == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
+            </select>
+        </div> --}}
 
         <!-- Harga -->
         <div>

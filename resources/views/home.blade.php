@@ -99,6 +99,7 @@
                                     <span class="text-3xl font-bold text-gray-900">
                                         @php echo number_format($menu->harga, 0, ',', '.'); @endphp
                                     </span>
+                                    @if(strtolower($menu->stok) === 'tersedia')
                                     <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
@@ -107,6 +108,13 @@
                                             Tambah
                                         </button>
                                     </form>
+                                    @else
+                                        <button
+                                            class="text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                            disabled>
+                                            Habis
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </div>
