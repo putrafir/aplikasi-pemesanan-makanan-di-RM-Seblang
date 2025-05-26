@@ -31,7 +31,7 @@ class AdminController extends Controller
             'deskripsi' => 'nullable|string',
             'harga' => 'required|numeric|min:0',
             'kategori' => 'required|exists:categories,id',
-            'stok' => 'required|integer|min:0',
+            //'stok' => 'required|in:habis,tersedia',
             ]);
 
         if ($request->file('image')) {
@@ -48,7 +48,7 @@ class AdminController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'harga' => $request->harga,
                 'kategori_id' => $request->kategori,
-                'stok' => $request->stok,
+            //    'stok' => $request->stok,
             ]);
 
 
@@ -88,7 +88,7 @@ class AdminController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'harga' => $request->harga,
                 'kategori_id' => $request->kategori,
-                'stok' => $request->stok,
+            //    'stok' => $request->stok,
             ]);
             $notification = array(
                 'message' => 'Menu Updated Successfully',
@@ -104,7 +104,7 @@ class AdminController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'harga' => $request->harga,
                 'kategori_id' => $request->kategori,
-                'stok' => $request->stok,
+            //    'stok' => $request->stok,
 
             ]);
             $notification = array(
@@ -138,4 +138,21 @@ class AdminController extends Controller
 
     }
     // End Method
+
+    public function updateStok(Request $request, $id)
+    {
+        $request->validate([
+            'stok_baru' => 'required|in:habis,tersedia',
+        ]);
+        $menu = Menu::findOrFail($id);
+        $menu->stok = $request->stok_baru;
+        $menu->save();
+
+        $notification = array(
+            'message' => 'Stok menu berhasil diperbarui',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification);
+    }
 }
