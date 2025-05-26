@@ -4,34 +4,30 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateItemsTable extends Migration
+return new class extends Migration
 {
     /**
-     * Jalankan migrasi untuk membuat tabel items.
-     *
-     * @return void
+     * Run the migrations.
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pesanan_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('menu_id')->nullable(); // opsional, untuk relasi
             $table->string('nama');
+            $table->foreignId('pesanan_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('menu_id')->nullable();
             $table->integer('jumlah');
-            $table->decimal('harga', 10, 2);
+             $table->decimal('harga', 10, 2);
             $table->timestamps();
         });
     }
 
 
     /**
-     * Pembatalan migrasi.
-     *
-     * @return void
+     * Reverse the migrations.
      */
-    public function down()
+    public function down(): void
     {
         Schema::dropIfExists('items');
     }
-}
+};

@@ -14,20 +14,9 @@
 <body>
 
 
-    <!-- Form Pencarian -->
-    <div class="relative max-w-md ml-4 mt-4">
-        <form method="GET" action="{{ url('/menu') }}" class="relative">
-            <input id="searchInput" type="text" name="search" placeholder="Cari Menu ..."
-                class="w-full pl-4 pr-12 py-2 text-left border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button type="submit"
-                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center transition duration-200 hover:bg-white hover:text-blue-500">
-                <i class="fas fa-arrow-right text-sm"></i>
-            </button>
-        </form>
-    </div>
+    
 
     <!-- Tab Kategori -->
-    <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 mt-4 ml-4">
 
         <nav class="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -39,6 +28,17 @@
                             clip-rule="evenodd" />
                     </svg>
                 </a>
+                <!-- Form Pencarian -->
+    <div class="relative max-w-md ml-4 mt-4">
+        <form method="GET" action="{{ url('/menu') }}" class="relative">
+            <input id="searchInput" type="text" name="search" placeholder="Cari Menu ..."
+                class="w-full pl-4 pr-12 py-2 text-left border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <button type="submit"
+                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center transition duration-200 hover:bg-white hover:text-blue-500">
+                <i class="fas fa-arrow-right text-sm"></i>
+            </button>
+        </form>
+    </div>
                 <a href="{{ route('customer.keranjang.view') }}">
                     <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -83,8 +83,8 @@
                         <div data-nama="{{ strtolower($menu->nama) }}"
                             class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg">
                             <a href="#">
-                                <img class="p-4 rounded-t-lg w-full h-40 object-cover"
-                                    src="/docs/images/products/apple-watch.png" alt="{{ $menu->nama }}" />
+                                <img class="p-4 rounded-t-lg w-full h-90 aspect-square object-cover"
+                                    src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
                             </a>
                             <div class="px-5 pb-5">
                                 <a href="#">

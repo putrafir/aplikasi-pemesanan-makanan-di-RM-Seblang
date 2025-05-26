@@ -18,7 +18,10 @@ return new class extends Migration
             $table->integer('nomor_meja')->unique();
             $table->integer('uang_dibayarkan')->default(0);
             $table->integer('kembalian')->default(0);
+            //$table->enum('kembalian',['pending','success'])->default('pending');
+            $table->string('metode_pembayaran')->default('tunai');
             $table->string('status')->default('aktif');
+            $table->string('status_bayar')->default('belum bayar');
             $table->json('details');
             $table->timestamps();
         });

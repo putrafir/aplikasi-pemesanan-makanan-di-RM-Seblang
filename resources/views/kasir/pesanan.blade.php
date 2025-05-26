@@ -134,6 +134,12 @@
                         <th scope="col" class="px-6 py-3">
                             Action
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Status Pesanan
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Status Pembayaran
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -148,9 +154,6 @@
                                 {{ $transaksi->nomor_meja }}
                             </td>
                             <td class="px-6 py-4">
-<<<<<<< HEAD
-                                {{ $transaksi->kembalian ?? '-' }}
-=======
                                 <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id])}}"
                                     class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
                                     <form action="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
@@ -160,7 +163,6 @@
                                         </button>
                                     </form>
 
->>>>>>> 01edfae54a35cced32582eff16c621ea0e86b721
                             </td>
 
                             <td class="px-6 py-4 flex gap-2">

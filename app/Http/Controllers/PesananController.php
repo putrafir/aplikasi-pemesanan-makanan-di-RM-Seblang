@@ -2,16 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Pesanan;
+use App\Http\Requests\StorePesananRequest;
+use App\Http\Requests\UpdatePesananRequest;
+use Illuminate\Http\Request;
 use App\Models\Transaksi;
 
 
 class PesananController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     // Menampilkan semua pesanan yang bukan keranjang
     public function index()
     {
+        $pesanans = Pesanan::with('items')->where('status', '!=', 'keranjang')->get();
         $pesanans = Pesanan::with('items')->where('status', '!=', 'keranjang')->get();
         return view('kasir.pesanan', compact('pesanans'));
     }
@@ -31,8 +37,22 @@ class PesananController extends Controller
     public function konfirmasi($id)
     {
         $pesanan = Pesanan::with('items')->findOrFail($id);
+        $pesanan = Pesanan::with('items')->findOrFail($id);
 
         if ($pesanan->status === 'keranjang') {
+            if ($pesanan->items->isEmpty()) {
+                return redirect()->back()->withErrors(['Pesanan tidak memiliki item.']);
+            }
+
+            $total = $pesanan->items->sum(function ($item) {
+                return $item->harga * $item->jumlah;
+            });
+
+            $pesanan->update([
+                'status' => 'belum dibayar',
+                'total' => $total
+            ]);
+
             if ($pesanan->items->isEmpty()) {
                 return redirect()->back()->withErrors(['Pesanan tidak memiliki item.']);
             }

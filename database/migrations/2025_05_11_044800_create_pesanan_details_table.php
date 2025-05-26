@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('order_details', function (Blueprint $table) {
+        Schema::create('pesanan_details', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('pesanan_id');
             $table->unsignedBigInteger('menu_id'); // Menambahkan relasi ke tabel menus
             $table->string('nama_produk'); // Ini mungkin duplikat dari nama di tabel menu, bisa dihilangkan jika yakin selalu ada menu_id
             $table->integer('jumlah');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Foreign key constraints
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreign('pesanan_id')->references('id')->on('pesanans')->onDelete('cascade');
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade'); // Menambahkan foreign key ke tabel menus
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('order_details');
+        Schema::dropIfExists('pesanan_details');
     }
 };

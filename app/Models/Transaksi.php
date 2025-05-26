@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany; // Karena satu transaksi bisa punya banyak detail
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transaksi extends Model
 {
+    /** @use HasFactory<\Database\Factories\TransaksiFactory> */
     use HasFactory;
-protected $guarded = [];
 
+    protected $guarded = [];
     /**
      * Get all of the details for the transaksi.
      */

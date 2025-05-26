@@ -9,11 +9,13 @@ class Pesanan extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
+        'session_id',
         'session_id',
         'nomor_meja',
         'status',
+        'total_harga',
+        'metode_pembayaran',
         'total_harga',
     'metode_pembayaran'
     ];
@@ -32,6 +34,7 @@ class Pesanan extends Model
         });
     }
 
+
     public function transaksi()
     {
         return $this->belongsTo(Transaksi::class);
@@ -40,6 +43,5 @@ class Pesanan extends Model
     public function details()
     {
         return $this->hasMany(PesananDetail::class, 'pesanan_id', 'id');
-
     }
 }

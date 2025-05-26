@@ -4,15 +4,15 @@ use App\Http\Controllers\KasirController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PesananController;
-
+use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\AdminController;
+use Illuminate\Support\Facades\Route;
 
 Route::get(
     '/menu',
     [MenuController::class, 'index']
 )->name('customer.menu');
-
 Route::get(
     '/',
     function () {
@@ -30,28 +30,23 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    // Profil User
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-    // Dashboard Kasir dan Admin
+Route::middleware('auth')->group(function () {
     Route::get('/kasir/dashboard', function () {
         return view('kasir.dashboard');
     })->name('kasir.dashboard');
-
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
-<<<<<<< HEAD
-
-=======
     // Pesanan Kasir
     Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
     // Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('pesanan.bayar');
     // Route::post('/kasir/pesanan/{id}/bayar', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
->>>>>>> 01edfae54a35cced32582eff16c621ea0e86b721
 
 });
 
@@ -60,14 +55,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/keranjang/checkout-pesanan', [KeranjangController::class, 'checkoutToPesanan'])->name('keranjang.checkoutPesanan');
     Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('kasir.bayar');
     Route::put('/pesanan/{id}/bayar/', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
+    Route::put('/pesanan/{id}/bayar/', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
     Route::post('/kasir/pesanan/{id}/konfirmasi', [PesananController::class, 'konfirmasi'])->name('pesanan.konfirmasi');
-<<<<<<< HEAD
-    Route::post('/transaksi/bayar/{pesananId}', [TransaksiController::class, 'prosesBayar'])->name('transaksi.bayar');
-
-=======
     Route::get('/kasir/pesanan/{id}/detail', [KasirController::class, 'detail'])->name('kasir.pesanan.detail');
     Route::delete('/kasir/pesanan/{id}', [KasirController::class, 'destroy'])->name('kasir.destroy');
->>>>>>> 01edfae54a35cced32582eff16c621ea0e86b721
 });
 
 
