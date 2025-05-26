@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('harga', 10, 2);
             $table->unsignedBigInteger('kategori_id');
             $table->foreign('kategori_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->text('stok')->default(0);
+            $table->string('stok')->default('habis');
             $table->timestamps();
         });
     }

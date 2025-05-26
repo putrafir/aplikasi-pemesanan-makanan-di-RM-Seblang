@@ -19,3 +19,25 @@ $(function () {
         });
     });
 });
+
+$(function () {
+    $(document).on("click", ".btn-stok", function (e) {
+        e.preventDefault();
+        let form = $(this).closest("form");
+
+        Swal.fire({
+            title: "Apakah Anda Yakin?",
+            text: "Ingin Mengubah Stok?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Ubah!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                form.submit();
+                Swal.fire("Berhasil!", "Stok telah diubah.", "success");
+            }
+        });
+    });
+});
