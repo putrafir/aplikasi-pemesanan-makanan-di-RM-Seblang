@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('uang_dibayarkan')->default(0);
             $table->integer('kembalian')->default(0);
             $table->string('status')->default('aktif');
+            // $table->enum('status',['aktif','ejfja','sa'])->default('aktif');
+
             $table->string('status_bayar')->default('belum bayar');
             $table->json('details');
             $table->timestamps();

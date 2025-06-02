@@ -14,7 +14,9 @@ class PesananController extends Controller
     public function index()
     {
         $pesanans = Pesanan::all(); // Menampilkan semua pesanan
-        return view('kasir.pesanan', compact('pesanans'));
+         return view('kasir.pesanan', compact('pesanans'));
+
+
     }
 
     public function showBayar($id)
@@ -69,4 +71,24 @@ class PesananController extends Controller
 
         return redirect()->back()->withErrors(['Pesanan ini sudah dikonfirmasi sebelumnya.']);
     }
+
+    //baru
+//     public function pesanan(Request $request)
+// {
+//     $query = Order::query();
+
+//     if ($request->has('')) {
+//         $query->where('created', $request->date);
+//     }
+
+//     if ($request->status) {
+//         $query->where('status', $request->status);
+//     }
+
+//     $orders = $query->get();
+
+//     return view('kasir.pesanan', compact('pesanans'));
+// }
+
+
 }

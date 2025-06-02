@@ -118,6 +118,49 @@
 
     <div class="p-4 sm:ml-64">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <td class="px-6 py-4">
+                <form method="GET" action="{{ route('kasir.pesanan') }}">
+                    <div class="flex align-items-center gap-5 mb-3">
+                        <div>
+                            <label for="date" class="form-label">Filter by Date</label>
+                            <input type="date" name="date" value="{{ old('date', date('Y-m-d')) }}"
+                                class="form-control">
+                        </div>
+                        <div>
+                            <label for="status" class="form-label">Status Pesanan</label>
+                            <select name="status" class="form-select">
+                                <option value="">Select Status</option>
+                                <option value="nonaktif" {{ request('status') == 'nonaktif' ? 'selected' : '' }}>
+                                    Sudah di Antar</option>
+                                <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>
+                                    Belum di Antar</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="status_bayar" class="form-label">Status Pembayaran</label>
+                            <select name="status_bayar" class="form-select">
+                                <option value="">Select Status</option>
+                                <option value="sudah bayar"
+                                    {{ request('status_bayar') == 'sudah bayar' ? 'selected' : '' }}>
+                                    sudah bayar</option>
+                                <option value="belum Bayar"
+                                    {{ request('status_bayar') == 'belum bayar' ? 'selected' : '' }}>
+                                    Belum Bayar</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="form-label d-block invisible ">Filter</label>
+                            <button type="submit" class="px-3 py-1 rounded font-semibold transition ">Filter</button>
+
+                        </div>
+                    </div>
+                </form>
+                <hr>
+            </td>
+
+
+
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -138,6 +181,9 @@
                         </th>
                     </tr>
                 </thead>
+
+
+
                 <tbody>
                     @foreach ($transaksis as $transaksi)
                         <tr
@@ -150,31 +196,40 @@
                                 {{ $transaksi->nomor_meja }}
                             </td>
                             <td class="px-6 py-4">
-                                <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id])}}"
+                                <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id]) }}"
                                     class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
                                 <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
                                     class=" px-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">Bayar</a>
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('kasir.transaksi.updateStatus', $transaksi->id) }}" method="POST">
+                                <form action="{{ route('kasir.transaksi.updateStatus', $transaksi->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name="status_baru" value="{{ $transaksi->status === 'aktif' ? 'nonaktif' : 'aktif' }}">
-                                    <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status === 'aktif' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }}">
+                                    <input type="hidden" name="status_baru"
+                                        value="{{ $transaksi->status === 'aktif' ? 'nonaktif' : 'aktif' }}">
+                                    <button type="submit"
+                                        class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status === 'aktif' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }}">
                                         {{ $transaksi->status === 'aktif' ? 'Tandai Selesai' : 'Selesai' }}
                                     </button>
                                 </form>
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('kasir.transaksi.updateStatusBayar', $transaksi->id) }}" method="POST">
+                                <form action="{{ route('kasir.transaksi.updateStatusBayar', $transaksi->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name="statusbayar_baru" value="{{ $transaksi->status_bayar === 'belum bayar' ? 'sudah bayar' : 'belum bayar' }}">
-                                    <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status_bayar === 'belum bayar' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }}">
+                                    <input type="hidden" name="statusbayar_baru"
+                                        value="{{ $transaksi->status_bayar === 'belum bayar' ? 'sudah bayar' : 'belum bayar' }}">
+                                    <button type="submit"
+                                        class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status_bayar === 'belum bayar' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }}">
                                         {{ $transaksi->status_bayar === 'belum bayar' ? 'Tandai Lunas' : 'Lunas' }}
                                     </button>
                                 </form>
                             </td>
+
+
+
                         </tr>
                     @endforeach
 
