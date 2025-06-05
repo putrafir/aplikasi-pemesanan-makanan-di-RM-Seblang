@@ -20,7 +20,7 @@ class KeranjangController extends Controller
         $totalBayar = $keranjangs->sum('total_harga');
         return view('customer.keranjang', compact('keranjangs', 'totalBayar'));
     }
-    
+
     public function addToCart(Request $request)
     {
         $request->validate([
@@ -68,7 +68,7 @@ class KeranjangController extends Controller
 
         $keranjangs = Keranjang::where('session_id', $sessionId)->get();
         $request->validate([
-            "nomor_meja"=>"unique:transaksis,nomor_meja,required",
+            "nomor_meja" => "unique:transaksis,nomor_meja,required",
         ]);
         if ($keranjangs->isEmpty()) {
             return redirect()->back()->with('error', 'Keranjang kosong, tidak ada yang bisa dibayar.');
@@ -99,6 +99,6 @@ class KeranjangController extends Controller
 
         Keranjang::where('session_id', $sessionId)->delete();
 
-        return redirect()->back()->with('success', "Pemesanan berhasil, silakan bayar nanti sebesar Rp. $totalBayar");
+        return redirect()->route('customer.riwayat')->with('success', "Pemesanan berhasil, silakan bayar nanti sebesar Rp. $totalBayar");
     }
 }

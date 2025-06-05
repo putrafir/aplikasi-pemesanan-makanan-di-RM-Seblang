@@ -56,12 +56,11 @@
         <table class="table-auto w-full border-collapse border border-gray-300">
             <thead>
                 <tr>
-                    <th class="border border-gray-300 px-4 py-2">#</th>
+                    <th class="border border-gray-300 px-4 py-2">No</th>
                     <th class="border border-gray-300 px-4 py-2">Nama Produk</th>
                     <th class="border border-gray-300 px-4 py-2">Harga</th>
                     <th class="border border-gray-300 px-4 py-2">Jumlah</th>
                     <th class="border border-gray-300 px-4 py-2">Subtotal</th>
-                    <th class="border border-gray-300 px-4 py-2">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,6 +91,7 @@
                 @endforeach
             </tbody>
         </table>
+
         <div class="mt-4">
             <form action="{{ route('customer.keranjang.checkout') }}" method="POST">
                 @csrf
