@@ -4,17 +4,17 @@ $(function () {
         var link = $(this).attr("href");
 
         Swal.fire({
-            title: "Are you sure?",
-            text: "Delete This Data?",
+            title: "Apakah Anda Yakin?",
+            text: "Ingin Menghapus Menu?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonText: "Ya, hapus!",
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = link;
-                Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                Swal.fire("Berhasil!", "Stok telah dihapus.", "success");
             }
         });
     });
