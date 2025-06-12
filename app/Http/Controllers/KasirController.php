@@ -27,6 +27,14 @@ class KasirController extends Controller
     $transaksi->jumlah_uang = $request->jumlah_uang;
     $transaksi->status = 'dibayar';
     $transaksi->save();
+    // Update status nomor meja jika ada
+    if ($transaksi->nomor_meja) {
+        $transaksi->nomor_meja->status = 'tersedia';
+        $transaksi->nomor_meja->save();
+    }
+
+        dd($transaksi);
+    
 
     return redirect()->back()->with('success', 'Pembayaran berhasil diproses.');
 }
