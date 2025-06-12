@@ -28,29 +28,20 @@
 
     <div class="p-4 sm:ml-64">
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <h2 class="text-center mb-5 font-bold">Daftar Menu </h2>
-            <a href="{{ route('admin.tambah.menu') }}"
+            <h2 class="text-center mb-5 font-bold">Daftar Nomor Meja </h2>
+            <a href="{{ route('admin.tambah.nomormeja') }}"
                 class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded mb-3"> <i
                     class="fas fa-plus px-1"></i>Tambah
-                Menu</a>
+                Nomor Meja</a>
 
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
-                            Nama Menu
+                            Nomor Meja
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Deskripsi
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Harga
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Kategori
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Stok
+                            Status
                         </th>
                         <th scope="col" class="px-4 py-3">
                             Aksi
@@ -58,39 +49,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($menus as $menu)
+                    @foreach ($nomor_mejas as $nomor_meja)
                         <tr
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                             <th scope="row"
                                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $menu->nama }}
+                                {{ $nomor_meja->nomor }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $menu->deskripsi }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $menu->harga }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $menu->kategori->nama }}
-                            </td>
-                            <td class="px-6 py-4">
-                                <form action="{{ route('admin.update.stok', $menu->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="hidden" name="stok_baru" value="{{ $menu->stok === 'habis' ? 'tersedia' : 'habis' }}">
-                                    <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $menu->stok === 'habis' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-stok">
-                                        {{ $menu->stok === 'habis' ? 'Habis' : 'Tersedia' }}
+                               @if ($nomor_meja->status == 'tersedia')
+                                    <button type="button" disabled class="px-3 py-1 text-green-700 bg-green-100 font-semibold text-sm rounded-full cursor-default">
+                                        Tersedia
                                     </button>
-                                </form>
+                                @elseif ($nomor_meja->status == 'terisi')
+                                    <button type="button" disabled class="px-3 py-1 text-yellow-700 bg-yellow-100 font-semibold text-sm rounded-full cursor-default">
+                                        Terisi
+                                    </button>
+                                @elseif ($nomor_meja->status == 'reservasi')
+                                    <button type="button" disabled class="px-3 py-1 text-blue-700 bg-blue-100 font-semibold text-sm rounded-full cursor-default">
+                                        Reservasi
+                                    </button>
+                                @elseif ($nomor_meja->status == 'rusak')
+                                    <button type="button" disabled class="px-3 py-1 text-red-700 bg-red-100 font-semibold text-sm rounded-full cursor-default">
+                                        Rusak
+                                    </button>
+                                @endif
                             </td>
-
                             <td class="px-6 py-4">
 
-                                <a href="{{ route('admin.edit.menu', $menu->id) }}"
+                                <a href="{{ route('admin.edit.nomormeja', $nomor_meja->id) }}"
                                     class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded">
                                     Edit </a>
-                                <a href="{{ route('admin.delete.menu', $menu->id) }}"
+                                <a href="{{ route('admin.delete.nomormeja', $nomor_meja->id) }}"
                                     class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-1 rounded"
                                     id="delete">
                                     Hapus </a>
