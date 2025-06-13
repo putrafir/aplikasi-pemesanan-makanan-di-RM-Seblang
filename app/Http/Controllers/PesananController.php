@@ -18,7 +18,6 @@ class PesananController extends Controller
     public function index()
     {
         $pesanans = Pesanan::with('items')->where('status', '!=', 'keranjang')->get();
-        $pesanans = Pesanan::with('items')->where('status', '!=', 'keranjang')->get();
         return view('kasir.pesanan', compact('pesanans'));
     }
 
@@ -62,7 +61,7 @@ class PesananController extends Controller
             });
 
             $pesanan->update([
-                'status' => 'belum dibayar',
+                'status' => 'belum bayar',
                 'total' => $total
             ]);
 
@@ -77,13 +76,13 @@ class PesananController extends Controller
     {
 
         $transaksis = Transaksi::find($id);
-        if ($transaksis->status_bayar == 'lunas') {
+        if ($transaksis->status_bayar == 'sudah bayar') {
             return redirect()->back()->with('error', 'Pesanan telah dibayar.');
         }
 
-        $pesanan = json_decode($transaksis->details, true);
-        return view('kasir.bayar_pesanan', compact('transaksis', 'pesanan'));
-    }
+            $pesanan = json_decode($transaksis->details, true);
+            return view('kasir.bayar_pesanan', compact('transaksis', 'pesanan'));
+        }
 
     public function prosesBayar($id, Request $request)
     {
@@ -95,40 +94,43 @@ class PesananController extends Controller
         if (!$pesanan) {
             return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
         }
-        if ($pesanan->status_bayar == 'lunas') {
+        if ($pesanan->status_bayar == 'sudah bayar') {
             return redirect()->back()->with('error', 'Pesanan telah dibayar.');
         }
-        // if ($pesanan->status === 'belum dibayar') {
-        //     return redirect()->back()->with('error', 'Pesanan ini sudah dibayar atau tidak valid.');
-        // }
 
-
-
-        $transaksiDetail = json_decode($pesanan->details, true);
-        $total = array_sum(array_column($transaksiDetail, 'subtotal'));
-        ;
-        if ($total > $validate['uang_dibayarkan']) {
+            $transaksiDetail = json_decode($pesanan->details, true);
+            $total = array_sum(array_column($transaksiDetail, 'subtotal'));
+            ;
+            if ($total > $validate['uang_dibayarkan']) {
 
             return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
-
         }
 
         $kembalian = $validate['uang_dibayarkan'] - $total;
         // Simpan ke tabel transaksi
+
+
         try {
 
             $pesanan->update([
                 'uang_dibayarkan' => $validate['uang_dibayarkan'],
+                'status_bayar' => 'sudah bayar',
                 'metode_pembayaran' => $validate['metode_pembayaran'],
-                'status_bayar' => 'lunas',
-                "status" => 'belum diantar',
                 'kembalian' => $kembalian,
             ]);
+
+            // Update status nomor meja jika ada
+            if ($pesanan->meja) {
+                $pesanan->meja->status = 'tersedia';
+                $pesanan->meja->save();
+            }
+
+
             return redirect()->route('kasir.pesanan')->with('success', 'Pembayaran berhasil dilakukan.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Pesanan gagal.');
 
+            }
         }
-    }
 
-}
+    }

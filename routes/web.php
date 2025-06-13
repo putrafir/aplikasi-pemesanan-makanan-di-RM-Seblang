@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\MenuController;
@@ -24,6 +25,7 @@ Route::get('customer/keranjang', [KeranjangController::class, 'index'])->name('c
 Route::post('/customer/keranjang/add', [KeranjangController::class, 'addToCart'])->name('customer.keranjang.add');
 Route::delete('/customer/keranjang/{id}', [KeranjangController::class, 'destroy'])->name('customer.keranjang.delete');
 Route::post('/customer/keranjang/checkout', [KeranjangController::class, 'checkout'])->name('customer.keranjang.checkout');
+Route::get('/customer/riwayat', [CustomerController::class, 'riwayat'])->name('customer.riwayat');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -62,12 +64,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/kasir/pesanan/{id}', [KasirController::class, 'destroy'])->name('kasir.destroy');
     Route::put('/kasir/transaksi/{id}/status', [TransaksiController::class, 'updateStatus'])->name('kasir.transaksi.updateStatus');
     Route::put('/kasir/transaksi/{id}/status/bayar', [TransaksiController::class, 'updateStatusBayar'])->name('kasir.transaksi.updateStatusBayar');
-     Route::get('/admin/menu', [AdminController::class, 'index'])->name('admin.menu');
+    Route::get('/admin/menu', [AdminController::class, 'index'])->name('admin.menu');
+    Route::get('/admin/nomormeja', [AdminController::class, 'nomorMeja'])->name('admin.nomormeja');
+
     Route::get('/admin/tambah/menu', [AdminController::class, 'tambahMenu'])->name('admin.tambah.menu');
+    Route::get('/admin/tambah/nomormeja', [AdminController::class, 'tambahNomorMeja'])->name('admin.tambah.nomormeja');
     Route::post('/admin/store/menu', [AdminController::class, 'storeMenu'])->name('admin.store.menu');
+    Route::post('/admin/store/nomormeja', [AdminController::class, 'storeNomorMeja'])->name('admin.store.nomormeja');
     Route::get('/admin/edit/menu/{id}', [AdminController::class, 'editMenu'])->name('admin.edit.menu');
+    Route::get('/admin/edit/nomormeja/{id}', [AdminController::class, 'editNomorMeja'])->name('admin.edit.nomormeja');
     Route::post('/admin/update/menu', [AdminController::class, 'updateMenu'])->name('admin.update.menu');
+    Route::post('/admin/update/nomormeja', [AdminController::class, 'updateNomorMeja'])->name('admin.update.nomormeja');
     Route::get('/admin/delete/menu/{id}', [AdminController::class, 'deleteMenu'])->name('admin.delete.menu');
+    Route::get('/admin/delete/nomormeja/{id}', [AdminController::class, 'deleteNomorMeja'])->name('admin.delete.nomormeja');
     Route::put('/admin/update/stok/{id}', [AdminController::class, 'updateStok'])->name('admin.update.stok');
 });
 

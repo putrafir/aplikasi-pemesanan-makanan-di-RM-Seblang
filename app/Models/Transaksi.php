@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+
 class Transaksi extends Model
 {
     /** @use HasFactory<\Database\Factories\TransaksiFactory> */
@@ -15,6 +16,12 @@ class Transaksi extends Model
     /**
      * Get all of the details for the transaksi.
      */
+
+    public function meja()
+    {
+        return $this->belongsTo(NomorMeja::class, 'nomor_meja', 'nomor');
+    }
+
     public function details(): HasMany
     {
         return $this->hasMany(PesananDetail::class, 'pesanan_id', 'id');

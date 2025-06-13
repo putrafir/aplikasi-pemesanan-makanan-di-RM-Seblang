@@ -33,12 +33,18 @@ class KasirController extends Controller
             'jumlah_uang' => 'required|numeric|min:0',
         ]);
 
-        $transaksi = Transaksi::findOrFail($id);
-        $transaksi->metode_pembayaran = $request->metode;
-        $transaksi->jumlah_uang = $request->jumlah_uang;
-        $transaksi->status_bayar = 'lunas';
-        $transaksi->status = 'belum diantar';
-        $transaksi->save();
+    $transaksi = Transaksi::findOrFail($id);
+    $transaksi->metode_pembayaran = $request->metode;
+    $transaksi->jumlah_uang = $request->jumlah_uang;
+    $transaksi->status = 'dibayar';
+    $transaksi->save();
+    // Update status nomor meja jika ada
+    if ($transaksi->nomor_meja) {
+        $transaksi->nomor_meja->status = 'tersedia';
+        $transaksi->nomor_meja->save();
+    }
+
+
 
         return redirect()->back()->with('success', 'Pembayaran berhasil diproses.');
     }
