@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('session_id');
             $table->integer('total_bayar');
-            $table->integer('nomor_meja')->unique();
+            $table->integer('nomor_meja');
             $table->integer('uang_dibayarkan')->default(0);
             $table->integer('kembalian')->default(0);
             //$table->enum('kembalian',['pending','success'])->default('pending');

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Category;
+use App\Models\NomorMeja;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -31,7 +32,7 @@ class AdminController extends Controller
             'deskripsi' => 'nullable|string',
             'harga' => 'required|numeric|min:0',
             'kategori' => 'required|exists:categories,id',
-            'stok' => 'required|integer|min:0',
+            //'stok' => 'required|in:habis,tersedia',
             ]);
 
         if ($request->file('image')) {
@@ -48,7 +49,7 @@ class AdminController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'harga' => $request->harga,
                 'kategori_id' => $request->kategori,
-                'stok' => $request->stok,
+            //    'stok' => $request->stok,
             ]);
 
 
@@ -88,7 +89,7 @@ class AdminController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'harga' => $request->harga,
                 'kategori_id' => $request->kategori,
-                'stok' => $request->stok,
+            //    'stok' => $request->stok,
             ]);
             $notification = array(
                 'message' => 'Menu Updated Successfully',
@@ -104,7 +105,7 @@ class AdminController extends Controller
                 'deskripsi' => $request->deskripsi,
                 'harga' => $request->harga,
                 'kategori_id' => $request->kategori,
-                'stok' => $request->stok,
+            //    'stok' => $request->stok,
 
             ]);
             $notification = array(
@@ -138,4 +139,109 @@ class AdminController extends Controller
 
     }
     // End Method
+
+    public function updateStok(Request $request, $id)
+    {
+        $request->validate([
+            'stok_baru' => 'required|in:habis,tersedia',
+        ]);
+        $menu = Menu::findOrFail($id);
+        $menu->stok = $request->stok_baru;
+        $menu->save();
+
+        $notification = array(
+            'message' => 'Stok menu berhasil diperbarui',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification);
+    }
+
+    public function nomorMeja()
+    {
+        $nomor_mejas = NomorMeja::all();
+        return view('admin.nomormeja', compact('nomor_mejas'));
+    }
+
+    public function tambahNomorMeja()
+    {
+        $nomor_mejas = NomorMeja::all();
+        return view('admin.tambahNomormeja', compact('nomor_mejas'));
+    }
+
+    public function storeNomorMeja(Request $request){
+
+        $request->validate([
+            'nomor' => 'required|integer|min:1|unique:nomor_mejas,nomor',
+            'status' => 'required|in:tersedia,terisi,reservasi,rusak',
+        ]);
+
+        // Cek apakah nomor meja sudah ada
+        $existingMeja = NomorMeja::where('nomor', $request->nomor)->first();
+        if ($existingMeja) {
+            $notification = array(
+                'message' => 'Nomor meja sudah ada',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($notification);
+        }
+        // Jika belum ada, simpan nomor meja baru
+        if ($request->status == 'tersedia') {
+            NomorMeja::create([
+                'nomor' => $request->nomor,
+                'status' => 'tersedia',
+            ]);
+        } else {
+            NomorMeja::create([
+                'nomor' => $request->nomor,
+                'status' => $request->status,
+            ]);
+        }
+
+        $notification = array(
+            'message' => 'Nomor meja berhasil ditambahkan',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.nomormeja')->with($notification);
+
+    }
+    // End Method
+
+    public function editNomorMeja($id){
+        $nomor_meja = NomorMeja::find($id);
+        return view('admin.editNomormeja', compact('nomor_meja'));
+    }
+
+    public function updateNomorMeja(Request $request){
+
+        $nomor_meja_id = $request->id;
+
+            NomorMeja::find($nomor_meja_id)->update([
+                'nomor' => $request->nomor,
+                'status' => $request->status,
+            ]);
+
+            $notification = array(
+                'message' => 'Nomor Meja Updated Successfully',
+                'alert-type' => 'success'
+            );
+
+            return redirect()->route('admin.nomormeja')->with($notification);
+
+    }
+
+    public function deleteNomorMeja($id){
+        $item = NomorMeja::find($id);
+        
+    $item->delete();
+
+        $notification = array(
+            'message' => 'Nomor Meja Delete Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification);
+
+    }
 }

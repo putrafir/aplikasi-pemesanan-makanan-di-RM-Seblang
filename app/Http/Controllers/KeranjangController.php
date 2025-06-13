@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateKeranjangRequest;
 use App\Models\Keranjang;
 use App\Models\Menu;
 use App\Models\Transaksi;
+use App\Models\NomorMeja;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,9 +17,10 @@ class KeranjangController extends Controller
     public function index(Request $request)
     {
         $sessionId = $request->session()->getId();
+        $nomor_mejas = NomorMeja::where('status', 'tersedia')->orderBy('nomor')->get();
         $keranjangs = Keranjang::where('session_id', $sessionId)->with('menu')->get();
         $totalBayar = $keranjangs->sum('total_harga');
-        return view('customer.keranjang', compact('keranjangs', 'totalBayar'));
+        return view('customer.keranjang', compact('keranjangs', 'totalBayar', 'nomor_mejas'));
     }
 
     public function addToCart(Request $request)
@@ -67,18 +69,18 @@ class KeranjangController extends Controller
 
 
         $keranjangs = Keranjang::where('session_id', $sessionId)->get();
-        $request->validate([
-            "nomor_meja" => "unique:transaksis,nomor_meja,required",
-        ]);
+
+
+      
+        // $request->validate([
+        //     "nomor_meja"=>"unique:transaksis,nomor_meja,required",
+        // ]);
+  
         if ($keranjangs->isEmpty()) {
             return redirect()->back()->with('error', 'Keranjang kosong, tidak ada yang bisa dibayar.');
         }
 
         $totalBayar = $keranjangs->sum('total_harga');
-
-
-
-
 
         $details = $keranjangs->map(function ($keranjang) {
             return [
@@ -96,6 +98,14 @@ class KeranjangController extends Controller
             'session_id' => $sessionId,
             'details' => $details->toJson(),
         ]);
+
+        // Update nomor meja menjadi tidak tersedia
+        $nomorMeja = NomorMeja::where('nomor', $request->nomor_meja)->first();
+        if ($nomorMeja) {
+            $nomorMeja->status = 'terisi';
+            $nomorMeja->save();
+        }
+     
 
         Keranjang::where('session_id', $sessionId)->delete();
 
