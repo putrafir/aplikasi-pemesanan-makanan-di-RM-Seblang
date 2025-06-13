@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KasirController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\MenuController;
@@ -24,6 +25,7 @@ Route::get('customer/keranjang', [KeranjangController::class, 'index'])->name('c
 Route::post('/customer/keranjang/add', [KeranjangController::class, 'addToCart'])->name('customer.keranjang.add');
 Route::delete('/customer/keranjang/{id}', [KeranjangController::class, 'destroy'])->name('customer.keranjang.delete');
 Route::post('/customer/keranjang/checkout', [KeranjangController::class, 'checkout'])->name('customer.keranjang.checkout');
+Route::get('/customer/riwayat', [CustomerController::class, 'riwayat'])->name('customer.riwayat');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -55,6 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/kasir/transaksi/{id}/status/bayar', [TransaksiController::class, 'updateStatusBayar'])->name('kasir.transaksi.updateStatusBayar');
     Route::get('/admin/menu', [AdminController::class, 'index'])->name('admin.menu');
     Route::get('/admin/nomormeja', [AdminController::class, 'nomorMeja'])->name('admin.nomormeja');
+
     Route::get('/admin/tambah/menu', [AdminController::class, 'tambahMenu'])->name('admin.tambah.menu');
     Route::get('/admin/tambah/nomormeja', [AdminController::class, 'tambahNomorMeja'])->name('admin.tambah.nomormeja');
     Route::post('/admin/store/menu', [AdminController::class, 'storeMenu'])->name('admin.store.menu');
