@@ -8,17 +8,20 @@ use App\Http\Requests\UpdatePesananRequest;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 
+
 class PesananController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    // Menampilkan semua pesanan yang bukan keranjang
     public function index()
     {
         $pesanans = Pesanan::with('items')->where('status', '!=', 'keranjang')->get();
         return view('kasir.pesanan', compact('pesanans'));
     }
 
+    // Membuat pesanan baru dengan status keranjang
     public function store(Request $request)
     {
         $pesanan = Pesanan::create([
@@ -29,11 +32,26 @@ class PesananController extends Controller
         return redirect()->route('menu.index')->with('success', 'Pesanan baru telah dibuat.');
     }
 
+    // Konfirmasi checkout: ubah status keranjang ke belum dibayar
     public function konfirmasi($id)
     {
         $pesanan = Pesanan::with('items')->findOrFail($id);
+        $pesanan = Pesanan::with('items')->findOrFail($id);
 
         if ($pesanan->status === 'keranjang') {
+            if ($pesanan->items->isEmpty()) {
+                return redirect()->back()->withErrors(['Pesanan tidak memiliki item.']);
+            }
+
+            $total = $pesanan->items->sum(function ($item) {
+                return $item->harga * $item->jumlah;
+            });
+
+            $pesanan->update([
+                'status' => 'belum dibayar',
+                'total' => $total
+            ]);
+
             if ($pesanan->items->isEmpty()) {
                 return redirect()->back()->withErrors(['Pesanan tidak memiliki item.']);
             }
@@ -53,7 +71,8 @@ class PesananController extends Controller
         return redirect()->back()->withErrors(['Pesanan ini sudah dikonfirmasi sebelumnya.']);
     }
 
-     public function showBayar($id)
+    // Menampilkan halaman pembayaran
+    public function showBayar($id)
     {
 
         $transaksis = Transaksi::find($id);
@@ -61,9 +80,9 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Pesanan telah dibayar.');
         }
 
-        $pesanan = json_decode($transaksis->details, true);
-        return view('kasir.bayar_pesanan', compact('transaksis', 'pesanan'));
-    }
+            $pesanan = json_decode($transaksis->details, true);
+            return view('kasir.bayar_pesanan', compact('transaksis', 'pesanan'));
+        }
 
     public function prosesBayar($id, Request $request)
     {
@@ -71,7 +90,6 @@ class PesananController extends Controller
             'uang_dibayarkan' => ['required', 'numeric'],
             'metode_pembayaran' => ['required']
         ]);
-
         $pesanan = Transaksi::find($id);
         if (!$pesanan) {
             return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
@@ -80,10 +98,10 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Pesanan telah dibayar.');
         }
 
-        $transaksiDetail = json_decode($pesanan->details, true);
-        $total = array_sum(array_column($transaksiDetail, 'subtotal'));
-        ;
-        if ($total > $validate['uang_dibayarkan']) {
+            $transaksiDetail = json_decode($pesanan->details, true);
+            $total = array_sum(array_column($transaksiDetail, 'subtotal'));
+            ;
+            if ($total > $validate['uang_dibayarkan']) {
 
             return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
         }
@@ -106,12 +124,13 @@ class PesananController extends Controller
                 $pesanan->meja->status = 'tersedia';
                 $pesanan->meja->save();
             }
-            
+
 
             return redirect()->route('kasir.pesanan')->with('success', 'Pembayaran berhasil dilakukan.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Pesanan gagal.');
 
+            }
         }
+
     }
-}
