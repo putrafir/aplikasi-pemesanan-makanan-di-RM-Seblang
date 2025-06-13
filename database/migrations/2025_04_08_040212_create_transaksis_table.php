@@ -20,8 +20,8 @@ return new class extends Migration
             $table->integer('kembalian')->default(0);
             //$table->enum('kembalian',['pending','success'])->default('pending');
             $table->string('metode_pembayaran')->default('tunai');
-            $table->string('status')->default('aktif');
-            $table->string('status_bayar')->default('belum bayar');
+            $table->string('status')->default('belum diantar');
+            $table->string('status_bayar')->default('tandai bayar');
             $table->json('details');
             $table->timestamps();
         });

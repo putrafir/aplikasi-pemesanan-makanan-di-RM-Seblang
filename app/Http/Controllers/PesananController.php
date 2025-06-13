@@ -77,7 +77,7 @@ class PesananController extends Controller
     {
 
         $transaksis = Transaksi::find($id);
-        if ($transaksis->status == 'success') {
+        if ($transaksis->status_bayar == 'lunas') {
             return redirect()->back()->with('error', 'Pesanan telah dibayar.');
         }
 
@@ -95,7 +95,7 @@ class PesananController extends Controller
         if (!$pesanan) {
             return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
         }
-        if ($pesanan->status == 'success') {
+        if ($pesanan->status_bayar == 'lunas') {
             return redirect()->back()->with('error', 'Pesanan telah dibayar.');
         }
         // if ($pesanan->status === 'belum dibayar') {
@@ -119,8 +119,9 @@ class PesananController extends Controller
 
             $pesanan->update([
                 'uang_dibayarkan' => $validate['uang_dibayarkan'],
-                'status' => 'success',
                 'metode_pembayaran' => $validate['metode_pembayaran'],
+                'status_bayar' => 'lunas',
+                "status" => 'belum diantar',
                 'kembalian' => $kembalian,
             ]);
             return redirect()->route('kasir.pesanan')->with('success', 'Pembayaran berhasil dilakukan.');
