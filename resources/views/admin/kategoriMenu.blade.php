@@ -5,17 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <title>Document</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{ asset('backend/js/code.js') }}"></script>
+
 </head>
 
 <body>
-
     <aside id="default-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        class="fixed top-0 left-0 z-50 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar">
         <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
@@ -115,128 +125,71 @@
         </div>
     </aside>
 
+    <div class="p-4 sm:ml-64">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <h2 class="text-center mb-5 font-bold">Kategori Menu </h2>
+            <a href="{{ route('admin.tambah.kategori') }}"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded mb-3"> <i
+                    class="fas fa-plus px-1"></i>Tambah kategori</a>
 
-    <form id="myForm" action="{{ route('admin.store.menu') }}" method="POST" enctype="multipart/form-data"
-        class="max-w-md mx-auto mt-8 p-6 bg-white rounded-md shadow-md">
-        @csrf
-        <h2 class="text-2xl font-bold text-center mb-6">Tambah Menu</h2>
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            No
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Nama
+                        </th>
+                        <th scope="col" class="px-4 py-3">
+                            Aksi
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($kategori as $key => $item)
+                        <tr>
+                            <td class="text-center">{{ $key + 1 }}</td>
+                            <td>{{ $item->nama }}</td>
+                            <td class="px-6 py-4">
 
-        <div class="mb-4">
-            <label for="nama_menu" class="block text-gray-700 text-sm font-bold mb-2">Nama Menu</label>
-            <input type="text" id="nama_menu" name="nama_menu"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                required>
+                                <a href="{{ route('admin.edit.kategori', $item->id) }}"
+                                    class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded">
+                                    Edit </a>
+                                <a href="{{ route('admin.delete.kategori', $item->id) }}"
+                                    class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-1 rounded"
+                                    id="deleteKategori">
+                                    Hapus </a>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
 
-        <div class="mb-6">
-            <label for="image" class="block text-gray-700 text-sm font-bold mb-2">Gambar</label>
-            <input type="file" id="image" name="image" accept="image/*"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            <img id="showImage"
-                src="{{ !empty($profileData->gambar)
-                    ? url('upload/menu/1.jpg' . $profileData->gambar)
-                    : url(
-                        'upload/menu/1.jpg                                                                                                                                                                                               .jpg',
-                    ) }}"
-                alt="" class="mt-2 max-w-xs rounded">
-        </div>
+    </div>
+    <script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+            switch (type) {
+                case 'info':
+                    toastr.info(" {{ Session::get('message') }} ");
+                    break;
 
-        <div class="mb-4">
-            <label for="deskripsi" class="block text-gray-700 text-sm font-bold mb-2">Deskripsi</label>
-            <textarea id="deskripsi" name="deskripsi" rows="4"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-        </div>
+                case 'success':
+                    toastr.success(" {{ Session::get('message') }} ");
+                    break;
 
-        <div class="mb-4">
-            <label for="kategori" class="block text-gray-700 text-sm font-bold mb-2">Kategori</label>
-            <select id="kategori" name="kategori"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">-- Pilih Kategori --</option>
-                <option value="1">Makanan</option>
-                <option value="2">Minuman</option>
-                <option value="3">Camilan</option>
-            </select>
-        </div>
+                case 'warning':
+                    toastr.warning(" {{ Session::get('message') }} ");
+                    break;
 
-        {{-- <div class="mb-4">
-            <label for="stok" class="block text-gray-700 text-sm font-bold mb-2">Stok</label>
-            <select id="stok" name="stok" min="0"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">-- Pilih Stok --</option>
-                <option value="habis">Habis</option>
-                <option value="tersedia">Tersedia</option>
-            </select>
-        </div> --}}
-
-        <div class="mb-4">
-            <label for="harga" class="block text-gray-700 text-sm font-bold mb-2">Harga</label>
-            <input type="number" id="harga" name="harga"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-
-        <div class="flex justify-between pt-4">
-            <button type="reset"
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Hapus
-            </button>
-            <button type="submit"
-                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Simpan
-            </button>
-        </div>
-    </form>
-
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#image').change(function(e) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#showImage').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(e.target.files['0']);
-            })
-        })
+                case 'error':
+                    toastr.error(" {{ Session::get('message') }} ");
+                    break;
+            }
+        @endif
     </script>
-
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#myForm').validate({
-                rules: {
-                    nama_menu: {
-                        required: true,
-                    },
-                    image: {
-                        required: true,
-                    },
-
-                },
-                messages: {
-                    nama_menu: {
-                        required: 'Please Menu Name',
-                    },
-                    image: {
-                        required: 'Please Select Image',
-                    },
-
-
-                },
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.parent().append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                },
-            });
-        });
-    </script>
-
-
 
 </body>
 

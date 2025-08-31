@@ -5,14 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+
     <title>Document</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
+
+
+
 
     <aside id="default-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
@@ -115,77 +117,37 @@
         </div>
     </aside>
 
-
-    <form id="myForm" action="{{ route('admin.store.menu') }}" method="POST" enctype="multipart/form-data"
-        class="max-w-md mx-auto mt-8 p-6 bg-white rounded-md shadow-md">
+    <form id="myForm" action="{{ route('admin.update.kategori') }}" method="POST" enctype="multipart/form-data"
+        class="max-w-xl mx-auto p-6 bg-white rounded-lg shadow space-y-4">
         @csrf
-        <h2 class="text-2xl font-bold text-center mb-6">Tambah Menu</h2>
+        <input type="hidden" name="id" value="{{ $kategori->id }}">
 
-        <div class="mb-4">
-            <label for="nama_menu" class="block text-gray-700 text-sm font-bold mb-2">Nama Menu</label>
-            <input type="text" id="nama_menu" name="nama_menu"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        <h3 class="text-2xl font-bold text-center mb-4">Edit Kategori</h3>
+
+        <!-- Nama Menu -->
+        <div>
+            <label for="nama" class="block text-sm font-medium text-gray-700">Nama Kategori</label>
+            <input type="text" id="nama" name="nama" value="{{ $kategori->nama }}"
+                class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:border-blue-500"
                 required>
         </div>
 
-        <div class="mb-6">
-            <label for="image" class="block text-gray-700 text-sm font-bold mb-2">Gambar</label>
-            <input type="file" id="image" name="image" accept="image/*"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            <img id="showImage"
-                src="{{ !empty($profileData->gambar)
-                    ? url('upload/menu/1.jpg' . $profileData->gambar)
-                    : url(
-                        'upload/menu/1.jpg                                                                                                                                                                                               .jpg',
-                    ) }}"
-                alt="" class="mt-2 max-w-xs rounded">
-        </div>
-
-        <div class="mb-4">
-            <label for="deskripsi" class="block text-gray-700 text-sm font-bold mb-2">Deskripsi</label>
-            <textarea id="deskripsi" name="deskripsi" rows="4"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-        </div>
-
-        <div class="mb-4">
-            <label for="kategori" class="block text-gray-700 text-sm font-bold mb-2">Kategori</label>
-            <select id="kategori" name="kategori"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">-- Pilih Kategori --</option>
-                <option value="1">Makanan</option>
-                <option value="2">Minuman</option>
-                <option value="3">Camilan</option>
-            </select>
-        </div>
-
-        {{-- <div class="mb-4">
-            <label for="stok" class="block text-gray-700 text-sm font-bold mb-2">Stok</label>
-            <select id="stok" name="stok" min="0"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">-- Pilih Stok --</option>
-                <option value="habis">Habis</option>
-                <option value="tersedia">Tersedia</option>
-            </select>
-        </div> --}}
-
-        <div class="mb-4">
-            <label for="harga" class="block text-gray-700 text-sm font-bold mb-2">Harga</label>
-            <input type="number" id="harga" name="harga"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-
+        <!-- Tombol -->
         <div class="flex justify-between pt-4">
-            <button type="reset"
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Hapus
-            </button>
-            <button type="submit"
-                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+
+            <a href="{{ route('admin.kategori.menu') }}"
+                class="bg-white text-black font-bold px-6 py-2 rounded border border-gray-300 hover:bg-gray-200 transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i>
+                Back
+            </a>
+
+            <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"><i
+                    class="fa-regular fa-floppy-disk"></i>
                 Simpan
             </button>
         </div>
-    </form>
 
+    </form>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -203,28 +165,24 @@
         $(document).ready(function() {
             $('#myForm').validate({
                 rules: {
-                    nama_menu: {
-                        required: true,
-                    },
-                    image: {
+                    category_name: {
                         required: true,
                     },
 
+
                 },
                 messages: {
-                    nama_menu: {
-                        required: 'Please Menu Name',
+                    category_name: {
+                        required: 'Please Enter Category Name',
                     },
-                    image: {
-                        required: 'Please Select Image',
-                    },
+
 
 
                 },
                 errorElement: 'span',
                 errorPlacement: function(error, element) {
                     error.addClass('invalid-feedback');
-                    element.parent().append(error);
+                    element.closest('.form-group').append(error);
                 },
                 highlight: function(element, errorClass, validClass) {
                     $(element).addClass('is-invalid');
@@ -235,8 +193,6 @@
             });
         });
     </script>
-
-
 
 </body>
 

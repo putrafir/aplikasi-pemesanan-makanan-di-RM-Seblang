@@ -14,8 +14,11 @@
 
 <body>
 
+
+
+
     <aside id="default-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        class="fixed top-0 left-0 z-50 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar">
         <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
@@ -115,109 +118,49 @@
         </div>
     </aside>
 
-
-    <form id="myForm" action="{{ route('admin.store.menu') }}" method="POST" enctype="multipart/form-data"
+    <form id="myForm" action="{{ route('admin.store.kategori') }}" method="POST" enctype="multipart/form-data"
         class="max-w-md mx-auto mt-8 p-6 bg-white rounded-md shadow-md">
         @csrf
-        <h2 class="text-2xl font-bold text-center mb-6">Tambah Menu</h2>
+        <h2 class="text-2xl font-bold text-center mb-6">Tambah Kategori</h2>
 
         <div class="mb-4">
-            <label for="nama_menu" class="block text-gray-700 text-sm font-bold mb-2">Nama Menu</label>
-            <input type="text" id="nama_menu" name="nama_menu"
+            <label for="nama" class="block text-gray-700 text-sm font-bold mb-2">Nama Kategori</label>
+            <input type="text" id="nama" name="nama"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 required>
         </div>
 
-        <div class="mb-6">
-            <label for="image" class="block text-gray-700 text-sm font-bold mb-2">Gambar</label>
-            <input type="file" id="image" name="image" accept="image/*"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-            <img id="showImage"
-                src="{{ !empty($profileData->gambar)
-                    ? url('upload/menu/1.jpg' . $profileData->gambar)
-                    : url(
-                        'upload/menu/1.jpg                                                                                                                                                                                               .jpg',
-                    ) }}"
-                alt="" class="mt-2 max-w-xs rounded">
-        </div>
-
-        <div class="mb-4">
-            <label for="deskripsi" class="block text-gray-700 text-sm font-bold mb-2">Deskripsi</label>
-            <textarea id="deskripsi" name="deskripsi" rows="4"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
-        </div>
-
-        <div class="mb-4">
-            <label for="kategori" class="block text-gray-700 text-sm font-bold mb-2">Kategori</label>
-            <select id="kategori" name="kategori"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">-- Pilih Kategori --</option>
-                <option value="1">Makanan</option>
-                <option value="2">Minuman</option>
-                <option value="3">Camilan</option>
-            </select>
-        </div>
-
-        {{-- <div class="mb-4">
-            <label for="stok" class="block text-gray-700 text-sm font-bold mb-2">Stok</label>
-            <select id="stok" name="stok" min="0"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="">-- Pilih Stok --</option>
-                <option value="habis">Habis</option>
-                <option value="tersedia">Tersedia</option>
-            </select>
-        </div> --}}
-
-        <div class="mb-4">
-            <label for="harga" class="block text-gray-700 text-sm font-bold mb-2">Harga</label>
-            <input type="number" id="harga" name="harga"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-
         <div class="flex justify-between pt-4">
             <button type="reset"
-                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Hapus
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"><i
+                    class="fa-solid fa-arrow-left"></i>
+                Batal
             </button>
             <button type="submit"
-                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"><i
+                    class="fa-regular fa-floppy-disk"></i>
                 Simpan
             </button>
         </div>
     </form>
 
 
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#image').change(function(e) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#showImage').attr('src', e.target.result);
-                }
-                reader.readAsDataURL(e.target.files['0']);
-            })
-        })
-    </script>
 
     <script type="text/javascript">
         $(document).ready(function() {
             $('#myForm').validate({
                 rules: {
-                    nama_menu: {
-                        required: true,
-                    },
-                    image: {
+                    nama: {
                         required: true,
                     },
 
+
                 },
                 messages: {
-                    nama_menu: {
-                        required: 'Please Menu Name',
+                    nama: {
+                        required: 'Please Category Name',
                     },
-                    image: {
-                        required: 'Please Select Image',
-                    },
+
 
 
                 },
@@ -235,6 +178,9 @@
             });
         });
     </script>
+
+
+
 
 
 

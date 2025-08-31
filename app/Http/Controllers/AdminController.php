@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Category;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
 use App\Models\Transaksi;
 use App\Models\Pesanan;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Carbon\Carbon;
 use DateTime;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 
 
 class AdminController extends Controller
@@ -205,5 +206,71 @@ $pdf = Pdf::loadView('admin.invoice_download', [
 return $pdf->download('invoice.pdf');
 
 }
+
+ public function KategoriMenu(){
+     $kategori = Category::all();
+        return view('admin.kategoriMenu', compact('kategori'));
+    }
+public function tambahKategori()
+    {
+        $kategori = Category::all();
+        return view('admin.tambahKategori', compact('kategori'));
+    }
+
+    public function storeKategori(Request $request){
+
+        $request->validate([
+            'nama' => 'required|string|max:255|unique:categories,nama',
+            ]);
+
+            Category::create([
+            'nama' => $request->nama,
+            ]);
+
+        $notification = array(
+            'message' => 'Kategori berhasil ditambahkan',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->route('admin.kategori.menu')->with($notification);
+
+    }
+    // End Method
+    public function editKategori($id){
+        $kategori  = Category::find($id);
+        return view('admin.editKategori', compact('kategori'));
+    }
+     // End Method
+
+     public function updateKategori(Request $request)
+{
+    $request->validate([
+        'id' => 'required|exists:categories,id',
+        'nama' => 'required|string|max:255',
+    ]);
+
+    Category::findOrFail($request->id)->update([
+        'nama' => $request->nama,
+    ]);
+
+    return redirect()->route('admin.kategori.menu')->with([
+        'message' => 'Kategori berhasil diperbarui',
+        'alert-type' => 'success',
+    ]);
+}
+
+ public function deleteKategori($id){
+    $item = Category::findOrFail($id);
+    $item->save();
+
+    $item->delete();
+
+    $notification = [
+        'message' => 'Kategori berhasil dihapus',
+        'alert-type' => 'success'
+    ];
+
+    return redirect()->back()->with($notification);
+    }
 
 }

@@ -21,6 +21,28 @@ $(function () {
 });
 
 $(function () {
+    $(document).on("click", "#deleteKategori", function (e) {
+        e.preventDefault();
+        var link = $(this).attr("href");
+
+        Swal.fire({
+            title: "Apakah Anda Yakin?",
+            text: "Ingin Menghapus Kategori?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = link;
+                Swal.fire("Berhasil!", "Kategori telah dihapus.", "success");
+            }
+        });
+    });
+});
+
+$(function () {
     $(document).on("click", ".btn-stok", function (e) {
         e.preventDefault();
         let form = $(this).closest("form");
