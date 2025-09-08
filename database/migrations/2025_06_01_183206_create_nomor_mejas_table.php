@@ -11,23 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('items', function (Blueprint $table) {
+        Schema::create('nomor_mejas', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->foreignId('pesanan_id')->constrained()->onDelete('cascade');
-            $table->unsignedBigInteger('menu_id')->nullable();
-            $table->integer('jumlah');
-             $table->decimal('harga', 10, 2);
+            $table->integer('nomor')->unique();
+            $table->enum('status', ['tersedia', 'terisi', 'reservasi', 'rusak'])->default('tersedia');
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('items');
+        Schema::dropIfExists('nomor_mejas');
     }
 };

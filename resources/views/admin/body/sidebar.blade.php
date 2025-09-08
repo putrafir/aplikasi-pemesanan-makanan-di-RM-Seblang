@@ -1,29 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="{{ asset('backend/js/code.js') }}"></script>
-</head>
-
-<body>
-
-
-
-
-    <aside id="default-sidebar"
+<aside id="default-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
         aria-label="Sidebar">
         <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
                 <li>
-                    <a href="{{ route('kasir.dashboard') }}"
+                    <a href="{{ route('admin.dashboard') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -51,7 +32,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('kasir.pesanan') }}"
+                    <a href="{{ route('admin.menu') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -59,13 +40,13 @@
                             <path
                                 d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
                         </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Pesanan</span>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Menu</span>
                         <span
                             class="inline-flex items-center justify-center w-3 h-3 p-3 ms-3 text-sm font-medium text-blue-800 bg-blue-100 rounded-full dark:bg-blue-900 dark:text-blue-300">3</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#"
+                    <a href="{{ route('admin.nomormeja') }}"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -73,7 +54,18 @@
                             <path
                                 d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
                         </svg>
-                        <span class="flex-1 ms-3 whitespace-nowrap">Users</span>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Nomor Meja</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#"
+                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                            fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.707 10.293l-7-7A1 1 0 009.586 3H3a1 1 0 00-1 1v6.586a1 1 0 00.293.707l7 7a1 1 0 001.414 0l6-6a1 1 0 000-1.414zM5.5 7A1.5 1.5 0 117 8.5 1.5 1.5 0 015.5 7z" />
+                        </svg>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Kategori</span>
                     </a>
                 </li>
                 <li>
@@ -117,106 +109,3 @@
             </ul>
         </div>
     </aside>
-
-
-    <div class="p-4 sm:ml-64">
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr>
-                        <th scope="col" class="px-6 py-3">
-                            Tanggal
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Nomor Meja
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            kembalian
-                        </th>
-
-                        <th scope="col" class="px-6 py-3">
-                            Action
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Status Pesanan
-                        </th>
-                        <th scope="col" class="px-6 py-3">
-                            Status Pembayaran
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($transaksis as $transaksi)
-                        <tr
-                            class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
-                            <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                {{ $transaksi->created_at->format('d M Y H:i') }}
-                            </th>
-                            <td class="px-6 py-4">
-                                {{ $transaksi->nomor_meja }}
-                            </td>
-                            <td class="px-6 py-4">
-                                {{ $transaksi->kembalian }}
-
-                            </td>
-
-                            <td class="px-6 py-4 flex gap-2">
-                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
-                                    class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
-                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}">
-                                    <button type="submit"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                        Bayar
-                                    </button>
-                                    </form>
-                            </td>
-                            <td class="px-6 py-4">
-                                <form action="{{ route('pesanan.update.status', $transaksi->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    @php
-                                        $isDiantar = $transaksi->status === 'sudah diantar';
-                                        $bgColor = $isDiantar ? 'bg-green-600' : 'bg-blue-600';
-                                    @endphp
-
-                                    <button type="submit" id="btn-status"
-                                        class="px-3 py-2 rounded font-semibold transition  {{$bgColor}} text-white  ">
-                                        {{ $transaksi->status }}
-                                    </button>
-                                </form>
-                            </td>
-                            <td class="px-6 py-4">
-                                @php
-                                    $isBayar = $transaksi->status_bayar !== 'tandai bayar';
-                                    $bgColor = $isBayar ? 'bg-green-600' : 'bg-red-600';
-                                @endphp
-
-                                <span
-                                    class="px-3 py-2 rounded font-semibold transition text-white {{ $bgColor }}">
-                                    {{ $transaksi->status_bayar }}
-                                </span>
-                            </td>
-                        </tr>
-                    @endforeach
-
-
-                </tbody>
-            </table>
-
-            @if (session()->has('success'))
-                <div class="bg-white">
-                    {{ session('success') }}
-                </div>
-            @endif
-            @if (session()->has('error'))
-                <div class="bg-white">
-                    {{ session('error') }}
-                </div>
-            @endif
-        </div>
-
-    </div>
-</body>
-
-</html>

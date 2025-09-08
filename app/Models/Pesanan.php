@@ -11,10 +11,13 @@ class Pesanan extends Model
 
     protected $fillable = [
         'session_id',
+        'session_id',
         'nomor_meja',
         'status',
         'total_harga',
-        'metode_pembayaran'
+        'metode_pembayaran',
+        'total_harga',
+    'metode_pembayaran'
     ];
 
     // Relasi: Pesanan memiliki banyak item
@@ -30,6 +33,7 @@ class Pesanan extends Model
             return $item->harga * $item->jumlah;
         });
     }
+
 
     public function transaksi()
     {
