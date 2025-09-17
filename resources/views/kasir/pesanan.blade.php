@@ -91,6 +91,9 @@
                         <th scope="col" class="px-6 py-3">
                             Status Pembayaran
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Kasir
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -110,7 +113,7 @@
                             </td>
 
                             <td class="px-6 py-4 flex gap-2">
-                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
+                                <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id]) }}"
                                     class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
                                 <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}">
                                     <button type="submit"
@@ -120,13 +123,12 @@
                                     </form>
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('pesanan.update.status', $transaksi->id) }}" method="POST">
+                                <form action="{{ route('kasir.transaksi.updateStatus', $transaksi->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="status_baru" value="{{ $transaksi->status === 'aktif' ? 'nonaktif' : 'aktif' }}">
                                     <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status === 'aktif' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-status">
                                         {{ $transaksi->status === 'aktif' ? 'Belum Diantar' : 'Sudah Diantar' }}
-
                                     </button>
                                 </form>
                             </td>
@@ -141,7 +143,13 @@
                                         {{ $transaksi->status_bayar === 'belum bayar' ? 'Tandai Lunas' : 'Lunas' }}
                                     </button>
                                 </form>
-
+                            </td>
+                            <td class="px-6 py-4">
+                                @if($transaksi->kasir)
+                                    {{ $transaksi->kasir->id }} - {{ $transaksi->kasir->name }}
+                                @else
+                                    Kasir tidak ada
+                                @endif
                             </td>
                         </tr>
                     @endforeach

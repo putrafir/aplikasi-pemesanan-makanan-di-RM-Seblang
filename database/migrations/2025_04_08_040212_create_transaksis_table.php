@@ -20,9 +20,14 @@ return new class extends Migration
             $table->integer('kembalian')->default(0);
             //$table->enum('kembalian',['pending','success'])->default('pending');
             $table->string('metode_pembayaran')->default('tunai');
-            $table->string('status')->default('belum diantar');
-            $table->string('status_bayar')->default('tandai bayar');
+            $table->string('status')->default('aktif');
+            $table->string('status_bayar')->default('belum bayar');
             $table->json('details');
+
+            // kolom baru untuk kasir
+            $table->unsignedBigInteger('kasir_id')->nullable(); 
+            $table->foreign('kasir_id')->references('id')->on('users')->onDelete('set null');
+
             $table->timestamps();
         });
     }

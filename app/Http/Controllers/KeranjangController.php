@@ -109,6 +109,6 @@ class KeranjangController extends Controller
 
         Keranjang::where('session_id', $sessionId)->delete();
 
-        return redirect()->route('customer.riwayat')->with('success', "Pemesanan berhasil, silakan bayar nanti sebesar Rp. $totalBayar");
+        return redirect()->back()->with('success', "Pemesanan berhasil, silakan bayar nanti sebesar Rp. $totalBayar");
     }
 }
