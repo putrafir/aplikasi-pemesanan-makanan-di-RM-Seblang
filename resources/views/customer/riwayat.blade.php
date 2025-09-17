@@ -10,6 +10,7 @@
 
 <body>
     <div class="container mx-auto p-6">
+
         <h1 class="text-2xl font-bold mb-6">Detail Pesanan Anda</h1>
 
         <div class="mb-4">
@@ -50,7 +51,9 @@
         </div>
 
         <div style="text-align: left; margin-top: 10px;">
+
                 <a href="{{ route('customer.keranjang.view') }}" type="submit"
+
                     style="padding: 10px 20px; background-color: blue; color: white; border: none; border-radius: 5px; cursor: pointer;">
                     Kembali
                 </a>
@@ -68,4 +71,6 @@
     </div>
 </body>
 
+
 </html>
+

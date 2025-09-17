@@ -26,14 +26,25 @@ class KasirController extends Controller
         $transaksis  = $query->get();
         return view('kasir.pesanan', compact('transaksis'));
     }
-
+    public function updateStatusPesanan($id)
+    {
+        try {
+            $transaksis = Transaksi::find($id);
+            $data = $transaksis->status == 'belum diantar' ? 'sudah diantar' : 'belum diantar';
+            $transaksis->status = $data;
+            $transaksis->save();
+            return redirect()->back()->with('success','status berhasil diubah');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error','status gagal diubah');
+        }
+    }
     public function prosesBayar(Request $request, $id)
-{
-    // Validasi
-    $request->validate([
-        'metode' => 'required|in:tunai,qris',
-        'jumlah_uang' => 'required|numeric|min:0',
-    ]);
+    {
+        // Validasi
+        $request->validate([
+            'metode' => 'required|in:tunai,qris',
+            'jumlah_uang' => 'required|numeric|min:0',
+        ]);
 
     $transaksi = Transaksi::findOrFail($id);
     $transaksi->metode_pembayaran = $request->metode;
@@ -46,11 +57,10 @@ class KasirController extends Controller
         $transaksi->nomor_meja->save();
     }
 
-        dd($transaksi);
-    
 
-    return redirect()->back()->with('success', 'Pembayaran berhasil diproses.');
-}
+
+        return redirect()->back()->with('success', 'Pembayaran berhasil diproses.');
+    }
 
     public function detail($id)
     {

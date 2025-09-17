@@ -16,7 +16,7 @@
 
     <title>Document</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{ asset('backend/js/code.js') }}"></script>
 </head>
@@ -81,6 +81,7 @@
                         <th scope="col" class="px-6 py-3">
                             kembalian
                         </th>
+
                         <th scope="col" class="px-6 py-3">
                             Action
                         </th>
@@ -104,21 +105,28 @@
                                 {{ $transaksi->nomor_meja }}
                             </td>
                             <td class="px-6 py-4">
-                                {{ $transaksi->kembalian ?? '-' }}
+                                {{ $transaksi->kembalian }}
+
                             </td>
-                            <td class="px-6 py-4">
-                                <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id])}}"
-                                    class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
+
+                            <td class="px-6 py-4 flex gap-2">
                                 <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
-                                    class=" px-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">Bayar</a>
+                                    class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
+                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}">
+                                    <button type="submit"
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                        Bayar
+                                    </button>
+                                    </form>
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('kasir.transaksi.updateStatus', $transaksi->id) }}" method="POST">
+                                <form action="{{ route('pesanan.update.status', $transaksi->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     <input type="hidden" name="status_baru" value="{{ $transaksi->status === 'aktif' ? 'nonaktif' : 'aktif' }}">
                                     <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status === 'aktif' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-status">
                                         {{ $transaksi->status === 'aktif' ? 'Belum Diantar' : 'Sudah Diantar' }}
+
                                     </button>
                                 </form>
                             </td>
@@ -133,6 +141,7 @@
                                         {{ $transaksi->status_bayar === 'belum bayar' ? 'Tandai Lunas' : 'Lunas' }}
                                     </button>
                                 </form>
+
                             </td>
                         </tr>
                     @endforeach
@@ -140,6 +149,7 @@
 
                 </tbody>
             </table>
+
             @if (session()->has('success'))
                 <div class="bg-white">
                     {{ session('success') }}

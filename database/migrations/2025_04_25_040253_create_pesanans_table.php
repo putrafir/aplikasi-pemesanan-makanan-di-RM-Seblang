@@ -4,12 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreatePesanansTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Jalankan migrasi untuk membuat tabel pesanans.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id();
@@ -21,13 +23,17 @@ return new class extends Migration
         });
     }
 
+
+
     /**
-     * Reverse the migrations.
+     * Pembatalan migrasi.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
         Schema::table('pesanans', function (Blueprint $table) {
             $table->dropColumn(['status', 'metode_pembayaran', 'total']);
         });
     }
-};
+}

@@ -64,6 +64,7 @@ $(function () {
     });
 });
 
+
 $(function () {
     $(document).on("click", ".btn-status", function (e) {
         e.preventDefault();
@@ -84,4 +85,6 @@ $(function () {
             }
         });
     });
+
 });
+
