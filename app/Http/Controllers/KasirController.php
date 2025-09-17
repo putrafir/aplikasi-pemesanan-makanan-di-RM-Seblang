@@ -42,14 +42,15 @@ class KasirController extends Controller
     {
         // Validasi
         $request->validate([
-            'metode' => 'required|in:tunai,qris',
-            'jumlah_uang' => 'required|numeric|min:0',
+            'metode_pembayaran' => 'required|in:tunai,qris',
+            'uang_dibayarkan' => 'required|numeric|min:0',
         ]);
 
     $transaksi = Transaksi::findOrFail($id);
-    $transaksi->metode_pembayaran = $request->metode;
-    $transaksi->jumlah_uang = $request->jumlah_uang;
+    $transaksi->metode_pembayaran = $request->metode_pembayaran;
+    $transaksi->uang_dibayarkan = $request->uang_dibayarkan;
     $transaksi->status = 'dibayar';
+    $transaksi->kasir_id = auth()->id();
     $transaksi->save();
     // Update status nomor meja jika ada
     if ($transaksi->nomor_meja) {

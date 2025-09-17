@@ -29,4 +29,9 @@ class Transaksi extends Model
         // 'pesanan_id': Foreign key di tabel 'pesanan_details' yang terhubung ke 'id' di tabel 'pesanans' (atau 'transaksis' jika nama tabel transaksi Anda 'transaksis')
         // 'id': Primary key di tabel 'transaksis' (atau 'pesanans')
     }
+
+    public function kasir()
+    {
+        return $this->belongsTo(User::class, 'kasir_id');
+    }
 }

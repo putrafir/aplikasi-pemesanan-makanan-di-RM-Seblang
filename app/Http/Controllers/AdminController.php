@@ -363,4 +363,10 @@ public function tambahKategori()
 
     return redirect()->back()->with($notification);
     }
+
+    public function akunKasir()
+    {
+        $kasirs = DB::table('users')->where('role', 'kasir')->get();
+        return view('admin.akunkasir', compact('kasirs'));
+    }
 }
