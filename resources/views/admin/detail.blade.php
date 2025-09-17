@@ -10,11 +10,9 @@
 
 <body>
 
-    @include('kasir.body.sidebar')
+    @include('admin.body.sidebar')
 
-<div class="p-4 sm:ml-64">
-
-    <div class="relative container mx-auto p-6">
+    <div class="sm:ml-64 p-6">
         <h1 class="text-2xl font-bold mb-6">Detail Pembayaran</h1>
 
         <div class="mb-4">
@@ -25,7 +23,7 @@
         <table class="table-auto w-full border-collapse border border-gray-300 mb-6">
             <thead>
                 <tr class="bg-gray-200">
-                    <th class="border px-4 py-2">No</th>
+                    <th class="border px-4 py-2">#</th>
                     <th class="border px-4 py-2">Nama Produk</th>
                     <th class="border px-4 py-2">Harga</th>
                     <th class="border px-4 py-2">Jumlah</th>
@@ -33,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pesanan->details as $detail )
+                @foreach ($pesanan->details as $detail)
                     <tr>
                         <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                         <td class="border px-4 py-2">{{ $detail->nama }}</td>
@@ -42,7 +40,7 @@
                         <td class="border px-4 py-2">{{ $detail->jumlah }}</td>
                         <td class="border px-4 py-2">@php echo number_format($detail->subtotal, 0, ',', '.'); @endphp</td>
                     </tr>
-                    @endforeach
+                @endforeach
 
             </tbody>
         </table>
@@ -51,15 +49,7 @@
             Total Bayar: @php echo number_format($pesanan->total_bayar, 0, ',', '.'); @endphp
         </div>
 
-        <div style="text-align: right; margin-top: 10px;">
-            <form action="{{ route('kasir.destroy', $pesanan->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pesanan ini?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" style="padding: 10px 20px; background-color: red; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    Hapus Pesanan
-                </button>
-            </form>
-        </div>
+
 
         <div class="mt-6">
             {{-- <form action="{{ route('admin.pesanan.bayar', $pesanan->id) }}" method="POST">
@@ -71,7 +61,6 @@
             </form> --}}
         </div>
     </div>
-</div>
 </body>
 
 </html>

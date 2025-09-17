@@ -9,6 +9,9 @@
 </head>
 
 <body class="bg-gray-100">
+
+    @include('kasir.body.sidebar')
+
     <div class="container mx-auto p-4 max-w-4xl">
 
         <!-- Notifikasi -->

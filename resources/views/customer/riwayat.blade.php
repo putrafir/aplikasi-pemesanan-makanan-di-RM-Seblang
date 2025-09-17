@@ -4,18 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Pembayaran</title>
+    <title>Detail Pesanan</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
-
-    @include('kasir.body.sidebar')
-
-<div class="p-4 sm:ml-64">
-
-    <div class="relative container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-6">Detail Pembayaran</h1>
+    <div class="container mx-auto p-6">
+        <h1 class="text-2xl font-bold mb-6">Detail Pesanan Anda</h1>
 
         <div class="mb-4">
             <p><strong>Tanggal:</strong> {{ $pesanan->created_at->format('d M Y H:i') }}</p>
@@ -33,16 +28,19 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pesanan->details as $detail )
+                @php
+                $details=json_decode($pesanan->details,true);
+                @endphp
+                @foreach ($details as $detail)
                     <tr>
                         <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                        <td class="border px-4 py-2">{{ $detail->nama }}</td>
+                        <td class="border px-4 py-2">{{ $detail["nama"] }}</td>
 
-                        <td class="border px-4 py-2">@php echo number_format($detail->harga, 0, ',', '.'); @endphp</td>
-                        <td class="border px-4 py-2">{{ $detail->jumlah }}</td>
-                        <td class="border px-4 py-2">@php echo number_format($detail->subtotal, 0, ',', '.'); @endphp</td>
+                        <td class="border px-4 py-2">@php echo number_format($detail["harga"], 0, ',', '.'); @endphp</td>
+                        <td class="border px-4 py-2">{{ $detail["jumlah"] }}</td>
+                        <td class="border px-4 py-2">@php echo number_format($detail["subtotal"], 0, ',', '.'); @endphp</td>
                     </tr>
-                    @endforeach
+                @endforeach
 
             </tbody>
         </table>
@@ -51,14 +49,11 @@
             Total Bayar: @php echo number_format($pesanan->total_bayar, 0, ',', '.'); @endphp
         </div>
 
-        <div style="text-align: right; margin-top: 10px;">
-            <form action="{{ route('kasir.destroy', $pesanan->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus pesanan ini?')">
-                @csrf
-                @method('DELETE')
-                <button type="submit" style="padding: 10px 20px; background-color: red; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    Hapus Pesanan
-                </button>
-            </form>
+        <div style="text-align: left; margin-top: 10px;">
+                <a href="{{ route('customer.keranjang.view') }}" type="submit"
+                    style="padding: 10px 20px; background-color: blue; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    Kembali
+                </a>
         </div>
 
         <div class="mt-6">
@@ -71,7 +66,6 @@
             </form> --}}
         </div>
     </div>
-</div>
 </body>
 
 </html>

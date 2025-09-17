@@ -7,10 +7,23 @@ use Illuminate\Http\Request;
 
 class KasirController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
 
-        $transaksis = Transaksi::all();
+        $query = Transaksi::query();
+
+        if ($request->date) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+        if ($request->status_bayar) {
+            $query->where('status_bayar', $request->status_bayar);
+        }
+
+        $transaksis  = $query->get();
         return view('kasir.pesanan', compact('transaksis'));
     }
 

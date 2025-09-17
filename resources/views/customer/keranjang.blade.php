@@ -56,7 +56,7 @@
         <table class="table-auto w-full border-collapse border border-gray-300">
             <thead>
                 <tr>
-                    <th class="border border-gray-300 px-4 py-2">#</th>
+                    <th class="border border-gray-300 px-4 py-2">No</th>
                     <th class="border border-gray-300 px-4 py-2">Nama Produk</th>
                     <th class="border border-gray-300 px-4 py-2">Harga</th>
                     <th class="border border-gray-300 px-4 py-2">Jumlah</th>
@@ -115,7 +115,17 @@
                     Pesan
                 </button>
             </form>
+            <div class="flex justify-end mt-4">
+                <a href="{{ route('customer.riwayat') }}">
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+                        Lihat Riwayat
+                    </button>
+                </a>
+            </div>
+            
         </div>
+        
+
     </div>
 </body>
 
