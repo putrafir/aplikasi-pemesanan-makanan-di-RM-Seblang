@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
@@ -78,6 +79,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/delete/menu/{id}', [AdminController::class, 'deleteMenu'])->name('admin.delete.menu');
     Route::get('/admin/delete/nomormeja/{id}', [AdminController::class, 'deleteNomorMeja'])->name('admin.delete.nomormeja');
     Route::put('/admin/update/stok/{id}', [AdminController::class, 'updateStok'])->name('admin.update.stok');
+    Route::get('/admin/laporan', [AdminController::class, 'AdminLaporan'])->name('admin.laporan');
+    Route::post('/admin/search/bydate', [AdminController::class, 'AdminSearchByDate'])->name('admin.search.bydate');
+    Route::get('/admin/pesanan/{id}/detail', [AdminController::class, 'detail'])->name('admin.pesanan.detail');
+    Route::get('/admin/invoice/download/{id}', [AdminController::class, 'AdminInvoiceDownload'])->name('admin.invoice.download');
+    Route::get('/admin/kategori/menu', [AdminController::class, 'KategoriMenu'])->name('admin.kategori.menu');
+    Route::get('/admin/tambah/kategori', [AdminController::class, 'tambahKategori'])->name('admin.tambah.kategori');
+    Route::post('/admin/store/kategori', [AdminController::class, 'storeKategori'])->name('admin.store.kategori');
+    Route::get('/admin/edit/kategori/{id}', [AdminController::class, 'editKategori'])->name('admin.edit.kategori');
+    Route::post('/admin/update/kategori', [AdminController::class, 'updateKategori'])->name('admin.update.kategori');
+    Route::get('/admin/delete/kategori/{id}', [AdminController::class, 'deleteKategori'])->name('admin.delete.kategori');
+    
 });
 
 
