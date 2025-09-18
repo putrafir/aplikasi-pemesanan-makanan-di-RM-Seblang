@@ -29,15 +29,15 @@
             </thead>
             <tbody>
                 @php
-                $details=json_decode($pesanan->details,true);
+                    $details = json_decode($pesanan->details, true);
                 @endphp
                 @foreach ($details as $detail)
                     <tr>
                         <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                        <td class="border px-4 py-2">{{ $detail["nama"] }}</td>
+                        <td class="border px-4 py-2">{{ $detail['nama'] }}</td>
 
                         <td class="border px-4 py-2">@php echo number_format($detail["harga"], 0, ',', '.'); @endphp</td>
-                        <td class="border px-4 py-2">{{ $detail["jumlah"] }}</td>
+                        <td class="border px-4 py-2">{{ $detail['jumlah'] }}</td>
                         <td class="border px-4 py-2">@php echo number_format($detail["subtotal"], 0, ',', '.'); @endphp</td>
                     </tr>
                 @endforeach
@@ -47,13 +47,6 @@
 
         <div class="text-right text-xl font-bold">
             Total Bayar: @php echo number_format($pesanan->total_bayar, 0, ',', '.'); @endphp
-        </div>
-
-        <div style="text-align: left; margin-top: 10px;">
-                <a href="{{ route('customer.menu') }}" type="submit"
-                    style="padding: 10px 20px; background-color: blue; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    Kembali
-                </a>
         </div>
 
         <div class="mt-6">
