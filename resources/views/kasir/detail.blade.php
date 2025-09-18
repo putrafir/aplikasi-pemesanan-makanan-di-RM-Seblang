@@ -9,7 +9,12 @@
 </head>
 
 <body>
-    <div class="container mx-auto p-6">
+
+    @include('kasir.body.sidebar')
+
+<div class="p-4 sm:ml-64">
+
+    <div class="relative container mx-auto p-6">
         <h1 class="text-2xl font-bold mb-6">Detail Pembayaran</h1>
 
         <div class="mb-4">
@@ -66,6 +71,7 @@
             </form> --}}
         </div>
     </div>
+</div>
 </body>
 
 </html>

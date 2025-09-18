@@ -13,6 +13,9 @@
 
 <body>
 
+
+
+
     @include('admin.body.sidebar')
 
     <form id="myForm" action="{{ route('admin.update.kategori') }}" method="POST" enctype="multipart/form-data"

@@ -51,9 +51,9 @@
             <select id="kategori" name="kategori"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 <option value="">-- Pilih Kategori --</option>
-                <option value="1">Makanan</option>
-                <option value="2">Minuman</option>
-                <option value="3">Camilan</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->nama }}</option>
+                @endforeach
             </select>
         </div>
 

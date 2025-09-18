@@ -54,9 +54,11 @@
         <select id="kategori" name="kategori"
             class="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring focus:border-blue-500">
             <option value="">-- Pilih Kategori --</option>
-            <option value="1" {{ $menu->kategori_id == 1 ? 'selected' : '' }}>Makanan</option>
-            <option value="2" {{ $menu->kategori_id == 2 ? 'selected' : '' }}>Minuman</option>
-            <option value="3" {{ $menu->kategori_id == 3 ? 'selected' : '' }}>Dessert</option>
+            @foreach ($categories as $category)
+                <option value="{{ $category->id }}" {{ $menu->kategori_id == $category->id ? 'selected' : '' }}>
+                    {{ $category->nama }}
+                </option>
+            @endforeach
         </select>
 
 

@@ -5,7 +5,7 @@ $(function () {
 
         Swal.fire({
             title: "Apakah Anda Yakin?",
-            text: "Ingin Menghapus Menu?",
+            text: "Ingin menghapus menu?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -14,7 +14,7 @@ $(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = link;
-                Swal.fire("Berhasil!", "Stok telah dihapus.", "success");
+                Swal.fire("Berhasil!", "Menu telah dihapus.", "success");
             }
         });
     });
@@ -65,7 +65,7 @@ $(function () {
 });
 
 $(function () {
-    $(document).on("click", "#btn-status", function (e) {
+    $(document).on("click", ".btn-status", function (e) {
         e.preventDefault();
         let form = $(this).closest("form");
 

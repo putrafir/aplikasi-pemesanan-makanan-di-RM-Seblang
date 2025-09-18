@@ -8,6 +8,8 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\TransaksiController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KelolaKasirController;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
@@ -25,7 +27,7 @@ Route::get('customer/keranjang', [KeranjangController::class, 'index'])->name('c
 Route::post('/customer/keranjang/add', [KeranjangController::class, 'addToCart'])->name('customer.keranjang.add');
 Route::delete('/customer/keranjang/{id}', [KeranjangController::class, 'destroy'])->name('customer.keranjang.delete');
 Route::post('/customer/keranjang/checkout', [KeranjangController::class, 'checkout'])->name('customer.keranjang.checkout');
-Route::get('/customer/riwayat', [CustomerController::class, 'riwayat'])->name('customer.riwayat');
+Route::put('/keranjang/{id}/update', [KeranjangController::class, 'update'])->name('customer.keranjang.update');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -92,7 +94,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/edit/kategori/{id}', [AdminController::class, 'editKategori'])->name('admin.edit.kategori');
     Route::post('/admin/update/kategori', [AdminController::class, 'updateKategori'])->name('admin.update.kategori');
     Route::get('/admin/delete/kategori/{id}', [AdminController::class, 'deleteKategori'])->name('admin.delete.kategori');
+    Route::get('/admin/kelolakasir', [KelolaKasirController::class, 'index'])->name('admin.kelolakasir');
+     Route::post('/admin/kelolakasir/tambah', [KelolaKasirController::class, 'tambahkasir'])->name('admin.kelolakasir.tambah');
 });
+
 
 
 require __DIR__ . '/auth.php';

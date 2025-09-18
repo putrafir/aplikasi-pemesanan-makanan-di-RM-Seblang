@@ -12,6 +12,9 @@
 
 <body>
 
+
+
+
     @include('admin.body.sidebar')
 
     <div class="p-4 sm:ml-64">
@@ -67,13 +70,6 @@
         </div>
 
     </div>
-</body>
-
-</html>
-
-
-
-
 </body>
 
 </html>
