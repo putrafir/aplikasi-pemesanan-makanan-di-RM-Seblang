@@ -47,7 +47,7 @@ Route::middleware('auth')->group(function () {
     })->name('admin.dashboard');
 
     // Pesanan Kasir
-    Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
+    // Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
     // Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('pesanan.bayar');
     // Route::post('/kasir/pesanan/{id}/bayar', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
 

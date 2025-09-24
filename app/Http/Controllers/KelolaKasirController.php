@@ -9,6 +9,8 @@ class KelolaKasirController extends Controller
 {
     public function index()
     {
+
+        
         return view('admin.kelola_kasir.index');
     }
 
