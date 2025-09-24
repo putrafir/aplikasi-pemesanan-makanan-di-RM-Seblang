@@ -11,12 +11,14 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
 
 
 
     @include('admin.body.sidebar')
+    @include('admin.body.header')
 
     <form id="myForm" action="{{ route('admin.update.kategori') }}" method="POST" enctype="multipart/form-data"
         class="max-w-xl mx-auto p-6 bg-white rounded-lg shadow space-y-4">

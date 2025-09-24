@@ -15,9 +15,10 @@
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
     @include('admin.body.sidebar')
+    @include('admin.body.header')
     
 
-    <div class="p-4 sm:ml-64">
+    <div class="p-4 ">
         <div class=" py-2 overflow-x-auto shadow-md sm:rounded-lg">
             <h2 class="text-center mb-5 font-bold dark:text-white">Daftar Akun Kasir</h2>
             <button onclick="showPopUpAdd()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded mb-5 ml-5">
