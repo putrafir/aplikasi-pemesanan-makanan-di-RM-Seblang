@@ -17,7 +17,12 @@ class Transaksi extends Model
      * Get all of the details for the transaksi.
      */
 
-    public function meja()
+     public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function nomorMeja()
     {
         return $this->belongsTo(NomorMeja::class, 'nomor_meja', 'nomor');
     }

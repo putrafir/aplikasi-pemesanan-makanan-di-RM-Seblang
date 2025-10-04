@@ -21,10 +21,14 @@ Route::get(
     }
 );
 
+Route::middleware(['auth'])->group(function () {
+});
+
 Route::get('customer/keranjang', [KeranjangController::class, 'index'])->name('customer.keranjang.view');
 Route::post('/customer/keranjang/add', [KeranjangController::class, 'addToCart'])->name('customer.keranjang.add');
 Route::delete('/customer/keranjang/{id}', [KeranjangController::class, 'destroy'])->name('customer.keranjang.delete');
 Route::post('/customer/keranjang/checkout', [KeranjangController::class, 'checkout'])->name('customer.keranjang.checkout');
+Route::get('/pesan-lagi', [KeranjangController::class, 'pesanLagi'])->name('customer.pesan.lagi');
 Route::get('/customer/riwayat', [CustomerController::class, 'riwayat'])->name('customer.riwayat');
 
 Route::get('/dashboard', function () {
@@ -46,7 +50,7 @@ Route::middleware('auth')->group(function () {
     })->name('admin.dashboard');
 
     // Pesanan Kasir
-    Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
+    // Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
     // Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('pesanan.bayar');
     // Route::post('/kasir/pesanan/{id}/bayar', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
 
@@ -54,9 +58,10 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
+    Route::get('/kasir/pesan-lagi/{id}', [KasirController::class, 'pesanLagi'])->name('kasir.pesan.lagi');
     Route::post('/keranjang/checkout-pesanan', [KeranjangController::class, 'checkoutToPesanan'])->name('keranjang.checkoutPesanan');
     Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('kasir.bayar');
-    Route::put('/pesanan/{id}/bayar/', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
+    // Route::put('/pesanan/{id}/bayar/', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
     Route::put('/pesanan/{id}/bayar/', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
     Route::post('/kasir/pesanan/{id}/konfirmasi', [PesananController::class, 'konfirmasi'])->name('pesanan.konfirmasi');
     Route::get('/kasir/pesanan/{id}/detail', [KasirController::class, 'detail'])->name('kasir.pesanan.detail');
@@ -78,6 +83,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/delete/menu/{id}', [AdminController::class, 'deleteMenu'])->name('admin.delete.menu');
     Route::get('/admin/delete/nomormeja/{id}', [AdminController::class, 'deleteNomorMeja'])->name('admin.delete.nomormeja');
     Route::put('/admin/update/stok/{id}', [AdminController::class, 'updateStok'])->name('admin.update.stok');
+
 });
 
 

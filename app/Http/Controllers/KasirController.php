@@ -80,6 +80,36 @@ class KasirController extends Controller
         return redirect()->route('kasir.pesanan')->with('success', 'Pesanan berhasil dihapus.');
     }
 
+//     public function pesanLagi($id)
+// {
+//     // Ambil data transaksi lama kalau ingin auto-mengisi form
+//     $transaksi = Transaksi::findOrFail($id);
+
+//     // Jika ingin langsung ke form pemesanan baru (tanpa isi otomatis)
+//     // return redirect()->route('kasir.pesanan')->with('success', 'Silakan lakukan pemesanan baru.');
+//     return redirect()->route('customer.menu')
+//                      ->with('success', 'Silakan pilih menu untuk pesan lagi.');
+
+//     // Jika ingin isi otomatis sesuai pesanan sebelumnya:
+//     // return view('kasir.form_pesanan', compact('transaksi'));
+// }
+
+public function pesanLagi($id, Request $request)
+{
+    $transaksi = Transaksi::findOrFail($id);
+
+    // Simpan nomor_meja ke session customer
+    //
+    // simpan nomor meja ke session
+    session(['nomor_meja' => $transaksi->nomor_meja]);
+
+    // Arahkan customer langsung ke menu
+    return redirect()->route('customer.menu')
+                     ->with('success', 'Silakan pilih menu untuk pesan lagi di Meja ' . $transaksi->nomor_meja);
+}
+
+
+
 
 
 }

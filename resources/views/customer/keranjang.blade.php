@@ -93,12 +93,12 @@
         </table>
 
         <div class="mt-4">
-            <form action="{{ route('customer.keranjang.checkout') }}" method="POST">
+            <form action="{{ route('customer.keranjang.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
                 <div class="mb-5">
                     <label for="nomor_meja" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
                         Meja</label>
-                    <select name="nomor_meja" id="nomor_meja" required
+                    <select name="nomor_meja" id="nomor_meja"
                         class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="">Pilih Nomor Meja</option>
                         @foreach ($nomor_mejas as $meja)
@@ -110,11 +110,52 @@
 
                 </div>
 
+                {{-- <div class="mb-3">
+                     <label for="nomor_meja_manual" class="form-label">Atau Masukkan Nomor Meja Manual</label>
+                    <input type="text" class="form-control" id="nomor_meja_manual"
+                    name="nomor_meja_manual" placeholder="Contoh: 15A">
+                </div> --}}
+
+                {{-- Input manual nomor meja -> hanya tampil untuk kasir --}}
+
+                @if(Auth::check())
+                    <div class="mb-3">
+                        <label for="nomor_meja_manual">Atau Masukkan Nomor Meja Manual</label>
+                        <input type="text" class="form-control" id="nomor_meja_manual"
+                        name="nomor_meja_manual" placeholder="Contoh: 15A">
+                    </div>
+                @endif
+
+
+
+
                 <button type="submit"
                     class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                     Pesan
                 </button>
             </form>
+
+<script>
+    document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+        // let manual = document.getElementById('nomor_meja_manual').value.trim();
+        let manualField = document.getElementById('nomor_meja_manual');
+        let manual = manualField ? manualField.value.trim() : "";
+        let dropdown = document.getElementById('nomor_meja');
+
+        // Kalau dua-duanya kosong → cegah submit
+        if (!manual && !dropdown.value) {
+            e.preventDefault();
+            alert("Silakan pilih nomor meja atau isi manual jika kasir.");
+            return;
+        }
+
+        // Kalau manual diisi,  kosongkan dropdown agar prioritas manual
+        if (manual) {
+            dropdown.value = "";
+        }
+    });
+</script>
+
         </div>
     </div>
 </body>

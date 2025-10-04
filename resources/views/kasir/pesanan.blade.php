@@ -215,6 +215,14 @@
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                         Bayar
                                     </button>
+                                </a>
+                                <a href="{{  route('kasir.pesan.lagi', ['id' => $transaksi->id]) }}">
+                                    <button type="button"
+                                        class="font-medium text-purple-600 dark:text-purple-400 hover:underline">
+                                        Pesan Lagi
+                                    </button>
+
+                                </a>
                                     </form>
                             </td>
                             <td class="px-6 py-4">
