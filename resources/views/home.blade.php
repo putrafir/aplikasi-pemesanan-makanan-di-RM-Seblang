@@ -85,6 +85,14 @@
         </div>
     </nav>
 
+    @if ($nomorMeja)
+        <div class="bg-orange-100 p-3 rounded text-center mx-4 mt-4 shadow">
+            <span class="font-semibold text-black">Nomor Meja:</span>
+            <span class="font-semibold text-black">{{ $nomorMeja }}</span>
+        </div>
+    @endif
+
+
     <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 mt-5 mb-5 ml-5">
 
         {{-- Tab Semua --}}
@@ -252,48 +260,32 @@
     <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50"></div>
 
     <script>
-        // Jika session success/error, munculkan toast
+        function showToast(message, type = 'success') {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+
+            toast.className =
+                "toast px-4 py-2 rounded-lg shadow-md text-white " +
+                (type === 'success' ? "bg-blue-600" : "bg-red-600");
+
+            toast.innerText = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        // Panggil sesuai flash message Laravel
         @if (session('success'))
-            // fungsi toast
-            function showToast(message) {
-                const container = document.getElementById("toast-container");
-                const toast = document.createElement("div");
-                toast.className = "toast bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md";
-                toast.innerText = message;
-                container.appendChild(toast);
-
-                // auto remove setelah animasi selesai
-                setTimeout(() => {
-                    toast.remove();
-                }, 4000);
-            }
-
-            // cek apakah ada session flash dari Laravel
-            @if (session('success'))
-                showToast("{{ session('success') }}");
-            @endif
+            showToast("{{ session('success') }}", "success");
         @endif
 
         @if (session('error'))
-            function showToast(message) {
-                const container = document.getElementById("toast-container");
-                const toast = document.createElement("div");
-                toast.className = "toast bg-red-600 text-white px-4 py-2 rounded-lg shadow-md";
-                toast.innerText = message;
-                container.appendChild(toast);
-
-                // auto remove setelah animasi selesai
-                setTimeout(() => {
-                    toast.remove();
-                }, 4000);
-            }
-
-            // cek apakah ada session flash dari Laravel
-            @if (session('error'))
-                showToast("{{ session('error') }}");
-            @endif
+            showToast("{{ session('error') }}", "error");
         @endif
     </script>
+
 
     <!-- Script: Pencarian -->
     <script>

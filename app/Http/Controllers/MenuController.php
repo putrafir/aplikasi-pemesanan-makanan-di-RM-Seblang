@@ -13,20 +13,41 @@ class MenuController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    // public function index(Request $request)
+    // {
+    //     $kategori = $request->query('kategori');
+
+    //     $kategoris = Category::with(['menus' => function ($query) use ($kategori) {
+    //         if ($kategori) {
+    //             $query->where('kategori_id', function ($q) use ($kategori) {
+    //                 $q->select('id')->from('categories')->where('nama', $kategori);
+    //             });
+    //         }
+    //     }])->get();
+
+    //     return view('home', compact('kategoris'));
+    // }
+
     public function index(Request $request)
-    {
-        $kategori = $request->query('kategori');
+{
+    $kategori = $request->query('kategori');
 
-        $kategoris = Category::with(['menus' => function ($query) use ($kategori) {
-            if ($kategori) {
-                $query->where('kategori_id', function ($q) use ($kategori) {
-                    $q->select('id')->from('categories')->where('nama', $kategori);
-                });
-            }
-        }])->get();
+    $kategoris = Category::with(['menus' => function ($query) use ($kategori) {
+        if ($kategori) {
+            $query->where('kategori_id', function ($q) use ($kategori) {
+                $q->select('id')->from('categories')->where('nama', $kategori);
+            });
+        }
+    }])->get();
 
-        return view('home', compact('kategoris'));
-    }
+    // Ambil nomor meja dari session
+    $nomorMeja = $request->session()->get('nomor_meja');
+
+    // Render ke view customer/menu.blade.php
+    return view('home', compact('kategoris', 'nomorMeja'));
+}
+
 
     /**
      * Show the form for creating a new resource.

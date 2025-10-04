@@ -9,11 +9,6 @@ use App\Models\Pesanan;
 use App\Models\NomorMeja;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
-use App\Models\Transaksi;
-use App\Models\Pesanan;
-use Carbon\Carbon;
-use DateTime;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use DateTime;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -267,8 +262,11 @@ class AdminController extends Controller
         $tanggalAkhir = Carbon::parse($request->tanggal_akhir)->endOfDay();
 
         $transaksis = Transaksi::whereBetween('created_at', [$tanggalAwal, $tanggalAkhir])->get();
+        $totalPendapatan = $transaksis->sum('total_bayar');
 
-        return view('admin.search_by_date', compact('transaksis', 'tanggalAwal', 'tanggalAkhir'));
+        return view('admin.search_by_date', compact('transaksis', 'tanggalAwal', 'tanggalAkhir', 'totalPendapatan'));
+
+
     }
 
     public function detail($id)
