@@ -26,7 +26,9 @@ class MenuController extends Controller
             }
         }])->get();
 
-        return view('home', compact('kategoris'));
+        $nomorMeja = $request->session()->get('nomor_meja');
+
+        return view('home', compact('kategoris', 'nomorMeja'));
     }
 
     /**

@@ -26,6 +26,11 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 Hasil Pencarian dari {{ $tanggalAwal->format('d M Y') }} sampai {{ $tanggalAkhir->format('d M Y') }}
             </h2>
 
+            <h2 class="text-xl text-blue-500 font-bold mb-2">
+                Total Pendapatan: <span class="text-green-600">Rp
+                    {{ number_format($totalPendapatan, 0, ',', '.') }}</span>
+            </h2>
+
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>

@@ -72,6 +72,13 @@
             </div>
         </nav>
 
+        @if ($nomorMeja)
+            <div class="bg-orange-100 p-3 rounded text-center mx-4 mt-4 shadow">
+                <span class="font-semibold text-black">Nomor Meja:</span>
+                <span class="font-semibold text-black">{{ $nomorMeja }}</span>
+            </div>
+        @endif
+
         <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 mt-5 mb-5 ml-5">
 
             {{-- Tab Semua --}}
