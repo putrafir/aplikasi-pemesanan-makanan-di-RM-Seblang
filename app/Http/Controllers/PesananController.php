@@ -5,90 +5,132 @@ namespace App\Http\Controllers;
 use App\Models\Pesanan;
 use App\Http\Requests\StorePesananRequest;
 use App\Http\Requests\UpdatePesananRequest;
+use Illuminate\Http\Request;
+use App\Models\Transaksi;
+
 
 class PesananController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    // Menampilkan semua pesanan yang bukan keranjang
     public function index()
     {
-        $pesanans = Pesanan::all(); // Menampilkan semua pesanan
-         return view('kasir.pesanan', compact('pesanans'));
-
-
+        $pesanans = Pesanan::with('items')->where('status', '!=', 'keranjang')->get();
+        return view('kasir.pesanan', compact('pesanans'));
     }
 
-    public function showBayar($id)
+    // Membuat pesanan baru dengan status keranjang
+    public function store(Request $request)
     {
-        // Ambil pesanan beserta relasi items
-        $pesanan = Pesanan::with('items')->findOrFail($id);
-
-        // Cegah pembayaran jika status masih keranjang
-        if ($pesanan->status === 'keranjang') {
-            return redirect()->route('kasir.pesanan')->withErrors(['Pesanan masih dalam keranjang dan belum siap dibayar.']);
-        }
-
-        // Hitung total
-        $total = $pesanan->total_harga;
-
-        return view('kasir.bayar', compact('pesanan', 'total'));
-    }
-
-    public function prosesBayar(Request $request, $id)
-    {
-        $pesanan = Pesanan::findOrFail($id);
-
-        // Cegah pembayaran jika status tidak valid
-        if ($pesanan->status !== 'belum dibayar') {
-            return redirect()->route('kasir.pesanan')->withErrors(['Pesanan ini tidak dapat dibayar.']);
-        }
-
-        // Validasi
-        $request->validate([
-            'jumlah_bayar' => 'required|numeric|min:' . $pesanan->total_harga,
-            'metode_pembayaran' => 'required|in:tunai,qris',
+        $pesanan = Pesanan::create([
+            'status' => 'keranjang',
+            // tambahkan field lain jika ada, seperti 'user_id' => auth()->id()
         ]);
 
-        // Update pesanan
-        $pesanan->update([
-            'status' => 'dibayar',
-            'metode_pembayaran' => $request->metode_pembayaran,
-        ]);
-
-        return redirect()->route('kasir.pesanan')->with('success', 'Pembayaran berhasil diproses!');
+        return redirect()->route('menu.index')->with('success', 'Pesanan baru telah dibuat.');
     }
 
+    // Konfirmasi checkout: ubah status keranjang ke belum dibayar
     public function konfirmasi($id)
     {
-        $pesanan = Pesanan::findOrFail($id);
+        $pesanan = Pesanan::with('items')->findOrFail($id);
+        $pesanan = Pesanan::with('items')->findOrFail($id);
 
-        // Hanya ubah status jika masih 'keranjang'
         if ($pesanan->status === 'keranjang') {
-            $pesanan->update(['status' => 'belum dibayar']);
+            if ($pesanan->items->isEmpty()) {
+                return redirect()->back()->withErrors(['Pesanan tidak memiliki item.']);
+            }
+
+            $total = $pesanan->items->sum(function ($item) {
+                return $item->harga * $item->jumlah;
+            });
+
+            $pesanan->update([
+                'status' => 'belum dibayar',
+                'total' => $total
+            ]);
+
+            if ($pesanan->items->isEmpty()) {
+                return redirect()->back()->withErrors(['Pesanan tidak memiliki item.']);
+            }
+
+            $total = $pesanan->items->sum(function ($item) {
+                return $item->harga * $item->jumlah;
+            });
+
+            $pesanan->update([
+                'status' => 'belum bayar',
+                'total' => $total
+            ]);
+
             return redirect()->back()->with('success', 'Pesanan telah dikonfirmasi dan siap dibayar.');
         }
 
         return redirect()->back()->withErrors(['Pesanan ini sudah dikonfirmasi sebelumnya.']);
     }
 
-    //baru
-//     public function pesanan(Request $request)
-// {
-//     $query = Order::query();
+    // Menampilkan halaman pembayaran
+    public function showBayar($id)
+    {
 
-//     if ($request->has('')) {
-//         $query->where('created', $request->date);
-//     }
+        $transaksis = Transaksi::find($id);
+        if ($transaksis->status_bayar == 'sudah bayar') {
+            return redirect()->back()->with('error', 'Pesanan telah dibayar.');
+        }
 
-//     if ($request->status) {
-//         $query->where('status', $request->status);
-//     }
+            $pesanan = json_decode($transaksis->details, true);
+            return view('kasir.bayar_pesanan', compact('transaksis', 'pesanan'));
+        }
 
-//     $orders = $query->get();
+    public function prosesBayar($id, Request $request)
+    {
+        $validate = $request->validate([
+            'uang_dibayarkan' => ['required', 'numeric'],
+            'metode_pembayaran' => ['required']
+        ]);
+        $pesanan = Transaksi::find($id);
+        if (!$pesanan) {
+            return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
+        }
+        if ($pesanan->status_bayar == 'sudah bayar') {
+            return redirect()->back()->with('error', 'Pesanan telah dibayar.');
+        }
 
-//     return view('kasir.pesanan', compact('pesanans'));
-// }
+            $transaksiDetail = json_decode($pesanan->details, true);
+            $total = array_sum(array_column($transaksiDetail, 'subtotal'));
+            ;
+            if ($total > $validate['uang_dibayarkan']) {
+
+            return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
+        }
+
+        $kembalian = $validate['uang_dibayarkan'] - $total;
+        // Simpan ke tabel transaksi
 
 
-}
+        try {
+
+            $pesanan->update([
+                'uang_dibayarkan' => $validate['uang_dibayarkan'],
+                'status_bayar' => 'sudah bayar',
+                'metode_pembayaran' => $validate['metode_pembayaran'],
+                'kembalian' => $kembalian,
+            ]);
+
+            // Update status nomor meja jika ada
+            if ($pesanan->meja) {
+                $pesanan->meja->status = 'tersedia';
+                $pesanan->meja->save();
+            }
+
+
+            return redirect()->route('kasir.pesanan')->with('success', 'Pembayaran berhasil dilakukan.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Pesanan gagal.');
+
+            }
+        }
+
+    }

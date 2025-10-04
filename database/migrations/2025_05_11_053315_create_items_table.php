@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->decimal('harga', 10, 2);
-            $table->integer('jumlah');
             $table->foreignId('pesanan_id')->constrained()->onDelete('cascade');
+            $table->unsignedBigInteger('menu_id')->nullable();
+            $table->integer('jumlah');
+             $table->decimal('harga', 10, 2);
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.

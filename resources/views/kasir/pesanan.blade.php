@@ -7,6 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="{{ asset('backend/js/code.js') }}"></script>
 </head>
 
 <body>
@@ -171,6 +174,10 @@
                             Nomor Meja
                         </th>
                         <th scope="col" class="px-6 py-3">
+                            kembalian
+                        </th>
+
+                        <th scope="col" class="px-6 py-3">
                             Action
                         </th>
                         <th scope="col" class="px-6 py-3">
@@ -196,36 +203,45 @@
                                 {{ $transaksi->nomor_meja }}
                             </td>
                             <td class="px-6 py-4">
-                                <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id]) }}"
-                                    class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
+                                {{ $transaksi->kembalian }}
+
+                            </td>
+
+                            <td class="px-6 py-4 flex gap-2">
                                 <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
-                                    class=" px-2 font-medium text-blue-600 dark:text-blue-500 hover:underline">Bayar</a>
+                                    class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
+                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}">
+                                    <button type="submit"
+                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                        Bayar
+                                    </button>
+                                    </form>
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('kasir.transaksi.updateStatus', $transaksi->id) }}"
-                                    method="POST">
+                                <form action="{{ route('pesanan.update.status', $transaksi->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name="status_baru"
-                                        value="{{ $transaksi->status === 'aktif' ? 'nonaktif' : 'aktif' }}">
-                                    <button type="submit"
-                                        class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status === 'aktif' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }}">
-                                        {{ $transaksi->status === 'aktif' ? 'Tandai Selesai' : 'Selesai' }}
+                                    @php
+                                        $isDiantar = $transaksi->status === 'sudah diantar';
+                                        $bgColor = $isDiantar ? 'bg-green-600' : 'bg-blue-600';
+                                    @endphp
+
+                                    <button type="submit" id="btn-status"
+                                        class="px-3 py-2 rounded font-semibold transition  {{$bgColor}} text-white  ">
+                                        {{ $transaksi->status }}
                                     </button>
                                 </form>
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('kasir.transaksi.updateStatusBayar', $transaksi->id) }}"
-                                    method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="hidden" name="statusbayar_baru"
-                                        value="{{ $transaksi->status_bayar === 'belum bayar' ? 'sudah bayar' : 'belum bayar' }}">
-                                    <button type="submit"
-                                        class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status_bayar === 'belum bayar' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }}">
-                                        {{ $transaksi->status_bayar === 'belum bayar' ? 'Tandai Lunas' : 'Lunas' }}
-                                    </button>
-                                </form>
+                                @php
+                                    $isBayar = $transaksi->status_bayar !== 'tandai bayar';
+                                    $bgColor = $isBayar ? 'bg-green-600' : 'bg-red-600';
+                                @endphp
+
+                                <span
+                                    class="px-3 py-2 rounded font-semibold transition text-white {{ $bgColor }}">
+                                    {{ $transaksi->status_bayar }}
+                                </span>
                             </td>
 
 
@@ -236,6 +252,17 @@
 
                 </tbody>
             </table>
+
+            @if (session()->has('success'))
+                <div class="bg-white">
+                    {{ session('success') }}
+                </div>
+            @endif
+            @if (session()->has('error'))
+                <div class="bg-white">
+                    {{ session('error') }}
+                </div>
+            @endif
         </div>
 
     </div>

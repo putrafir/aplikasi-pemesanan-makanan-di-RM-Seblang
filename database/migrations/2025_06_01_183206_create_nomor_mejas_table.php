@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pesanans', function (Blueprint $table) {
+        Schema::create('nomor_mejas', function (Blueprint $table) {
             $table->id();
-            $table->decimal('total_harga', 10, 2)->nullable(); // Menambahkan kolom total_harga
-            $table->string('status')->default('belum dibayar');
-            $table->string('nomor_meja')->nullable();
-            $table->string('metode_pembayaran')->nullable();
+            $table->integer('nomor')->unique();
+            $table->enum('status', ['tersedia', 'terisi', 'reservasi', 'rusak'])->default('tersedia');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pesanans');
+        Schema::dropIfExists('nomor_mejas');
     }
 };

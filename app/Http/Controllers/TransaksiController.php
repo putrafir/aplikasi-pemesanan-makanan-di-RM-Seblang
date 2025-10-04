@@ -6,9 +6,17 @@ use App\Http\Requests\StoreTransaksiRequest;
 use App\Http\Requests\UpdateTransaksiRequest;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
+use App\Models\NomorMeja;
 
 class TransaksiController extends Controller
 {
+    public function index()
+    {
+        // Mengambil semua data transaksi dari database
+        $transaksis = Transaksi::all();  // Atau bisa juga dengan query yang lebih spesifik
+        return view('kasir.pesanan', compact('transaksis'));
+    }
+
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
@@ -30,7 +38,18 @@ class TransaksiController extends Controller
         $transaksi->status_bayar = $request->statusbayar_baru;
         $transaksi->save();
 
+        if ($request->statusbayar_baru === 'sudah bayar') {
+            $meja = NomorMeja::where('nomor', $transaksi->nomor_meja)->first();
+            if ($meja) {
+                $meja->status = 'tersedia';
+                $meja->save();
+            }
+        }
+
         return redirect()->back()->with('success', 'Status pembayaran berhasil diperbarui.');
     }
+
+
+
 
 }
