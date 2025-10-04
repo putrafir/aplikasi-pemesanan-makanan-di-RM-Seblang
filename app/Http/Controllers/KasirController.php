@@ -77,4 +77,18 @@ class KasirController extends Controller
 
         return redirect()->route('kasir.pesanan')->with('success', 'Pesanan berhasil dihapus.');
     }
+
+    public function pesanLagi($id, Request $request)
+    {
+        $transaksi = Transaksi::findOrFail($id);
+
+        // Simpan nomor_meja ke session customer
+        //
+        // simpan nomor meja ke session
+        session(['nomor_meja' => $transaksi->nomor_meja]);
+
+        // Arahkan customer langsung ke menu
+        return redirect()->route('customer.menu')
+                        ->with('success', 'Silakan pilih menu untuk pesan lagi di Meja ' . $transaksi->nomor_meja);
+    }
 }

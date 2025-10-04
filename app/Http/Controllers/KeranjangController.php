@@ -90,6 +90,23 @@ class KeranjangController extends Controller
             return redirect()->back()->with('error', 'Keranjang kosong, tidak ada yang bisa dibayar.');
         }
 
+        if (auth()->check() && auth()->user()->role == 'kasir') {
+            $request->validate([
+                'nomor_meja' => 'nullable|string|max:10',
+                'nomor_meja_manual' => 'nullable|string|max:10',
+            ]);
+            $nomorMejaInput = $request->nomor_meja_manual ?: $request->nomor_meja;
+        } else {
+            $request->validate([
+                'nomor_meja' => 'required|exists:nomor_mejas,nomor',
+            ]);
+            $nomorMejaInput = $request->nomor_meja;
+        }
+
+        if (!$nomorMejaInput) {
+            return redirect()->back()->with('error', 'Nomor meja wajib diisi.');
+        }
+
         $totalBayar = $keranjangs->sum('total_harga');
 
         $details = $keranjangs->map(function ($keranjang) {
@@ -106,7 +123,7 @@ class KeranjangController extends Controller
 
         $transaksi = Transaksi::create([
             'total_bayar' => $totalBayar,
-            'nomor_meja' => $request->nomor_meja,
+            'nomor_meja' => $nomorMejaInput,
             'session_id' => $sessionId,
             'details' => $details->toJson(),
             'status' => 'aktif',
@@ -114,7 +131,7 @@ class KeranjangController extends Controller
         ]);
 
         // Update nomor meja menjadi tidak tersedia
-        $nomorMejaModel = NomorMeja::where('nomor', $nomorMeja)->first();
+        $nomorMejaModel = NomorMeja::where('nomor', $nomorMejaInput)->first();
         if ($nomorMejaModel) {
             $nomorMejaModel->status = 'terisi';
             $nomorMejaModel->save();
@@ -167,5 +184,16 @@ class KeranjangController extends Controller
         $grandTotal = $riwayat->sum('total_bayar');
 
         return view('customer.riwayatPesanan', compact('riwayat', 'nomor_meja', 'grandTotal'));
+    }
+
+    public function pesanLagi(Request $request)
+    {
+        $nomorMeja = $request->session()->get('nomor_meja');
+
+        if (!$nomorMeja) {
+            return redirect()->route('customer.menu')->with('error', 'Nomor meja tidak ditemukan.');
+        }
+
+        return redirect()->route('customer.menu')->with('success', 'Pesan lagi untuk Meja ' . $nomorMeja);
     }
 }

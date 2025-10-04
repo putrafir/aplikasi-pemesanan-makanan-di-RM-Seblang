@@ -10,4 +10,5 @@ class NomorMeja extends Model
     /** @use HasFactory<\Database\Factories\NomorMejaFactory> */
     use HasFactory;
     protected $guarded = [];
+    protected $table = 'nomor_mejas';
 }
