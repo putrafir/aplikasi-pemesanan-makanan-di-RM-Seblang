@@ -125,7 +125,7 @@
 
         <!-- Checkout -->
         <div class="mt-8">
-            <form action="{{ route('customer.keranjang.checkout') }}" method="POST">
+            <form action="{{ route('customer.keranjang.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
                 <div class="mb-5">
                     <label for="nomor_meja"
@@ -135,7 +135,7 @@
                             class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled>
                         <input type="hidden" name="nomor_meja" value="{{ session('nomor_meja') }}">
                     @else
-                        <select name="nomor_meja" id="nomor_meja" required
+                        <select name="nomor_meja" id="nomor_meja" 
                             class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-50">
                             <option value="">Pilih Nomor Meja</option>
                             @foreach ($nomor_mejas as $meja)
@@ -145,6 +145,15 @@
                     @endif
                 </div>
         </div>
+
+        @if(Auth::check())
+            <div class="mb-3">
+                <label for="nomor_meja_manual">Atau Masukkan Nomor Meja Manual</label>
+                <input type="text" class="form-control" id="nomor_meja_manual"
+                name="nomor_meja_manual" placeholder="Contoh: 15A">
+            </div>
+        @endif
+
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
             <div class="max-w-4xl mx-auto flex items-center justify-between">
                 
@@ -159,8 +168,22 @@
                     </button>
                 </form>
 
-                <a href="{{ route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) }}"
-                class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">List Pesanan</a>
+                @if(auth()->check() && auth()->user()->role === 'kasir')
+                    {{-- Tombol untuk kasir --}}
+                    <a href="{{ route('kasir.pesanan') }}"
+                    class="px-4 py-2 border-2 border-gray-600 text-black rounded-lg hover:bg-gray-100 transition">
+                    Kembali
+                    </a>
+                @else
+                    {{-- Tombol untuk customer --}}
+                    <a href="{{ $pesanan ? route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) : '#' }}"
+                    class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">
+                    List Pesanan
+                    </a>
+                @endif
+
+                
+
                     
                 </div>
             </div>
@@ -173,6 +196,26 @@
     <!-- Toast Container -->
     <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50"></div>
 
+    <script>
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            // let manual = document.getElementById('nomor_meja_manual').value.trim();
+            let manualField = document.getElementById('nomor_meja_manual');
+            let manual = manualField ? manualField.value.trim() : "";
+            let dropdown = document.getElementById('nomor_meja');
+
+            // Kalau dua-duanya kosong → cegah submit
+            if (!manual && !dropdown.value) {
+                e.preventDefault();
+                alert("Silakan pilih nomor meja atau isi manual jika kasir.");
+                return;
+            }
+
+            // Kalau manual diisi,  kosongkan dropdown agar prioritas manual
+            if (manual) {
+                dropdown.value = "";
+            }
+        });
+    </script>
     <script>
         // Jika session success/error, munculkan toast
         @if (session('success'))
