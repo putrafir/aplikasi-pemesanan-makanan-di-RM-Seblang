@@ -11,16 +11,15 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KelolaKasirController;
 use Illuminate\Support\Facades\Route;
 
-Route::get(
-    '/menu',
-    [MenuController::class, 'index']
-)->name('customer.menu');
-Route::get(
-    '/',
-    function () {
-        return view('auth.login');
-    }
-);
+// Route customer melihat daftar menu
+Route::get('/menu', [MenuController::class, 'index'])->name('customer.menu');
+
+// Route customer melihat detail menu
+Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
+
+Route::get('/', function () {
+    return view('auth.login');
+});
 
 Route::get('customer/keranjang', [KeranjangController::class, 'index'])->name('customer.keranjang.view');
 Route::post('/customer/keranjang/add', [KeranjangController::class, 'addToCart'])->name('customer.keranjang.add');
@@ -90,7 +89,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/update/kategori', [AdminController::class, 'updateKategori'])->name('admin.update.kategori');
     Route::get('/admin/delete/kategori/{id}', [AdminController::class, 'deleteKategori'])->name('admin.delete.kategori');
     Route::get('/admin/kelolakasir', [KelolaKasirController::class, 'index'])->name('admin.kelolakasir');
-     Route::post('/admin/kelolakasir/tambah', [KelolaKasirController::class, 'tambahkasir'])->name('admin.kelolakasir.tambah');
+    Route::post('/admin/kelolakasir/tambah', [KelolaKasirController::class, 'tambahkasir'])->name('admin.kelolakasir.tambah');
+    Route::get('/admin/edit/kasir/{id}', [KelolaKasirController::class, 'edit'])->name('admin.edit.kasir');
+    Route::get('/admin/delete/kasir/{id}', [KelolaKasirController::class, 'delete'])->name('admin.delete.kasir');
+    Route::put('/admin/update/kasir/{id}', [KelolaKasirController::class, 'update'])->name('admin.update.kasir');
 });
 
 
