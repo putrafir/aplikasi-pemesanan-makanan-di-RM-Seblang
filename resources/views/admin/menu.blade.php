@@ -22,13 +22,15 @@
     <script src="{{ asset('backend/js/code.js') }}"></script>
 </head>
 
-<body>
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
 
     @include('admin.body.sidebar')
+    @include('admin.body.header')
 
-    <div class="p-4 sm:ml-64">
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="p-4 ">
+        <div class=" overflow-x-auto shadow-md sm:rounded-lg">
             <h2 class="text-center mb-5 font-bold">Daftar Menu </h2>
             <a href="{{ route('admin.tambah.menu') }}"
                 class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded mb-3"> <i

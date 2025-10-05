@@ -12,11 +12,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
     @include('admin.body.sidebar')
+    @include('admin.body.header')
 
-    <div class="sm:ml-64 p-6">
+    <div class="p-6">
         <h1 class="text-center mb-4 font-bold">Laporan Transaksi</h1>
         <h3 class="mb-5">Gunakan filter untuk melihat laporan transaksi berdasarkan rentang tanggal</h3>
 

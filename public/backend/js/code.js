@@ -81,6 +81,40 @@ $(document).on("click", "#pesanLagiBtn", function (e) {
     });
 });
 
+$(document).on("click", "#pesanLagiBtn", function (e) {
+    e.preventDefault();
+
+    Swal.fire({
+        text: "Kamu yakin ingin memulai pesanan baru?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Pesanan Baru",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = $(this).attr("href");
+        }
+    });
+});
+
+$(document).on("click", "#pesanLagiBtn", function (e) {
+    e.preventDefault();
+
+    Swal.fire({
+        text: "Kamu yakin ingin memulai pesanan baru?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Pesanan Baru",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = $(this).attr("href");
+        }
+    });
+});
+
 $(function () {
     $(document).on("click", ".btn-status", function (e) {
         e.preventDefault();

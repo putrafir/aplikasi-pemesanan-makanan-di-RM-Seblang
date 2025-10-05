@@ -6,13 +6,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bayar Pesanan</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="bg-gray-100">
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false}" x-init="
+         darkMode = JSON.parse(localStorage.getItem('darkMode'));
+         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+    :class="{'dark bg-gray-900': darkMode === true}" class="bg-gray-100">
 
     @include('kasir.body.sidebar')
-
-    <div class="container mx-auto p-4 max-w-4xl">
+    @include('kasir.body.header')
+    
+    <div class="p-4">
+    <div class=" container mx-auto p-6">
 
         <!-- Notifikasi -->
         @if (session('success'))
@@ -127,6 +133,7 @@
  
     </form>
     {{-- @endif --}}
+    </div>
     </div>
     </div>
 </body>

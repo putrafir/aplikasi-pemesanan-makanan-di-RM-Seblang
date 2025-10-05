@@ -72,48 +72,73 @@ class KeranjangController extends Controller
         return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang.');
     }
 
- public function checkout(Request $request)
-{
-    $sessionId = $request->session()->getId();
-    $keranjangs = Keranjang::where('session_id', $sessionId)->get();
+    public function checkout(Request $request)
+    {
 
-    if ($keranjangs->isEmpty()) {
-        return redirect()->back()->with('error', 'Keranjang kosong, tidak ada yang bisa dibayar.');
-    }
+        $sessionId = $request->session()->getId();
+
+
+        $keranjangs = Keranjang::where('session_id', $sessionId)->get();
+
+
+
+        // $request->validate([
+        //     "nomor_meja"=>"unique:transaksis,nomor_meja,required",
+        // ]);
+
+        if ($keranjangs->isEmpty()) {
+            return redirect()->back()->with('error', 'Keranjang kosong, tidak ada yang bisa dibayar.');
+        }
+
+        if (auth()->check() && auth()->user()->role == 'kasir') {
+            $request->validate([
+                'nomor_meja' => 'nullable|string|max:10',
+                'nomor_meja_manual' => 'nullable|string|max:10',
+            ]);
+            $nomorMejaInput = $request->nomor_meja_manual ?: $request->nomor_meja;
+        } else {
+            $request->validate([
+                'nomor_meja' => 'required|exists:nomor_mejas,nomor',
+            ]);
+            $nomorMejaInput = $request->nomor_meja;
+        }
+
+        if (!$nomorMejaInput) {
+            return redirect()->back()->with('error', 'Nomor meja wajib diisi.');
+        }
 
     $totalBayar = $keranjangs->sum('total_harga');
 
-    $details = $keranjangs->map(function ($keranjang) {
-        return [
-            'menu_id' => $keranjang->menu_id,
-            'nama' => $keranjang->menu->nama,
-            'jumlah' => $keranjang->jumlah,
-            'harga' => $keranjang->harga_satuan,
-            'subtotal' => $keranjang->total_harga,
-        ];
-    });
+        $details = $keranjangs->map(function ($keranjang) {
+            return [
+                'menu_id' => $keranjang->menu_id,
+                'nama' => $keranjang->menu->nama,
+                'jumlah' => $keranjang->jumlah,
+                'harga' => $keranjang->harga_satuan,
+                'subtotal' => $keranjang->total_harga,
+            ];
+        });
 
-    // pakai nomor meja dari session jika ada
-    $nomorMeja = $request->session()->get('nomor_meja', $request->nomor_meja);
+        $nomorMeja = $request->session()->get('nomor_meja', $request->nomor_meja);
 
-    $transaksi = Transaksi::create([
-        'total_bayar' => $totalBayar,
-        'nomor_meja' => $nomorMeja,
-        'session_id' => $sessionId,
-        'details' => $details->toJson(),
-        'status' => 'aktif',
-        'status_bayar' => 'belum bayar',
-    ]);
+        $transaksi = Transaksi::create([
+            'total_bayar' => $totalBayar,
+            'nomor_meja' => $nomorMejaInput,
+            'session_id' => $sessionId,
+            'details' => $details->toJson(),
+            'status' => 'aktif',
+            'status_bayar' => 'belum bayar',
+        ]);
 
-    // Update status meja
-    $nomorMejaModel = NomorMeja::where('nomor', $nomorMeja)->first();
-    if ($nomorMejaModel) {
-        $nomorMejaModel->status = 'terisi';
-        $nomorMejaModel->save();
-    }
+        // Update nomor meja menjadi tidak tersedia
+        $nomorMejaModel = NomorMeja::where('nomor', $nomorMejaInput)->first();
+        if ($nomorMejaModel) {
+            $nomorMejaModel->status = 'terisi';
+            $nomorMejaModel->save();
+        }
 
-    // Simpan nomor_meja ke session
-    $request->session()->put('nomor_meja', $nomorMeja);
+        //simpan nomor meja di session
+        $request->session()->put('nomor_meja', $nomorMeja);
 
     Keranjang::where('session_id', $sessionId)->delete();
 

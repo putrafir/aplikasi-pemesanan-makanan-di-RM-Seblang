@@ -10,6 +10,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         /* Toast Animation */
         .toast {
@@ -90,6 +92,7 @@
                             </td>
                             <td class="px-4 py-2">
                                 Rp. {{ number_format($keranjang->harga_satuan, 0, ',', '.') }}
+                                Rp. {{ number_format($keranjang->harga_satuan, 0, ',', '.') }}
                             </td>
                             <td class="px-2 py-2 text-center">
                                 <form action="{{ route('customer.keranjang.update', $keranjang->id) }}" method="POST"
@@ -113,6 +116,7 @@
 
                             <td class="px-4 py-2 text-center text-blue-600 font-semibold">
                                 Rp. {{ number_format($keranjang->total_harga, 0, ',', '.') }}
+                                Rp. {{ number_format($keranjang->total_harga, 0, ',', '.') }}
                             </td>
                             <td class="px-4 py-2 text-center">
                                 <form action="{{ route('customer.keranjang.delete', $keranjang->id) }}" method="POST">
@@ -130,17 +134,16 @@
 
         <!-- Checkout -->
         <div class="mt-8">
-            <form action="{{ route('customer.keranjang.checkout') }}" method="POST">
+            <form action="{{ route('customer.keranjang.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
                 <div class="mb-5">
                     <label for="nomor_meja" class="block mb-2 text-sm font-bold text-gray-900">Nomor Meja</label>
-
                     @if (session('nomor_meja'))
                         <input type="text" value="Meja {{ session('nomor_meja') }}"
                             class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled>
                         <input type="hidden" name="nomor_meja" value="{{ session('nomor_meja') }}">
                     @else
-                        <select name="nomor_meja" id="nomor_meja" required
+                        <select name="nomor_meja" id="nomor_meja"
                             class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-50">
                             <option value="">Pilih Nomor Meja</option>
                             @foreach ($nomor_mejas as $meja)
@@ -150,6 +153,14 @@
                     @endif
                 </div>
         </div>
+
+        @if (Auth::check())
+            <div class="mb-3">
+                <label for="nomor_meja_manual">Atau Masukkan Nomor Meja Manual</label>
+                <input type="text" class="form-control" id="nomor_meja_manual" name="nomor_meja_manual"
+                    placeholder="Contoh: 15A">
+            </div>
+        @endif
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
             <div class="max-w-4xl mx-auto flex items-center justify-between">
@@ -162,16 +173,38 @@
                         class="w-20 text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3">
                         Pesan
                     </button>
+                    </form>
+
+                    @if (auth()->check() && auth()->user()->role === 'kasir')
+                        {{-- Tombol untuk kasir --}}
+                        <a href="{{ route('kasir.pesanan') }}"
+                            class="px-4 py-2 border-2 border-gray-600 text-black rounded-lg hover:bg-gray-100 transition">
+                            Kembali
+                        </a>
+                    @else
+                        {{-- Tombol untuk customer --}}
+                        <a href="{{ $pesanan ? route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) : '#' }}"
+                            class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">
+                            List Pesanan
+                        </a>
+                    @endif
+
+
+
+
                 </div>
             </div>
         </div>
         </form>
     </div>
 
+
+
     <!-- Toast Notification -->
     <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50"></div>
 
     <script>
+        // Jika session success/error, munculkan toast
         @if (session('success'))
             function showToast(message) {
                 const container = document.getElementById("toast-container");
@@ -200,6 +233,7 @@
             showToast("{{ session('error') }}");
         @endif
     </script>
+
 </body>
 
 </html>

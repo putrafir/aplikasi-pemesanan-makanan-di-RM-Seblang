@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Category;
@@ -9,6 +10,9 @@ use App\Models\Pesanan;
 use App\Models\NomorMeja;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use App\Models\Transaksi;
+use App\Models\PesananDetail;
+use App\Models\Pesanan;
 use Carbon\Carbon;
 use DateTime;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -267,6 +271,7 @@ class AdminController extends Controller
         return view('admin.search_by_date', compact('transaksis', 'tanggalAwal', 'tanggalAkhir', 'totalPendapatan'));
 
 
+        return view('admin.search_by_date', compact('transaksis', 'tanggalAwal', 'tanggalAkhir', 'totalPendapatan'));
     }
 
     public function detail($id)

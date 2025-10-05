@@ -41,13 +41,10 @@ class MenuController extends Controller
         }
     }])->get();
 
-    // Ambil nomor meja dari session
-    $nomorMeja = $request->session()->get('nomor_meja');
+        $nomorMeja = $request->session()->get('nomor_meja');
 
-    // Render ke view customer/menu.blade.php
-    return view('home', compact('kategoris', 'nomorMeja'));
-}
-
+        return view('home', compact('kategoris', 'nomorMeja'));
+    }
 
     /**
      * Show the form for creating a new resource.

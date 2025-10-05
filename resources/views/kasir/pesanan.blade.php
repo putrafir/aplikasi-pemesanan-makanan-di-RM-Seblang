@@ -21,12 +21,16 @@
     <script src="{{ asset('backend/js/code.js') }}"></script>
 </head>
 
-<body>
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false}" x-init="
+         darkMode = JSON.parse(localStorage.getItem('darkMode'));
+         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+    :class="{'dark bg-gray-900': darkMode === true}">
     
     @include('kasir.body.sidebar')
+    @include('kasir.body.header')
 
-    <div class="p-4 sm:ml-64">
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="p-4">
+        <div class=" overflow-x-auto shadow-md sm:rounded-lg">
 
             <td class="px-6 py-4">
                 <form method="GET" action="{{ route('kasir.pesanan') }}">
@@ -120,7 +124,15 @@
                                         class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
                                         Bayar
                                     </button>
-                                    </form>
+                                </a>
+                                <a href="{{  route('kasir.pesan.lagi', ['id' => $transaksi->id]) }}">
+                                    <button type="button"
+                                        class="font-medium text-purple-600 dark:text-purple-400 hover:underline">
+                                        Pesan Lagi
+                                    </button>
+
+                                </a>
+                                </form>
                             </td>
                             <td class="px-6 py-4">
                                 <form action="{{ route('kasir.transaksi.updateStatus', $transaksi->id) }}" method="POST">
