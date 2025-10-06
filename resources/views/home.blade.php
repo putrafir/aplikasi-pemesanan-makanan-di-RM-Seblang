@@ -119,13 +119,13 @@
                     @foreach ($allMenus as $menu)
                         <div data-nama="{{ strtolower($menu->nama) }}"  
                             class="cursor-pointer menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
-                            <a href="#" class="cursor-pointer">
+                            <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                 <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
                                     src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
                             </a>
                             <div class="px-5 pb-5">
                                 <div class="flex items-center justify-between mb-5">
-                                    <a href="#" class="cursor-pointer">
+                                    <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                         <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
                                     </a>
                                     <span class="text-3xl font-bold text-blue-700">
@@ -183,13 +183,13 @@
                     @foreach ($kategori->menus as $menu)
                         <div data-nama="{{ strtolower($menu->nama) }} " 
                             class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
-                            <a href="#" class="cursor-pointer">
+                            <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                 <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
                                     src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
                             </a>
                             <div class="px-5 pb-5">
                                 <div class="flex items-center justify-between mb-5">
-                                    <a href="#" class="cursor-pointer">
+                                    <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                         <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
                                     </a>
                                     <span class="text-3xl font-bold text-blue-700">

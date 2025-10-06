@@ -28,6 +28,7 @@ Route::delete('/customer/keranjang/{id}', [KeranjangController::class, 'destroy'
 Route::post('/customer/keranjang/checkout', [KeranjangController::class, 'checkout'])->name('customer.keranjang.checkout');
 Route::get('/pesan-lagi', [KeranjangController::class, 'pesanLagi'])->name('customer.pesan.lagi');
 Route::put('/keranjang/{id}/update', [KeranjangController::class, 'update'])->name('customer.keranjang.update');
+Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
 
 
 Route::get('/dashboard', function () {
@@ -94,6 +95,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/delete/kategori/{id}', [AdminController::class, 'deleteKategori'])->name('admin.delete.kategori');
     Route::get('/admin/kelolakasir', [KelolaKasirController::class, 'index'])->name('admin.kelolakasir');
     Route::post('/admin/kelolakasir/tambah', [KelolaKasirController::class, 'tambahkasir'])->name('admin.kelolakasir.tambah');
+    Route::get('/admin/edit/kasir/{id}', [KelolaKasirController::class, 'edit'])->name('admin.edit.kasir');
+    Route::get('/admin/delete/kasir/{id}', [KelolaKasirController::class, 'delete'])->name('admin.delete.kasir');
+    Route::put('/admin/update/kasir/{id}', [KelolaKasirController::class, 'update'])->name('admin.update.kasir');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/pesanan/{id}', [KeranjangController::class, 'detailPesanan'])->name('customer.detailPesanan');
     Route::get('/riwayat/{nomor_meja}', [KeranjangController::class, 'riwayatPesanan'])->name('customer.riwayat');
