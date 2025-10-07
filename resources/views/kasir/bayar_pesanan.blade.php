@@ -99,9 +99,7 @@
                             <label for="metode_pembayaran" class="block mb-1 font-medium">Metode Pembayaran</label>
                             <select name="metode_pembayaran" id="metode_pembayaran" required
                                 class="w-full p-2 border rounded">
-                                <option value="">-- Pilih --</option>
                                 <option value="tunai">Tunai</option>
-                                <option value="qris">QRIS</option>
                             </select>
                         </div>
                     </div>
@@ -121,7 +119,7 @@
         </div>
     </div>
 
- 
+
     </form>
     {{-- @endif --}}
     </div>

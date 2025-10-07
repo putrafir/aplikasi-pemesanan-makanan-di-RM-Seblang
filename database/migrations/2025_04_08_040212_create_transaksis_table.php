@@ -23,6 +23,10 @@ return new class extends Migration
             $table->string('status')->default('belum diantar');
             $table->string('status_bayar')->default('tandai bayar');
             $table->json('details');
+            // Kolom tambahan
+            $table->timestamp('waktu_diantar')->nullable();
+            $table->timestamp('waktu_bayar')->nullable();
+
             $table->timestamps();
         });
     }

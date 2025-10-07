@@ -20,9 +20,9 @@ class KasirController extends Controller
             $data = $transaksis->status == 'belum diantar' ? 'sudah diantar' : 'belum diantar';
             $transaksis->status = $data;
             $transaksis->save();
-            return redirect()->back()->with('success','status berhasil diubah');
+            return redirect()->back()->with('success', 'status berhasil diubah');
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error','status gagal diubah');
+            return redirect()->back()->with('error', 'status gagal diubah');
         }
     }
     public function prosesBayar(Request $request, $id)
@@ -33,16 +33,16 @@ class KasirController extends Controller
             'jumlah_uang' => 'required|numeric|min:0',
         ]);
 
-    $transaksi = Transaksi::findOrFail($id);
-    $transaksi->metode_pembayaran = $request->metode;
-    $transaksi->jumlah_uang = $request->jumlah_uang;
-    $transaksi->status = 'dibayar';
-    $transaksi->save();
-    // Update status nomor meja jika ada
-    if ($transaksi->nomor_meja) {
-        $transaksi->nomor_meja->status = 'tersedia';
-        $transaksi->nomor_meja->save();
-    }
+        $transaksi = Transaksi::findOrFail($id);
+        $transaksi->metode_pembayaran = $request->metode;
+        $transaksi->jumlah_uang = $request->jumlah_uang;
+        $transaksi->status = 'dibayar';
+        $transaksi->save();
+        // Update status nomor meja jika ada
+        if ($transaksi->nomor_meja) {
+            $transaksi->nomor_meja->status = 'tersedia';
+            $transaksi->nomor_meja->save();
+        }
 
 
 
@@ -52,8 +52,8 @@ class KasirController extends Controller
     public function detail($id)
     {
         $pesanan = Transaksi::with('details.menu')->findOrFail($id);
-        $pesanan->details = json_decode($pesanan->details);
-        return view('kasir.detail', compact('pesanan'));
+$details = json_decode($pesanan->details, true);
+        return view('kasir.detail', compact('pesanan', 'details'));
     }
 
     public function destroy($id)

@@ -162,31 +162,57 @@
                             </td>
 
                             <td class="px-6 py-4 flex gap-2">
-                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
+                                <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id]) }}"
                                     class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
-                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}">
-                                    <button type="submit"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                        Bayar
-                                    </button>
-                                    </form>
+                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                    Bayar
+                                </a>
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('pesanan.update.status', $transaksi->id) }}" method="POST">
+
+                                <form action="{{ route('kasir.transaksi.updateStatus', $transaksi->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('PUT')
+
+                                    <input type="hidden" name="status_baru"
+                                        value="{{ $transaksi->status === 'belum diantar' ? 'sudah diantar' : 'belum diantar' }}">
+
                                     @php
                                         $isDiantar = $transaksi->status === 'sudah diantar';
                                         $bgColor = $isDiantar ? 'bg-green-600' : 'bg-blue-600';
                                     @endphp
 
                                     <button type="submit" id="btn-status"
-                                        class="px-3 py-2 rounded font-semibold transition  {{$bgColor}} text-white  ">
+                                        class="px-3 py-2 rounded font-semibold transition  {{ $bgColor }} text-white  ">
                                         {{ $transaksi->status }}
                                     </button>
                                 </form>
                             </td>
-                            <td class="px-6 py-4">
+                            <td>
+
+                                <form action="{{ route('kasir.transaksi.updateStatusBayar', $transaksi->id) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <input type="hidden" name="statusbayar_baru"
+                                        value="{{ $transaksi->status_bayar === 'belum bayar' ? 'sudah bayar' : 'belum bayar' }}">
+
+                                    @php
+                                        $isBayar = $transaksi->status_bayar === 'sudah bayar';
+                                        $bgColor = $isBayar ? 'bg-green-600' : 'bg-blue-600';
+                                    @endphp
+
+                                    <button type="submit" id="btn-status"
+                                        class="px-3 py-2 rounded font-semibold transition  {{ $bgColor }} text-white  ">
+                                        {{ $transaksi->status_bayar }}
+                                    </button>
+                                </form>
+                            </td>
+
+                            {{-- <td class="px-6 py-4">
                                 @php
                                     $isBayar = $transaksi->status_bayar !== 'tandai bayar';
                                     $bgColor = $isBayar ? 'bg-green-600' : 'bg-red-600';
@@ -196,7 +222,7 @@
                                     class="px-3 py-2 rounded font-semibold transition text-white {{ $bgColor }}">
                                     {{ $transaksi->status_bayar }}
                                 </span>
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
 

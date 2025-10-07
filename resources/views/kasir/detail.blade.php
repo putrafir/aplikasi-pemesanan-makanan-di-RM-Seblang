@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Pembayaran</title>
+    <title>Detail Pemesanan</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body>
     <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-6">Detail Pembayaran</h1>
+        <h1 class="text-2xl font-bold mb-6">Detail Pemesanan</h1>
 
         <div class="mb-4">
             <p><strong>Tanggal:</strong> {{ $pesanan->created_at->format('d M Y H:i') }}</p>
@@ -25,19 +25,26 @@
                     <th class="border px-4 py-2">Harga</th>
                     <th class="border px-4 py-2">Jumlah</th>
                     <th class="border px-4 py-2">Subtotal</th>
+                    <th class="border px-4 py-2">Waktu Diantar</th>
+                    <th class="border px-4 py-2">Waktu Bayar</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pesanan->details as $detail )
-                    <tr>
-                        <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                        <td class="border px-4 py-2">{{ $detail->nama }}</td>
-
-                        <td class="border px-4 py-2">@php echo number_format($detail->harga, 0, ',', '.'); @endphp</td>
-                        <td class="border px-4 py-2">{{ $detail->jumlah }}</td>
-                        <td class="border px-4 py-2">@php echo number_format($detail->subtotal, 0, ',', '.'); @endphp</td>
-                    </tr>
-                    @endforeach
+                   @foreach ($details as $detail)
+        <tr>
+            <td class="border px-4 py-2">{{ $loop->iteration }}</td>
+            <td class="border px-4 py-2">{{ $detail['nama'] ?? '' }}</td>
+            <td class="border px-4 py-2">
+                @php echo number_format($detail['harga'], 0, ',', '.'); @endphp
+            </td>
+            <td class="border px-4 py-2">{{ $detail['jumlah'] }}</td>
+            <td class="border px-4 py-2">
+                @php echo number_format($detail['subtotal'], 0, ',', '.'); @endphp
+            </td>
+            <td class="border px-4 py-2">{{ $pesanan->waktu_diantar ?? '-' }}</td>
+            <td class="border px-4 py-2">{{ $pesanan->waktu_bayar ?? '-' }}</td>
+        </tr>
+    @endforeach
 
             </tbody>
         </table>

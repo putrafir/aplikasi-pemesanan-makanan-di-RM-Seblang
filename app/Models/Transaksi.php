@@ -16,6 +16,25 @@ class Transaksi extends Model
     /**
      * Get all of the details for the transaksi.
      */
+    // protected $fillable = [
+    //     'session_id',
+    //     'total_bayar',
+    //     'nomor_meja',
+    //     'uang_dibayarkan',
+    //     'kembalian',
+    //     'metode_pembayaran',
+    //     'status',
+    //     'status_bayar',
+    //     'details',
+    //     'waktu_diantar',
+    //     'waktu_bayar',
+    // ];
+
+    protected $casts = [
+        'details' => 'array',
+        'waktu_diantar' => 'datetime',
+        'waktu_bayar' => 'datetime',
+    ];
 
     public function meja()
     {

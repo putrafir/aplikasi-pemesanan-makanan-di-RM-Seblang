@@ -20,10 +20,15 @@ class TransaksiController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'status_baru' => 'required|in:aktif,nonaktif',
+            'status_baru' => 'required|in:belum diantar,sudah diantar',
         ]);
         $transaksi = Transaksi::findOrFail($id);
         $transaksi->status = $request->status_baru;
+
+        $transaksi->waktu_diantar = $request->status_baru === 'sudah diantar'
+            ? now()
+            : null;
+
         $transaksi->save();
 
         return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
@@ -36,6 +41,11 @@ class TransaksiController extends Controller
         ]);
         $transaksi = Transaksi::findOrFail($id);
         $transaksi->status_bayar = $request->statusbayar_baru;
+
+        $transaksi->waktu_bayar = $request->statusbayar_baru === 'sudah bayar'
+            ? now()
+            : null;
+
         $transaksi->save();
 
         if ($request->statusbayar_baru === 'sudah bayar') {
