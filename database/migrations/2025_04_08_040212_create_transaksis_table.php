@@ -23,6 +23,8 @@ return new class extends Migration
             $table->string('status')->default('aktif');
             $table->string('status_bayar')->default('belum bayar');
             $table->json('details');
+            $table->timestamp('waktu_diantar')->nullable();
+            $table->timestamp('waktu_bayar')->nullable();
 
             // kolom baru untuk kasir
             $table->unsignedBigInteger('kasir_id')->nullable(); 
