@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateTransaksiRequest;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\NomorMeja;
+use Carbon\Carbon;
 
 class TransaksiController extends Controller
 {
@@ -24,6 +25,9 @@ class TransaksiController extends Controller
         ]);
         $transaksi = Transaksi::findOrFail($id);
         $transaksi->status = $request->status_baru;
+        $transaksi->waktu_diantar = $request->status_baru === 'nonaktif'
+            ? now()
+            : null;
         $transaksi->save();
 
         return redirect()->back()->with('success', 'Status pesanan berhasil diperbarui.');
@@ -36,6 +40,12 @@ class TransaksiController extends Controller
         ]);
         $transaksi = Transaksi::findOrFail($id);
         $transaksi->status_bayar = $request->statusbayar_baru;
+        $transaksi->waktu_bayar = $request->statusbayar_baru === 'sudah bayar'
+            ? now()
+            : null;
+
+        // dd($request->statusbayar_baru);
+
         $transaksi->save();
 
         if ($request->statusbayar_baru === 'sudah bayar') {
