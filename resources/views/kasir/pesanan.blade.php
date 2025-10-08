@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Toastr CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Toastr JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
     <title>Document</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -119,8 +128,6 @@
     </aside>
 
 
-    <div class="p-4 sm:ml-64">
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
             <td class="px-6 py-4">
                 <form method="GET" action="{{ route('kasir.pesanan') }}">
                     <div class="flex align-items-center gap-5 mb-3">
@@ -186,6 +193,9 @@
                         <th scope="col" class="px-6 py-3">
                             Status Pembayaran
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Kasir
+                        </th>
                     </tr>
                 </thead>
 
@@ -208,7 +218,7 @@
                             </td>
 
                             <td class="px-6 py-4 flex gap-2">
-                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
+                                <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id]) }}"
                                     class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
                                 <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}">
                                     <button type="submit"
@@ -223,10 +233,20 @@
                                     </button>
 
                                 </a>
-                                    </form>
+                                </form>
                             </td>
                             <td class="px-6 py-4">
-                                <form action="{{ route('pesanan.update.status', $transaksi->id) }}" method="POST">
+                                <form action="{{ route('kasir.transaksi.updateStatus', $transaksi->id) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <input type="hidden" name="status_baru" value="{{ $transaksi->status === 'aktif' ? 'nonaktif' : 'aktif' }}">
+                                    <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status === 'aktif' ? 'bg-blue-500 hover:bg-blue-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-status">
+                                        {{ $transaksi->status === 'aktif' ? 'Belum Diantar' : 'Sudah Diantar' }}
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="px-6 py-4">
+                                <form action="{{ route('kasir.transaksi.updateStatusBayar', $transaksi->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
                                     @php
@@ -241,15 +261,11 @@
                                 </form>
                             </td>
                             <td class="px-6 py-4">
-                                @php
-                                    $isBayar = $transaksi->status_bayar !== 'tandai bayar';
-                                    $bgColor = $isBayar ? 'bg-green-600' : 'bg-red-600';
-                                @endphp
-
-                                <span
-                                    class="px-3 py-2 rounded font-semibold transition text-white {{ $bgColor }}">
-                                    {{ $transaksi->status_bayar }}
-                                </span>
+                                @if($transaksi->kasir)
+                                    {{ $transaksi->kasir->id }} - {{ $transaksi->kasir->name }}
+                                @else
+                                    Kasir tidak ada
+                                @endif
                             </td>
 
 
@@ -274,6 +290,30 @@
         </div>
 
     </div>
+
+    <script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+            switch (type) {
+                case 'info':
+                    toastr.info(" {{ Session::get('message') }} ");
+                    break;
+
+                case 'success':
+                    toastr.success(" {{ Session::get('message') }} ");
+                    break;
+
+                case 'warning':
+                    toastr.warning(" {{ Session::get('message') }} ");
+                    break;
+
+                case 'error':
+                    toastr.error(" {{ Session::get('message') }} ");
+                    break;
+            }
+        @endif
+    </script>
+
 </body>
 
 </html>

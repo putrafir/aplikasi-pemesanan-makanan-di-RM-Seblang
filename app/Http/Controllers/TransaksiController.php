@@ -49,7 +49,4 @@ class TransaksiController extends Controller
         return redirect()->back()->with('success', 'Status pembayaran berhasil diperbarui.');
     }
 
-
-
-
 }

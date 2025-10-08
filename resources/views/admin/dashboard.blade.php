@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Dashboard</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
     @include('admin.body.sidebar')
 
@@ -139,8 +140,21 @@
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
 </body>
 
 </html>
+
+
+<script>
+    const incomeChartData = @json($incomeData ?? []);
+    const customerChartData = @json($customerData ?? []);
+</script>
+<script type="module">
+    import chart01 from '/js/chart/chart-one.js';
+    document.addEventListener('DOMContentLoaded', function () {
+        chart01();
+    });
+</script>
+
