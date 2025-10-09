@@ -72,6 +72,13 @@
             </div>
         </nav>
 
+        @if ($nomorMeja)
+            <div class="bg-orange-100 p-3 rounded text-center mx-4 mt-4 shadow">
+                <span class="font-semibold text-black">Nomor Meja:</span>
+                <span class="font-semibold text-black">{{ $nomorMeja }}</span>
+            </div>
+        @endif
+
         <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 mt-5 mb-5 ml-5">
 
             {{-- Tab Semua --}}
@@ -112,13 +119,13 @@
                     @foreach ($allMenus as $menu)
                         <div data-nama="{{ strtolower($menu->nama) }}"
                             class="cursor-pointer menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
-                            <a href="#" class="cursor-pointer">
+                            <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                 <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
                                     src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
                             </a>
                             <div class="px-5 pb-5">
                                 <div class="flex items-center justify-between mb-5">
-                                    <a href="#" class="cursor-pointer">
+                                    <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                         <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
                                     </a>
                                     <span class="text-3xl font-bold text-blue-700">
@@ -167,87 +174,74 @@
                 @endif
         </div>
 
-  <!-- Konten per Kategori -->
-@foreach ($kategoris as $kategori)
-    <div id="kategori-{{ Str::slug($kategori->nama) }}" class="kategori-content hidden px-4 py-4">
-        <h2 class="text-2xl font-bold mb-4 text-gray-900">{{ $kategori->nama }}</h2>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            @foreach ($kategori->menus as $menu)
-                <div data-nama="{{ strtolower($menu->nama) }}"
-                    class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
-
-                    <!-- Gambar Menu -->
-                    <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
-                        <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
-                            src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
-                    </a>
-
-                    <div class="px-5 pb-5">
-                        <!-- Nama & Harga -->
-                        <div class="flex items-center justify-between mb-5">
-                            <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
-                                <h5 class="text-xl font-semibold tracking-tight text-gray-900">
-                                    {{ $menu->nama }}
-                                </h5>
+        <!-- Konten per Kategori -->
+        @foreach ($kategoris as $index => $kategori)
+            @php $kategoriId = Str::slug($kategori->nama); @endphp
+            <div class="kategori-content {{ $index == 0 ? '' : 'hidden' }}" id="kategori-{{ $kategoriId }}">
+                <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">{{ $kategori->nama }}</h2>
+                <div class="px-4 py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    @foreach ($kategori->menus as $menu)
+                        <div data-nama="{{ strtolower($menu->nama) }} "
+                            class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+                            <a href="#" class="cursor-pointer">
+                                <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
+                                    src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
                             </a>
-                            <span class="text-3xl font-bold text-blue-700">
-                                Rp. {{ number_format($menu->harga, 0, ',', '.') }}
-                            </span>
-                        </div>
+                            <div class="px-5 pb-5">
+                                <div class="flex items-center justify-between mb-5">
+                                    <a href="#" class="cursor-pointer">
+                                        <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
+                                    </a>
+                                    <span class="text-3xl font-bold text-blue-700">
+                                       Rp. @php echo number_format($menu->harga, 0, ',', '.'); @endphp
+                                    </span>
+                                </div>
+                                <div class="flex items-center justify-between mt-5 mb-5">
+                                        <!-- Tombol QTY -->
+                                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                                            <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
+                                            @csrf
+                                            <button type="button" onclick="decrementQty()"
+                                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
 
-                        <!-- Deskripsi -->
-                        <p class="text-gray-600 text-sm mb-3">
-                            {{ $menu->deskripsi }}
-                        </p>
+                                            <input id="quantity" type="number" name="quantity" value="1" min="1"
+                                                class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
 
-                        <!-- Form Tambah ke Keranjang -->
-                        <div class="flex items-center justify-between mt-5">
-                            <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                                <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
-                                    @csrf
-                                    <button type="button" onclick="decrementQty('{{ $menu->id }}')"
-                                        class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
+                                            <button type="button" onclick="incrementQty()"
+                                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
+                                        </div>
+                                    @if(strtolower($menu->stok) === 'tersedia')
 
-                                    <input id="quantity-{{ $menu->id }}" type="number" name="quantity" value="1" min="1"
-                                        class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
-
-                                    <button type="button" onclick="incrementQty('{{ $menu->id }}')"
-                                        class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <button type="submit"
+                                            class="text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                            Tambah
+                                        </button>
+                                    </form>
+                                    @else
+                                        <button
+                                            class="text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                            disabled>
+                                            Habis
+                                        </button>
+                                    @endif
+                                </div>
                             </div>
-
-                            @if(strtolower($menu->stok) === 'tersedia')
-                                <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                <button type="submit"
-                                    class="text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                    Tambah
-                                </button>
-                                </form>
-                            @else
-                                <button
-                                    class="text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                    disabled>
-                                    Habis
-                                </button>
-                            @endif
                         </div>
-                    </div>
+                    @endforeach
                 </div>
-            @endforeach
-        </div>
-
-        @if ($kategori->menus->isEmpty())
-            <div class="flex flex-col w-full items-center justify-center py-10">
-                <h1 class="text-gray-600 text-xl font-semibold">
-                    Tidak ada menu yang tersedia
-                </h1>
-                <img src="{{ asset('src/images/empty-menu.png') }}"
-                    alt="Tidak ada menu"
-                    class="w-48 h-48 object-contain mb-4 opacity-80">
+                @if ($kategori->menus->isEmpty())
+                    <div class="flex flex-col w-full items-center justify-center py-10">
+                        <h1 class="text-gray-600 text-xl font-semibold">
+                            Tidak ada menu yang tersedia
+                        </h1>
+                        <img src="{{ asset('src/images/empty-menu.png') }}"
+                            alt="Tidak ada menu"
+                            class="w-48 h-48 object-contain mb-4 opacity-80">
+                    </div>
+                @endif
             </div>
-        @endif
-    </div>
-@endforeach
+        @endforeach
 
         <!-- Toast Container -->
     <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50"></div>

@@ -10,18 +10,25 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
 
 
 
     @include('admin.body.sidebar')
+    @include('admin.body.header')
 
-    <div class="p-4 sm:ml-64">
+    <div class="p-4 ">
 
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <div class=" overflow-x-auto shadow-md sm:rounded-lg">
             <h2 class="text-xl text-blue-500 font-bold mb-4">
                 Hasil Pencarian dari {{ $tanggalAwal->format('d M Y') }} sampai {{ $tanggalAkhir->format('d M Y') }}
+            </h2>
+
+            <h2 class="text-xl text-blue-500 font-bold mb-2">
+                Total Pendapatan: <span class="text-green-600">Rp
+                    {{ number_format($totalPendapatan, 0, ',', '.') }}</span>
             </h2>
 
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

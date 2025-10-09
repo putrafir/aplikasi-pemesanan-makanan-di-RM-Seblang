@@ -1,12 +1,29 @@
 <aside id="default-sidebar"
-        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        class="sidebar fixed top-0 left-0 z-9999 w-64 h-screen border-r border-gray-200 bg-white transition-transform -translate-x-full sm:translate-x-0 dark:border-gray-800 dark:bg-gray-800"
         aria-label="Sidebar">
-        <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
-            <ul class="space-y-2 font-medium">
+
+        {{-- sidebar header --}}
+         <div class="sidebar-header flex items-center px-3 pt-5 pb-2 ">
+            <a href="{{ route('kasir.dashboard') }}">
+            <span class="logo" >
+                {{-- <img class="dark:hidden" src="{{ asset('src/logo/logo-cashier.png')}}" alt="Logo">
+                <img class="hidden dark:block" src="{{ asset('src/logo/logocashier-dark.png')}}" alt="Logo"> --}}
+                <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Kasir Seblang</h1>
+            </span>
+            </a>
+        </div>
+        {{-- end sidebar header --}}
+
+        <div class="h-full px-3 py-4 overflow-y-auto">
+            <ul class="mb-6 flex flex-col gap-4 font-medium">
                 <li>
                     <a href="{{ route('kasir.dashboard') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 rounded-lg group {{ request()->routeIs('kasir.dashboard') 
+                            ? 'bg-blue-100 text-blue-700 dark:bg-gray-700 dark:text-blue-400 ' 
+                            : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                        <svg class="w-5 h-5 transition duration-75 {{ request()->routeIs('kasir.dashboard') 
+                            ? 'text-blue-700 dark:text-blue-400 dark:group-hover:text-sky-300' 
+                            : 'text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white' }}"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 22 21">
                             <path
@@ -14,10 +31,10 @@
                             <path
                                 d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                         </svg>
-                        <span class="ms-3">Dashboard</span>
+                        <span class="flex-1 ms-3 whitespace-nowrap">Dashboard</span>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="#"
                         class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -30,15 +47,18 @@
                         <span
                             class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ route('kasir.pesanan') }}"
-                        class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                        <svg class="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                        class="flex items-center p-2 text-gray-900 rounded-lg group {{ request()->routeIs('kasir.pesanan') 
+                            ? 'bg-blue-100 text-blue-700 dark:bg-gray-700 dark:text-blue-400 ' 
+                            : 'text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700' }}">
+                        <svg class="shrink-0 w-5 h-5 transition duration-75 {{ request()->routeIs('kasir.pesanan') 
+                            ? 'text-blue-700 dark:text-blue-400 dark:group-hover:text-sky-300' 
+                            : 'text-gray-500 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white' }}"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                            viewBox="0 0 20 20">
-                            <path
-                                d="m17.418 3.623-.018-.008a6.713 6.713 0 0 0-2.4-.569V2h1a1 1 0 1 0 0-2h-2a1 1 0 0 0-1 1v2H9.89A6.977 6.977 0 0 1 12 8v5h-2V8A5 5 0 1 0 0 8v6a1 1 0 0 0 1 1h8v4a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-4h6a1 1 0 0 0 1-1V8a5 5 0 0 0-2.582-4.377ZM6 12H4a1 1 0 0 1 0-2h2a1 1 0 0 1 0 2Z" />
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M14 7h-4v3a1 1 0 0 1-2 0V7H6a1 1 0 0 0-.997.923l-.917 11.924A2 2 0 0 0 6.08 22h11.84a2 2 0 0 0 1.994-2.153l-.917-11.924A1 1 0 0 0 18 7h-2v3a1 1 0 1 1-2 0V7Zm-2-3a2 2 0 0 0-2 2v1H8V6a4 4 0 0 1 8 0v1h-2V6a2 2 0 0 0-2-2Z" clip-rule="evenodd"/>
                         </svg>
                         <span class="flex-1 ms-3 whitespace-nowrap">Pesanan</span>
                         <span

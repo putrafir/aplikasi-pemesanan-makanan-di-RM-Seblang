@@ -17,7 +17,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     @include('admin.body.sidebar')
 
 
-    <div class="p-4 sm:ml-64">
+    <div class="p-4 ">
         <div class=" py-2 overflow-x-auto shadow-md sm:rounded-lg">
             <h2 class="text-center mb-5 font-bold dark:text-white">Daftar Akun Kasir</h2>
             <button onclick="showPopUpAdd()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded mb-5 ml-5">
@@ -25,8 +25,6 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     class="fas fa-plus px-1"></i>Tambah
                 Kasir
             </button>
-
-            {{-- di bawah ini --}}
 
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -62,6 +60,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     @endforeach
                 </tbody>
             </table>
+        </div>
+    </div>
+
         </div>
     </div>
 
@@ -130,7 +131,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     </div>
 </div>
 
-    <!-- Modal Edit Kasir -->
+<!-- Modal Edit Kasir -->
     <div id="popUpEdit" class="hidden fixed inset-0 z-50 flex items-center justify-center">
         <div class="absolute inset-0 bg-black bg-opacity-50" onclick="hidePopUpEdit()"></div>
         <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-lg w-full max-w-md z-10 p-6">
@@ -169,7 +170,18 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         </div>
     </div>
 
-    <!-- Semua script di sini -->
+<script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+            switch (type) {
+                case 'info': toastr.info(" {{ Session::get('message') }} "); break;
+                case 'success': toastr.success(" {{ Session::get('message') }} "); break;
+                case 'warning': toastr.warning(" {{ Session::get('message') }} "); break;
+                case 'error': toastr.error(" {{ Session::get('message') }} "); break;
+            }
+        @endif
+    </script>
+
     <script>
         function showPopUpAdd() {
             document.getElementById('popUpAdd').classList.remove('hidden');

@@ -21,12 +21,16 @@
     <script src="{{ asset('backend/js/code.js') }}"></script>
 </head>
 
-<body>
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false}" x-init="
+         darkMode = JSON.parse(localStorage.getItem('darkMode'));
+         $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+    :class="{'dark bg-gray-900': darkMode === true}">
     
     @include('kasir.body.sidebar')
+    @include('kasir.body.header')
 
-    <div class="p-4 sm:ml-64">
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="p-4">
+        <div class=" overflow-x-auto shadow-md sm:rounded-lg">
 
             <td class="px-6 py-4">
                 <form method="GET" action="{{ route('kasir.pesanan') }}">
@@ -115,12 +119,18 @@
                             <td class="px-6 py-4 flex gap-2">
                                 <a href="{{ route('kasir.pesanan.detail', ['id' => $transaksi->id]) }}"
                                     class="font-medium text-green-600 dark:text-blue-500 hover:underline">Detail</a>
-                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}">
-                                    <button type="submit"
-                                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
-                                        Bayar
+                                <a href="{{ route('kasir.bayar', ['id' => $transaksi->id]) }}"
+                                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline">
+                                    Bayar
+                                </a>
+                                <a href="{{  route('kasir.pesan.lagi', ['id' => $transaksi->id]) }}">
+                                    <button type="button"
+                                        class="font-medium text-purple-600 dark:text-purple-400 hover:underline">
+                                        Pesan Lagi
                                     </button>
-                                    </form>
+
+                                </a>
+                                </form>
                             </td>
                             <td class="px-6 py-4">
                                 <form action="{{ route('kasir.transaksi.updateStatus', $transaksi->id) }}" method="POST">
@@ -132,15 +142,24 @@
                                     </button>
                                 </form>
                             </td>
-                            <td class="px-6 py-4">
-                                <form action="{{ route('kasir.transaksi.updateStatusBayar', $transaksi->id) }}" method="POST">
+                             <td>
+
+                                <form action="{{ route('kasir.transaksi.updateStatusBayar', $transaksi->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name="statusbayar_baru" value="{{ $transaksi->status_bayar === 'belum bayar' ? 'sudah bayar' : 'belum bayar' }}">
-                                    <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $transaksi->status_bayar === 'belum bayar' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-status" 
-                                    {{-- {{ $transaksi->status_bayar === 'sudah bayar' ? 'disabled' : '' }} --}}
-                                    >
-                                        {{ $transaksi->status_bayar === 'belum bayar' ? 'Tandai Lunas' : 'Lunas' }}
+
+                                    <input type="hidden" name="statusbayar_baru"
+                                        value="{{ $transaksi->status_bayar === 'belum bayar' ? 'sudah bayar' : 'belum bayar' }}">
+
+                                    @php
+                                        $isBayar = $transaksi->status_bayar === 'sudah bayar';
+                                        $bgColor = $isBayar ? 'bg-green-600' : 'bg-red-600';
+                                    @endphp
+
+                                    <button type="submit" id="btn-status"
+                                        class="px-3 py-2 rounded font-semibold transition  {{ $bgColor }} text-white  btn-status">
+                                        {{ $transaksi->status_bayar }}
                                     </button>
                                 </form>
                             </td>
