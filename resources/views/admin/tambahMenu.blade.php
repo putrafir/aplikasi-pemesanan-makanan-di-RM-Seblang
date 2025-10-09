@@ -12,9 +12,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
     @include('admin.body.sidebar')
+    @include('admin.body.header')
 
 
     <form id="myForm" action="{{ route('admin.store.menu') }}" method="POST" enctype="multipart/form-data"
@@ -53,9 +55,9 @@
             <select id="kategori" name="kategori"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 <option value="">-- Pilih Kategori --</option>
-                <option value="1">Makanan</option>
-                <option value="2">Minuman</option>
-                <option value="3">Camilan</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->nama }}</option>
+                @endforeach
             </select>
         </div>
 

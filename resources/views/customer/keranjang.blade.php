@@ -5,118 +5,261 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Keranjang Pesanan</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        /* Toast Animation */
+        .toast {
+            animation: slideIn 0.5s, fadeOut 0.5s 3s forwards;
+        }
 
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; transform: translateX(100%); }
+        }
+
+        /* Footer animation */
+        .footer-anim {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 
-<body>
+<body class="bg-blue-100" x-data="{ toast: '', showToast: false }">
 
-    <nav class="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="{{ route('customer.menu') }}"><svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                    viewBox="0 0 24 24">
-                    <path fill-rule="evenodd"
-                        d="M13.729 5.575c1.304-1.074 3.27-.146 3.27 1.544v9.762c0 1.69-1.966 2.618-3.27 1.544l-5.927-4.881a2 2 0 0 1 0-3.088l5.927-4.88Z"
-                        clip-rule="evenodd" />
-                </svg>
-            </a>
-            <a href="{{ route('customer.keranjang.view') }}">
-                <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
-                    <path fill-rule="evenodd"
-                        d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"
-                        clip-rule="evenodd" />
-                </svg>
-            </a>
+     @include('customer.body.nav')
 
-
-
-
+    <div class="container mx-auto mt-6 p-4 bg-white rounded-lg shadow-md">
+        <div class="flex justify-between">
+            <h1 class="text-2xl font-bold mb-8">Keranjang Anda</h1>
         </div>
-    </nav>
-
-    <div class="container mx-auto">
-        <div class=" justify-between flex">
-            <h1 class="text-2xl font-bold mb-4">Keranjang Belanja</h1>
-            <h1 class="text-2xl font-bold mb-4">Total @php echo number_format($totalBayar, 0, ',', '.'); @endphp</h1>
-        </div>
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
-
-        <table class="table-auto w-full border-collapse border border-gray-300">
-            <thead>
-                <tr>
-                    <th class="border border-gray-300 px-4 py-2">No</th>
-                    <th class="border border-gray-300 px-4 py-2">Nama Produk</th>
-                    <th class="border border-gray-300 px-4 py-2">Harga</th>
-                    <th class="border border-gray-300 px-4 py-2">Jumlah</th>
-                    <th class="border border-gray-300 px-4 py-2">Subtotal</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($keranjangs as $keranjang)
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <td class="border border-gray-300 px-4 py-2">{{ $loop->iteration }}</td>
-                        <td class="border border-gray-300 px-4 py-2">
-                            {{ $keranjang->menu->nama }}
-                            @if ($keranjang->ukuran)
-                                <div class="text-xs text-gray-500">(Ukuran: {{ $keranjang->ukuran }})</div>
-                            @endif
-                        </td>
-                        <td class="border border-gray-300 px-4 py-2">
-                            @php echo number_format($keranjang->harga_satuan, 0, ',', '.'); @endphp
-                        </td>
-                        <td class="border border-gray-300 px-4 py-2">{{ $keranjang->jumlah }}</td>
-                        <td class="border border-gray-300 px-4 py-2">
-                            @php echo number_format($keranjang->total_harga, 0, ',', '.'); @endphp
-                        </td>
-                        <td class="border border-gray-300 px-4 py-2">
-                            <form action="{{ route('customer.keranjang.delete', $keranjang->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:underline">Hapus</button>
-                            </form>
-                        </td>
+                        <th scope="col" class="px-4 py-2 text-center">No</th>
+                        <th scope="col" class="px-4 py-2 text-center">Nama Produk</th>
+                        <th scope="col" class="px-4 py-2 text-center">Harga</th>
+                        <th scope="col" class="px-4 py-2 text-center">Jumlah</th>
+                        <th scope="col" class="px-4 py-2 text-center">Subtotal</th>
+                        <th scope="col" class="px-4 py-2 text-center">Aksi</th>
                     </tr>
-                @endforeach
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach ($keranjangs as $keranjang)
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
+                            <td class="px-4 py-2">{{ $loop->iteration }}</td>
+                            <td scope="row" class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {{ $keranjang->menu->nama }}
+                                @if ($keranjang->ukuran)
+                                    <div class="text-xs text-gray-500">(Ukuran: {{ $keranjang->ukuran }})</div>
+                                @endif
+                            </td>
+                            <td class="px-4 py-2">
+                                Rp. {{ number_format($keranjang->harga_satuan, 0, ',', '.') }}
+                            </td>
 
-        <div class="mt-4">
-            <form action="{{ route('customer.keranjang.checkout') }}" method="POST">
+                            {{-- QTY Buttons --}}
+                            <td class="px-2 py-2 text-center">
+                                <form action="{{ route('customer.keranjang.update', $keranjang->id) }}"
+                                    method="POST" class="inline-flex items-center"
+                                    x-data="{ jumlah: {{ $keranjang->jumlah }} }">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <!-- Tombol - -->
+                                    <button type="submit" name="action" value="decrement"
+                                        class="mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-l transition">
+                                        −
+                                    </button>
+
+                                    <!-- Input jumlah (animated bounce) -->
+                                    <input type="number" name="jumlah" x-model="jumlah"
+                                        class="w-13 text-center border-t border-b border-gray-300 focus:outline-none text-lg font-semibold transform transition-transform duration-150"
+                                        x-effect="$el.classList.add('scale-110'); setTimeout(()=> $el.classList.remove('scale-110'),150)">
+
+                                    <!-- Tombol + -->
+                                    <button type="submit" name="action" value="increment"
+                                        class="mx-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-r transition">
+                                        +
+                                    </button>
+                                </form>
+                            </td>
+
+                            <td class="px-4 py-2 text-center text-blue-600 font-semibold">
+                                Rp. {{ number_format($keranjang->total_harga, 0, ',', '.') }}
+                            </td>
+                            <td class="px-4 py-2 text-center">
+                                <form action="{{ route('customer.keranjang.delete', $keranjang->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="text-white bg-red-600 hover:bg-red-800 rounded-lg px-2 py-1">Hapus</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        
+
+        <!-- Checkout -->
+        <div class="mt-8">
+            <form action="{{ route('customer.keranjang.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
                 <div class="mb-5">
-                    <label for="nomor_meja" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
-                        Meja</label>
-                    <select name="nomor_meja" id="nomor_meja" required
-                        class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="">Pilih Nomor Meja</option>
-                        @foreach ($nomor_mejas as $meja)
-                            <option value="{{ $meja->nomor }}" {{ old('nomor_meja') == $meja->nomor ? 'selected' : '' }}>
-                                Meja {{ $meja->nomor }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <label for="nomor_meja"
+                        class="block mb-2 text-sm font-bold text-gray-900">Nomor Meja</label>
+                    @if (session('nomor_meja'))
+                        <input type="text" value="Meja {{ session('nomor_meja') }}"
+                            class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled>
+                        <input type="hidden" name="nomor_meja" value="{{ session('nomor_meja') }}">
+                    @else
+                        <select name="nomor_meja" id="nomor_meja" 
+                            class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-50">
+                            <option value="">Pilih Nomor Meja</option>
+                            @foreach ($nomor_mejas as $meja)
+                                <option value="{{ $meja->nomor }}">Meja {{ $meja->nomor }}</option>
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+        </div>
+
+        @if(Auth::check())
+            <div class="mb-3">
+                <label for="nomor_meja_manual">Atau Masukkan Nomor Meja Manual</label>
+                <input type="text" class="form-control" id="nomor_meja_manual"
+                name="nomor_meja_manual" placeholder="Contoh: 15A">
+            </div>
+        @endif
+
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
+            <div class="max-w-4xl mx-auto flex items-center justify-between">
+                
+                <!-- Harga -->
+                <span class="text-2xl md:text-3xl font-bold text-blue-600">
+                    Total Rp. {{ number_format($totalBayar, 0, ',', '.') }}
+                </span>
+                <div class="flex space-x-3">
+                    <button type="submit"
+                        class="w-20 text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3">
+                        Pesan
+                    </button>
+                </form>
+
+                @if(auth()->check() && auth()->user()->role === 'kasir')
+                    {{-- Tombol untuk kasir --}}
+                    <a href="{{ route('kasir.pesanan') }}"
+                    class="px-4 py-2 border-2 border-gray-600 text-black rounded-lg hover:bg-gray-100 transition">
+                    Kembali
+                    </a>
+                @else
+                    {{-- Tombol untuk customer --}}
+                    <a href="{{ $pesanan ? route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) : '#' }}"
+                    class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">
+                    List Pesanan
+                    </a>
+                @endif
+
+                
+
                     
                 </div>
-
-                <button type="submit"
-                    class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                    Pesan
-                </button>
-            </form>
+            </div>
         </div>
     </div>
+
+    
+
+    <!-- Toast Notification -->
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50"></div>
+
+    <script>
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            // let manual = document.getElementById('nomor_meja_manual').value.trim();
+            let manualField = document.getElementById('nomor_meja_manual');
+            let manual = manualField ? manualField.value.trim() : "";
+            let dropdown = document.getElementById('nomor_meja');
+
+            // Kalau dua-duanya kosong → cegah submit
+            if (!manual && !dropdown.value) {
+                e.preventDefault();
+                alert("Silakan pilih nomor meja atau isi manual jika kasir.");
+                return;
+            }
+
+            // Kalau manual diisi,  kosongkan dropdown agar prioritas manual
+            if (manual) {
+                dropdown.value = "";
+            }
+        });
+    </script>
+    <script>
+        // Jika session success/error, munculkan toast
+        @if (session('success'))
+            // fungsi toast
+            function showToast(message) {
+                const container = document.getElementById("toast-container");
+                const toast = document.createElement("div");
+                toast.className = "toast bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md";
+                toast.innerText = message;
+                container.appendChild(toast);
+
+                // auto remove setelah animasi selesai
+                setTimeout(() => {
+                    toast.remove();
+                }, 4000);
+            }
+
+            // cek apakah ada session flash dari Laravel
+            @if(session('success'))
+                showToast("{{ session('success') }}");
+            @endif
+        @endif
+
+        @if (session('error'))
+                function showToast(message) {
+                const container = document.getElementById("toast-container");
+                const toast = document.createElement("div");
+                toast.className = "toast bg-red-600 text-white px-4 py-2 rounded-lg shadow-md";
+                toast.innerText = message;
+                container.appendChild(toast);
+
+                // auto remove setelah animasi selesai
+                setTimeout(() => {
+                    toast.remove();
+                }, 4000);
+            }
+
+            // cek apakah ada session flash dari Laravel
+            @if(session('error'))
+                showToast("{{ session('error') }}");
+            @endif
+        @endif
+    </script>
+
 </body>
 
 </html>

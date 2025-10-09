@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\KelolaKasirController;
 use Illuminate\Support\Facades\Route;
 
 Route::get(
@@ -25,7 +26,10 @@ Route::get('customer/keranjang', [KeranjangController::class, 'index'])->name('c
 Route::post('/customer/keranjang/add', [KeranjangController::class, 'addToCart'])->name('customer.keranjang.add');
 Route::delete('/customer/keranjang/{id}', [KeranjangController::class, 'destroy'])->name('customer.keranjang.delete');
 Route::post('/customer/keranjang/checkout', [KeranjangController::class, 'checkout'])->name('customer.keranjang.checkout');
-Route::get('/customer/riwayat', [CustomerController::class, 'riwayat'])->name('customer.riwayat');
+Route::get('/pesan-lagi', [KeranjangController::class, 'pesanLagi'])->name('customer.pesan.lagi');
+Route::put('/keranjang/{id}/update', [KeranjangController::class, 'update'])->name('customer.keranjang.update');
+Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -46,7 +50,7 @@ Route::middleware('auth')->group(function () {
     })->name('admin.dashboard');
 
     // Pesanan Kasir
-    Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
+    // Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
     // Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('pesanan.bayar');
     // Route::post('/kasir/pesanan/{id}/bayar', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
 
@@ -54,6 +58,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
+    Route::get('/kasir/pesan-lagi/{id}', [KasirController::class, 'pesanLagi'])->name('kasir.pesan.lagi');
     Route::post('/keranjang/checkout-pesanan', [KeranjangController::class, 'checkoutToPesanan'])->name('keranjang.checkoutPesanan');
     Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('kasir.bayar');
     Route::put('/pesanan/{id}/bayar/', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
@@ -77,8 +82,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/delete/menu/{id}', [AdminController::class, 'deleteMenu'])->name('admin.delete.menu');
     Route::get('/admin/delete/nomormeja/{id}', [AdminController::class, 'deleteNomorMeja'])->name('admin.delete.nomormeja');
     Route::put('/admin/update/stok/{id}', [AdminController::class, 'updateStok'])->name('admin.update.stok');
-
-
+    Route::get('/admin/laporan', [AdminController::class, 'AdminLaporan'])->name('admin.laporan');
+    Route::post('/admin/search/bydate', [AdminController::class, 'AdminSearchByDate'])->name('admin.search.bydate');
+    Route::get('/admin/pesanan/{id}/detail', [AdminController::class, 'detail'])->name('admin.pesanan.detail');
+    Route::get('/admin/invoice/download/{id}', [AdminController::class, 'AdminInvoiceDownload'])->name('admin.invoice.download');
+    Route::get('/admin/kategori/menu', [AdminController::class, 'KategoriMenu'])->name('admin.kategori.menu');
+    Route::get('/admin/tambah/kategori', [AdminController::class, 'tambahKategori'])->name('admin.tambah.kategori');
+    Route::post('/admin/store/kategori', [AdminController::class, 'storeKategori'])->name('admin.store.kategori');
+    Route::get('/admin/edit/kategori/{id}', [AdminController::class, 'editKategori'])->name('admin.edit.kategori');
+    Route::post('/admin/update/kategori', [AdminController::class, 'updateKategori'])->name('admin.update.kategori');
+    Route::get('/admin/delete/kategori/{id}', [AdminController::class, 'deleteKategori'])->name('admin.delete.kategori');
+    Route::get('/admin/kelolakasir', [KelolaKasirController::class, 'index'])->name('admin.kelolakasir');
+    Route::post('/admin/kelolakasir/tambah', [KelolaKasirController::class, 'tambahkasir'])->name('admin.kelolakasir.tambah');
+    Route::get('/admin/edit/kasir/{id}', [KelolaKasirController::class, 'edit'])->name('admin.edit.kasir');
+    Route::get('/admin/delete/kasir/{id}', [KelolaKasirController::class, 'delete'])->name('admin.delete.kasir');
+    Route::put('/admin/update/kasir/{id}', [KelolaKasirController::class, 'update'])->name('admin.update.kasir');
+    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/pesanan/{id}', [KeranjangController::class, 'detailPesanan'])->name('customer.detailPesanan');
+    Route::get('/riwayat/{nomor_meja}', [KeranjangController::class, 'riwayatPesanan'])->name('customer.riwayat');
 });
 
 

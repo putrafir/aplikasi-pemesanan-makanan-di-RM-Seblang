@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateMenuRequest;
 use App\Models\Category;
 use App\Models\Menu;
 use Illuminate\Http\Request;
-use App\Models\Kategori;
 
 class MenuController extends Controller
 {
@@ -26,7 +25,9 @@ class MenuController extends Controller
             }
         }])->get();
 
-        return view('home', compact('kategoris'));
+        $nomorMeja = $request->session()->get('nomor_meja');
+
+        return view('home', compact('kategoris', 'nomorMeja'));
     }
 
     /**
@@ -48,9 +49,10 @@ class MenuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Menu $menu)
+    public function show($id)
     {
-        //
+        $menu = Menu::findOrFail($id); // ambil data menu berdasarkan id
+        return view('customer.menu-detail', compact('menu'));
     }
 
     /**

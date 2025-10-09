@@ -13,6 +13,12 @@ class Transaksi extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'details' => 'array',
+        'waktu_diantar' => 'datetime',
+        'waktu_bayar' => 'datetime',
+    ];
     /**
      * Get all of the details for the transaksi.
      */
@@ -36,6 +42,11 @@ class Transaksi extends Model
         'waktu_bayar' => 'datetime',
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function meja()
     {
         return $this->belongsTo(NomorMeja::class, 'nomor_meja', 'nomor');
@@ -47,5 +58,10 @@ class Transaksi extends Model
         // 'PesananDetail::class': Nama model untuk detail pesanan
         // 'pesanan_id': Foreign key di tabel 'pesanan_details' yang terhubung ke 'id' di tabel 'pesanans' (atau 'transaksis' jika nama tabel transaksi Anda 'transaksis')
         // 'id': Primary key di tabel 'transaksis' (atau 'pesanans')
+    }
+
+    public function kasir()
+    {
+        return $this->belongsTo(User::class, 'kasir_id');
     }
 }

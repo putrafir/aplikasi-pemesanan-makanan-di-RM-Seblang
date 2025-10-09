@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('session_id');
             $table->unsignedBigInteger('menu_id');
             $table->integer('jumlah');
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->integer('total_harga');
             $table->timestamps();
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
+            
         });
     }
 

@@ -119,6 +119,8 @@ class PesananController extends Controller
                 'status_bayar' => 'sudah bayar',
                 'metode_pembayaran' => $validate['metode_pembayaran'],
                 'kembalian' => $kembalian,
+                'kasir_id' => auth()->id(),
+                'waktu_bayar' => now(),
             ]);
 
             // Update status nomor meja jika ada

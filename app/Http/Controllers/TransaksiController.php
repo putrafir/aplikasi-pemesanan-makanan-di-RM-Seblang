@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateTransaksiRequest;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 use App\Models\NomorMeja;
+use Carbon\Carbon;
 
 class TransaksiController extends Controller
 {
@@ -58,8 +59,5 @@ class TransaksiController extends Controller
 
         return redirect()->back()->with('success', 'Status pembayaran berhasil diperbarui.');
     }
-
-
-
 
 }

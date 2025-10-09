@@ -4,17 +4,39 @@ $(function () {
         var link = $(this).attr("href");
 
         Swal.fire({
-            title: "Are you sure?",
-            text: "Delete This Data?",
+            title: "Apakah Anda Yakin?",
+            text: "Ingin menghapus menu?",
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonText: "Ya, hapus!",
         }).then((result) => {
             if (result.isConfirmed) {
                 window.location.href = link;
-                Swal.fire("Deleted!", "Your file has been deleted.", "success");
+                Swal.fire("Berhasil!", "Menu telah dihapus.", "success");
+            }
+        });
+    });
+});
+
+$(function () {
+    $(document).on("click", "#deleteKategori", function (e) {
+        e.preventDefault();
+        var link = $(this).attr("href");
+
+        Swal.fire({
+            title: "Apakah Anda Yakin?",
+            text: "Ingin Menghapus Kategori?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = link;
+                Swal.fire("Berhasil!", "Kategori telah dihapus.", "success");
             }
         });
     });
@@ -41,8 +63,27 @@ $(function () {
         });
     });
 });
+
+$(document).on("click", "#pesanLagiBtn", function (e) {
+    e.preventDefault();
+
+    Swal.fire({
+        text: "Kamu yakin ingin memulai pesanan baru?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Pesanan Baru",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = $(this).attr("href");
+        }
+    });
+});
+
+
 $(function () {
-    $(document).on("click", "#btn-status", function (e) {
+    $(document).on("click", ".btn-status", function (e) {
         e.preventDefault();
         let form = $(this).closest("form");
 
@@ -61,4 +102,6 @@ $(function () {
             }
         });
     });
+
 });
+
