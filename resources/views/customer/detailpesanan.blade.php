@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Pesanan</title>
+    <title>List Pesanan</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -43,6 +43,7 @@
 
 <body class="bg-blue-100">
 
+    @include('customer.body.nav')
 
     <div class="container mx-auto mt-6 p-4 bg-white rounded-lg shadow-md">
         <!-- Judul di tengah -->
@@ -67,7 +68,8 @@
         <!-- Tombol Riwayat & Pesan Lagi -->
         <div class="mt-6 flex justify-between">
             <a href="{{ route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) }}"
-                class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">Riwayat</a>
+                class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">List
+                Pesanan</a>
 
             <a href="{{ route('customer.menu') }}" id="pesanLagiBtn"
                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Pesan Lagi</a>
