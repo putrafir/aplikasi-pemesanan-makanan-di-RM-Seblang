@@ -375,4 +375,91 @@ public function tambahKategori()
         $kasirs = DB::table('users')->where('role', 'kasir')->get();
         return view('admin.akunkasir', compact('kasirs'));
     }
+
+    public function dashboard()
+    {
+        //Customer
+        $todayCustomer = Transaksi::whereDate('created_at', Carbon::today())->count();
+        $yesterdayCustomer = Transaksi::whereDate('created_at', Carbon::yesterday())->count();
+        $customerChange = $this->calculatePercentage($todayCustomer, $yesterdayCustomer);
+
+        //Order
+        $todayMenu = 0;
+
+        $transaksis = Transaksi::whereDate('created_at', Carbon::today())->get();
+
+        foreach ($transaksis as $transaksi) {
+            $details = json_decode($transaksi->details);
+
+            foreach ($details as $item) {
+                $todayMenu += $item->jumlah;
+            }
+        }
+        $yesterdayMenu = 0;
+
+        $transaksis = Transaksi::whereDate('created_at', Carbon::yesterday())->get();
+
+        foreach ($transaksis as $transaksi) {
+            $details = json_decode($transaksi->details);
+
+            foreach ($details as $item) {
+                $yesterdayMenu += $item->jumlah;
+            }
+        }
+        $menuChange = $this->calculatePercentage($todayMenu, $yesterdayMenu);
+
+        //Income
+        $todayIncome = Transaksi::whereDate('created_at', Carbon::today())
+                            ->where('status_bayar', 'sudah bayar')
+                            ->sum('total_bayar');
+        $yesterdayIncome = Transaksi::whereDate('created_at', Carbon::yesterday())
+                    ->where('status_bayar', 'sudah bayar')
+                    ->sum('total_bayar');
+
+        $incomeChange = $this->calculatePercentage($todayIncome, $yesterdayIncome);
+
+        // Income per bulan (total_bayar)
+        $incomeDataRaw = Transaksi::selectRaw('MONTH(created_at) as month, SUM(total_bayar) as total')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->where('status_bayar', 'sudah bayar')
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+        $customerDataRaw = Transaksi::selectRaw('MONTH(created_at) as month, COUNT(*) as total')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
+
+        // Buat array 12 bulan, default 0
+        $incomeData = array_fill(0, 12, 0);
+
+        // Masukkan data sesuai bulan
+        foreach ($incomeDataRaw as $item) {
+            // $item->month = 1..12, array index = 0..11
+            $incomeData[$item->month - 1] = $item->total;
+        }
+
+        // Buat array 12 bulan, default 0
+        $customerData = array_fill(0, 12, 0);
+
+        // Masukkan data sesuai bulan
+        foreach ($customerDataRaw as $item) {
+            // $item->month = 1..12, array index = 0..11
+            $customerData[$item->month - 1] = $item->total;
+        }
+
+
+        return view('admin.dashboard', compact('todayCustomer', 'customerChange', 'customerData', 'todayMenu', 'menuChange', 'todayIncome', 'incomeChange', 'incomeData'));
+    }
+
+    private function calculatePercentage($today, $yesterday)
+    {
+        if ($yesterday == 0) {
+            return $today > 0 ? 100 : 0;
+        }
+
+        return (($today - $yesterday) / $yesterday) * 100;
+    }
 }

@@ -10,8 +10,6 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <style>
         /* Toast Animation */
         .toast {
@@ -69,22 +67,23 @@
             <h1 class="text-2xl font-bold mb-8">Keranjang Anda</h1>
         </div>
         <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th class="px-4 py-2 text-center">No</th>
-                        <th class="px-4 py-2 text-center">Nama Produk</th>
-                        <th class="px-4 py-2 text-center">Harga</th>
-                        <th class="px-4 py-2 text-center">Jumlah</th>
-                        <th class="px-4 py-2 text-center">Subtotal</th>
-                        <th class="px-4 py-2 text-center">Aksi</th>
+                        <th scope="col" class="px-4 py-2 text-center">No</th>
+                        <th scope="col" class="px-4 py-2 text-center">Nama Produk</th>
+                        <th scope="col" class="px-4 py-2 text-center">Harga</th>
+                        <th scope="col" class="px-4 py-2 text-center">Jumlah</th>
+                        <th scope="col" class="px-4 py-2 text-center">Subtotal</th>
+                        <th scope="col" class="px-4 py-2 text-center">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($keranjangs as $keranjang)
-                        <tr class="bg-white border-b">
+                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                             <td class="px-4 py-2">{{ $loop->iteration }}</td>
-                            <td class="px-4 py-2 font-medium text-gray-900">
+                            <td scope="row"
+                                class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $keranjang->menu->nama }}
                                 @if ($keranjang->ukuran)
                                     <div class="text-xs text-gray-500">(Ukuran: {{ $keranjang->ukuran }})</div>
@@ -92,8 +91,9 @@
                             </td>
                             <td class="px-4 py-2">
                                 Rp. {{ number_format($keranjang->harga_satuan, 0, ',', '.') }}
-                                Rp. {{ number_format($keranjang->harga_satuan, 0, ',', '.') }}
                             </td>
+
+                            {{-- QTY Buttons --}}
                             <td class="px-2 py-2 text-center">
                                 <form action="{{ route('customer.keranjang.update', $keranjang->id) }}" method="POST"
                                     class="inline-flex items-center" x-data="{ jumlah: {{ $keranjang->jumlah }} }">
@@ -102,20 +102,24 @@
 
                                     <!-- Tombol - -->
                                     <button type="submit" name="action" value="decrement"
-                                        class="mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-l transition">−</button>
+                                        class="mx-1 px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-l transition">
+                                        −
+                                    </button>
 
-                                    <!-- Input jumlah -->
+                                    <!-- Input jumlah (animated bounce) -->
                                     <input type="number" name="jumlah" x-model="jumlah"
-                                        class="w-13 text-center border-t border-b border-gray-300 focus:outline-none text-lg font-semibold">
+                                        class="w-13 text-center border-t border-b border-gray-300 focus:outline-none text-lg font-semibold transform transition-transform duration-150"
+                                        x-effect="$el.classList.add('scale-110'); setTimeout(()=> $el.classList.remove('scale-110'),150)">
 
                                     <!-- Tombol + -->
                                     <button type="submit" name="action" value="increment"
-                                        class="mx-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-r transition">+</button>
+                                        class="mx-1 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-r transition">
+                                        +
+                                    </button>
                                 </form>
                             </td>
 
                             <td class="px-4 py-2 text-center text-blue-600 font-semibold">
-                                Rp. {{ number_format($keranjang->total_harga, 0, ',', '.') }}
                                 Rp. {{ number_format($keranjang->total_harga, 0, ',', '.') }}
                             </td>
                             <td class="px-4 py-2 text-center">
@@ -131,6 +135,7 @@
                 </tbody>
             </table>
         </div>
+
 
         <!-- Checkout -->
         <div class="mt-8">
@@ -154,6 +159,7 @@
                 </div>
         </div>
 
+
         @if (Auth::check())
             <div class="mb-3">
                 <label for="nomor_meja_manual">Atau Masukkan Nomor Meja Manual</label>
@@ -162,8 +168,10 @@
             </div>
         @endif
 
+
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
             <div class="max-w-4xl mx-auto flex items-center justify-between">
+
                 <!-- Harga -->
                 <span class="text-2xl md:text-3xl font-bold text-blue-600">
                     Total Rp. {{ number_format($totalBayar, 0, ',', '.') }}
@@ -195,28 +203,55 @@
                 </div>
             </div>
         </div>
-        </form>
     </div>
 
 
 
     <!-- Toast Notification -->
+    <!-- Toast Container -->
     <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50"></div>
 
     <script>
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            // let manual = document.getElementById('nomor_meja_manual').value.trim();
+            let manualField = document.getElementById('nomor_meja_manual');
+            let manual = manualField ? manualField.value.trim() : "";
+            let dropdown = document.getElementById('nomor_meja');
+
+            // Kalau dua-duanya kosong → cegah submit
+            if (!manual && !dropdown.value) {
+                e.preventDefault();
+                alert("Silakan pilih nomor meja atau isi manual jika kasir.");
+                return;
+            }
+
+            // Kalau manual diisi,  kosongkan dropdown agar prioritas manual
+            if (manual) {
+                dropdown.value = "";
+            }
+        });
+    </script>
+    <script>
         // Jika session success/error, munculkan toast
         @if (session('success'))
+            // fungsi toast
             function showToast(message) {
                 const container = document.getElementById("toast-container");
                 const toast = document.createElement("div");
                 toast.className = "toast bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md";
                 toast.innerText = message;
                 container.appendChild(toast);
+
+                // auto remove setelah animasi selesai
                 setTimeout(() => {
                     toast.remove();
                 }, 4000);
             }
-            showToast("{{ session('success') }}");
+
+            // cek apakah ada session flash dari Laravel
+            @if (session('success'))
+                showToast("{{ session('success') }}");
+            @endif
         @endif
 
         @if (session('error'))
@@ -226,11 +261,17 @@
                 toast.className = "toast bg-red-600 text-white px-4 py-2 rounded-lg shadow-md";
                 toast.innerText = message;
                 container.appendChild(toast);
+
+                // auto remove setelah animasi selesai
                 setTimeout(() => {
                     toast.remove();
                 }, 4000);
             }
-            showToast("{{ session('error') }}");
+
+            // cek apakah ada session flash dari Laravel
+            @if (session('error'))
+                showToast("{{ session('error') }}");
+            @endif
         @endif
     </script>
 
