@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
+            $table->string('gambar')->nullable();
             $table->text('deskripsi');
             $table->decimal('harga', 10, 2);
             $table->unsignedBigInteger('kategori_id');
             $table->foreign('kategori_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->string('stok')->default('habis');
             $table->timestamps();
         });
     }
