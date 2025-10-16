@@ -9,7 +9,7 @@ use App\Models\Menu;
 use App\Models\Transaksi;
 use App\Models\NomorMeja;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 
 class KeranjangController extends Controller
 {
