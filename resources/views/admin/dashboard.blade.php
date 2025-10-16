@@ -183,8 +183,31 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         {{-- chart 2 end  --}}
                     </div>
                     {{-- end charts --}}
-                </div>
+
+                    {{-- 👉 Tambahkan kode Best Seller di sini --}}
+                    @if ($bestSeller)
+                        <div class="mt-6">
+                            <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4 w-64">
+                                <h2 class="text-lg font-bold mb-2">Menu Best Seller</h2>
+                                <div class="flex items-center space-x-4">
+                                    <img src="{{ asset($bestSeller->gambar) }}" alt="{{ $bestSeller->nama }}"
+                                        class="w-16 h-16 rounded-lg object-cover">
+                                    <div>
+                                        <p class="font-semibold">{{ $bestSeller->nama }}</p>
+                                        <p class="text-sm">Terjual {{ $bestSeller->jumlah_terjual }} kali</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @else
+                        <div class="mt-6">
+                            <p class="text-gray-500">Belum ada data penjualan.</p>
+                        </div>
+                    @endif
+
+                </div> <!-- penutup .p-4 sm:ml-64 -->
             </div>
+        </div>
         </div>
     </main>
 

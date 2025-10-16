@@ -65,9 +65,10 @@ class MenuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Menu $menu)
+    public function show($id)
     {
-        //
+        $menu = Menu::findOrFail($id); // ambil data menu berdasarkan id
+        return view('customer.menu-detail', compact('menu'));
     }
 
     /**

@@ -50,6 +50,7 @@ class KasirController extends Controller
     $transaksi->metode_pembayaran = $request->metode_pembayaran;
     $transaksi->uang_dibayarkan = $request->uang_dibayarkan;
     $transaksi->status = 'dibayar';
+    $transaksi->waktu_bayar = now();
     $transaksi->kasir_id = auth()->id();
     $transaksi->save();
     // Update status nomor meja jika ada
@@ -66,8 +67,8 @@ class KasirController extends Controller
     public function detail($id)
     {
         $pesanan = Transaksi::with('details.menu')->findOrFail($id);
-        $pesanan->details = json_decode($pesanan->details);
-        return view('kasir.detail', compact('pesanan'));
+        $details = json_decode($pesanan->details, true);
+        return view('kasir.detail', compact('pesanan', 'details'));
     }
 
     public function destroy($id)

@@ -159,7 +159,6 @@
                 </div>
         </div>
 
-
         @if (Auth::check())
             <div class="mb-3">
                 <label for="nomor_meja_manual">Atau Masukkan Nomor Meja Manual</label>
@@ -167,7 +166,6 @@
                     placeholder="Contoh: 15A">
             </div>
         @endif
-
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
             <div class="max-w-4xl mx-auto flex items-center justify-between">
