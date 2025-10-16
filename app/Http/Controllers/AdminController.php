@@ -447,8 +447,40 @@ public function tambahKategori()
             $customerData[$item->month - 1] = $item->total;
         }
 
+        // === Tambahan: Menu Best Seller ===
 
-        return view('admin.dashboard', compact('todayCustomer', 'customerChange', 'customerData', 'todayMenu', 'menuChange', 'todayIncome', 'incomeChange', 'incomeData'));
+
+    // Ambil semua transaksi yang sudah bayar
+    $transaksiAll = Transaksi::where('status_bayar', 'sudah bayar')->get();
+
+    $menuSales = [];
+    foreach ($transaksiAll as $transaksi) {
+        $details = json_decode($transaksi->details, true);
+
+        if ($details && is_array($details)) {
+            foreach ($details as $item) {
+                if (!isset($menuSales[$item['nama']])) {
+                    $menuSales[$item['nama']] = 0;
+                }
+                $menuSales[$item['nama']] += $item['jumlah'];
+            }
+        }
+    }
+
+    $bestSeller = null;
+    if (!empty($menuSales)) {
+        arsort($menuSales);
+        $bestSellerName = array_key_first($menuSales);
+        $bestSellerCount = $menuSales[$bestSellerName];
+        $bestSeller = Menu::where('nama', $bestSellerName)->first();
+        if ($bestSeller) {
+            $bestSeller->jumlah_terjual = $bestSellerCount;
+        }
+    }
+
+
+
+        return view('admin.dashboard', compact('todayCustomer', 'customerChange', 'customerData', 'todayMenu', 'menuChange', 'todayIncome', 'incomeChange', 'incomeData', 'bestSeller'));
     }
 
     private function calculatePercentage($today, $yesterday)
