@@ -51,8 +51,24 @@ class MenuController extends Controller
      */
     public function show($id)
     {
-        $menu = Menu::findOrFail($id); // ambil data menu berdasarkan id
-        return view('customer.menu-detail', compact('menu'));
+        $menu = Menu::with('kategori')->findOrFail($id);
+
+        // Tentukan placeholder sesuai kategori
+        switch (strtolower($menu->kategori->nama)) {
+            case 'makanan':
+                $placeholder = 'Contoh: Sedikit pedas';
+                break;
+            case 'minuman':
+                $placeholder = 'Contoh: Sedikit gula';
+                break;
+            case 'camilan':
+                $placeholder = 'Contoh: Tambahkan coklat';
+                break;
+            default:
+                $placeholder = 'Contoh: Tambahkan catatan sesuai selera';
+                break;
+        }
+        return view('customer.menu-detail', compact('menu', 'placeholder'));
     }
 
     /**

@@ -34,6 +34,7 @@ class KeranjangController extends Controller
         $request->validate([
             'menu_id' => 'required|exists:menus,id',
             'quantity' => 'nullable|integer|min:1',
+            'catatan' => 'nullable|string|max:255',
         ]);
 
         $menu = Menu::findOrFail($request->menu_id);
@@ -50,6 +51,7 @@ class KeranjangController extends Controller
         if ($keranjang) {
             $keranjang->jumlah += $jumlah;
             $keranjang->total_harga = $keranjang->jumlah * $menu->harga;
+            $keranjang->catatan = $request->catatan ?? $keranjang->catatan;
             $keranjang->save();
         } else {
             Keranjang::create([
@@ -58,6 +60,7 @@ class KeranjangController extends Controller
                 'harga_satuan' => $menu->harga,
                 'jumlah' => $jumlah,
                 'total_harga' => $menu->harga * $jumlah,
+                'catatan' => $request->catatan,
             ]);
         }
 
@@ -116,6 +119,7 @@ class KeranjangController extends Controller
                 'jumlah' => $keranjang->jumlah,
                 'harga' => $keranjang->harga_satuan,
                 'subtotal' => $keranjang->total_harga,
+                'catatan' => $keranjang->catatan,
             ];
         });
 
