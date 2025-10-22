@@ -18,6 +18,8 @@ const chart01 = () => {
       toolbar: {
         show: false,
       },
+      offsetX: 20,
+      offsetY: 20,
     },
     plotOptions: {
       bar: {
@@ -50,11 +52,19 @@ const chart01 = () => {
         "Nov",
         "Dec",
       ],
+      title: {
+        text: "Bulan", // ← label sumbu X
+        style: {
+          fontSize: "14px",
+          fontWeight: 500,
+          color: "#374151",
+        },
+      },
       axisBorder: {
-        show: false,
+        show: { show: true, color: "#E5E7EB" },
       },
       axisTicks: {
-        show: false,
+        show: { show: true, color: "#E5E7EB" },
       },
     },
     legend: {
@@ -68,15 +78,29 @@ const chart01 = () => {
       },
     },
     yaxis: {
-      title: false,
-    },
-    grid: {
-      yaxis: {
-        lines: {
-          show: true,
+      title: {
+        text: "Total Pendapatan", // ← label sumbu Y
+        style: {
+          fontSize: "14px",
+          fontWeight: 500,
+          color: "#374151",
         },
       },
+      labels: {
+        formatter: (val) => `Rp ${val.toLocaleString('id-ID')}`,
+      },
     },
+    grid: {
+      borderColor: "#E5E7EB",
+      strokeDashArray: 4,
+      yaxis: { lines: { show: true } },
+      padding: {
+        top: 10,
+        left: 30, // tambah ruang di kiri agar label Y tidak terpotong
+        right: 10,
+      },
+    },
+    
     fill: {
       opacity: 1,
     },
