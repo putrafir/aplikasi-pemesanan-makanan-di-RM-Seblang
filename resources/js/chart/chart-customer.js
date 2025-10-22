@@ -12,6 +12,7 @@ const chartCustomer = () => {
       type: "bar",
       height: 180,
       toolbar: { show: false },
+      offsetX: 20,
     },
     plotOptions: {
       bar: {
@@ -32,8 +33,20 @@ const chartCustomer = () => {
         "Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
       ],
-      axisBorder: { show: false },
-      axisTicks: { show: false },
+      title: {
+        text: "Bulan", // ← label sumbu X
+        style: {
+          fontSize: "14px",
+          fontWeight: 500,
+          color: "#374151",
+        },
+      },
+      axisBorder: {
+        show: { show: true, color: "#E5E7EB" },
+      },
+      axisTicks: {
+        show: { show: true, color: "#E5E7EB" },
+      },
     },
     legend: {
       show: true,
@@ -42,7 +55,16 @@ const chartCustomer = () => {
       fontFamily: "Outfit",
       markers: { radius: 99 },
     },
-    yaxis: { title: false },
+    yaxis: {
+      title: {
+        text: "Total Customer", // ← label sumbu Y
+        style: {
+          fontSize: "14px",
+          fontWeight: 500,
+          color: "#374151",
+        },
+      },
+    },
     grid: {
       yaxis: { lines: { show: true } },
     },
