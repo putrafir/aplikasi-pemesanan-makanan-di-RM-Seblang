@@ -75,6 +75,7 @@
                         <th scope="col" class="px-4 py-2 text-center">Harga</th>
                         <th scope="col" class="px-4 py-2 text-center">Jumlah</th>
                         <th scope="col" class="px-4 py-2 text-center">Subtotal</th>
+                        <th scope="col" class="px-4 py-2 text-center">Catatan</th>
                         <th scope="col" class="px-4 py-2 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -121,6 +122,10 @@
 
                             <td class="px-4 py-2 text-center text-blue-600 font-semibold">
                                 Rp. {{ number_format($keranjang->total_harga, 0, ',', '.') }}
+                            </td>
+                            <!-- Kolom Catatan -->
+                            <td class="px-4 py-2 text-center text-gray-700">
+                                {{ $keranjang->catatan ?? '-' }}
                             </td>
                             <td class="px-4 py-2 text-center">
                                 <form action="{{ route('customer.keranjang.delete', $keranjang->id) }}" method="POST">

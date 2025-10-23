@@ -19,9 +19,10 @@ return new class extends Migration
             $table->integer('jumlah');
             $table->decimal('harga_satuan', 10, 2);
             $table->integer('total_harga');
+            $table->text('catatan')->nullable();
             $table->timestamps();
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
-            $table->unsignedBigInteger('user_id')->after('id');
+            // $table->unsignedBigInteger('user_id')->after('id');
         });
     }
 
