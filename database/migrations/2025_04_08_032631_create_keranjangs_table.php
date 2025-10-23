@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('catatan')->nullable();
             $table->timestamps();
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
-            // $table->unsignedBigInteger('user_id')->after('id');
+            $table->text('catatan')->nullable();
         });
     }
 

@@ -34,27 +34,23 @@
         <p class="text-gray-700 leading-relaxed mb-6">
             {{ $menu->deskripsi ?? 'Belum ada deskripsi untuk menu ini.' }}
         </p>
+        <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
+            @csrf
 
-        {{-- Catatan (Opsional) --}}
-        <div class="mb-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-2">
-                Catatan <span class="text-gray-500 text-sm">(Opsional)</span>
-            </h2>
+            {{-- Catatan (Opsional) --}}
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-2">
+                    Catatan <span class="text-gray-500 text-sm">(Opsional)</span>
+                </h2>
 
-            <textarea name="catatan" form="formKeranjang" rows="3" placeholder="{{ $placeholder }}"
-                class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-none"></textarea>
-        </div>
+                <textarea name="catatan" rows="3" placeholder="{{ $placeholder }}"
+                    class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 placeholder-gray-400 focus:ring-blue-400 resize-none"></textarea>
+            </div>
 
+            <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
+                <div class="max-w-4xl mx-auto flex items-center justify-between">
 
-        <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
-            <div class="max-w-4xl mx-auto flex items-center justify-between">
-
-                {{-- Form Tambah ke Keranjang --}}
-                <form id="formKeranjang" action="{{ route('customer.keranjang.add') }}" method="POST"
-                    class="flex items-center space-x-4">
-                    @csrf
-                    {{-- kirim ID menu secara tersembunyi --}}
-                    <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                    {{-- Form Tambah ke Keranjang --}}
 
                     <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
                         <button type="button" onclick="decrementQty()"
@@ -64,27 +60,41 @@
                         <button type="button" onclick="incrementQty()"
                             class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
                     </div>
+                    <form id="formKeranjang" action="{{ route('customer.keranjang.add') }}" method="POST"
+                        class="flex items-center space-x-4">
+                        @csrf
+                        {{-- kirim ID menu secara tersembunyi --}}
+                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
 
-                    @if (strtolower($menu->stok) === 'tersedia')
-                        <button type="submit"
-                            class="text-white bg-blue-500 hover:bg-blue-700 px-6 py-2 rounded-lg shadow transition">
-                            Tambah ke Keranjang
-                        </button>
-                    @else
-                        <button type="button" disabled
-                            class="text-white bg-gray-400 cursor-not-allowed px-6 py-2 rounded-lg">
-                            Habis
-                        </button>
-                    @endif
-                </form>
+                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                            <button type="button" onclick="decrementQty()"
+                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
+                            <input id="quantity" type="number" name="quantity" value="1" min="1"
+                                class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
+                            <button type="button" onclick="incrementQty()"
+                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
+                        </div>
+
+                        @if (strtolower($menu->stok) === 'tersedia')
+                            <button type="submit"
+                                class="text-white bg-blue-500 hover:bg-blue-700 px-6 py-2 rounded-lg shadow transition">
+                                Tambah ke Keranjang
+                            </button>
+                        @else
+                            <button type="button" disabled
+                                class="text-white bg-gray-400 cursor-not-allowed px-6 py-2 rounded-lg">
+                                Habis
+                            </button>
+                        @endif
+                    </form>
 
 
 
 
 
 
+                </div>
             </div>
-        </div>
 
 
     </div>
