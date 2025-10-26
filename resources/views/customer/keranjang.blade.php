@@ -52,7 +52,8 @@
         <div class="flex justify-between">
             <h1 class="text-2xl font-bold mb-8">Keranjang Anda</h1>
         </div>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <!-- Versi Tabel (desktop & tablet) -->
+        <div class="hidden md:block relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -126,10 +127,66 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- 🔹 Versi Card (mobile only) -->
+    <div class="md:hidden space-y-4 mt-4">
+        @foreach ($keranjangs as $keranjang)
+            <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-semibold text-gray-900">{{ $keranjang->menu->nama }}</h3>
+                        @if ($keranjang->ukuran)
+                            <p class="text-xs text-gray-500 mt-0.5">Ukuran: {{ $keranjang->ukuran }}</p>
+                        @endif
+                    </div>
+                    <p class="text-blue-600 font-semibold">
+                        Rp {{ number_format($keranjang->total_harga, 0, ',', '.') }}
+                    </p>
+                </div>
+
+                <div class="mt-3 text-sm text-gray-600 space-y-1">
+                    <p>Harga: Rp {{ number_format($keranjang->harga_satuan, 0, ',', '.') }}</p>
+                    <p>Jumlah: {{ $keranjang->jumlah }}</p>
+                    <p>Catatan: {{ $keranjang->catatan ?? '-' }}</p>
+                </div>
+
+                <div class="flex items-center justify-between mt-3">
+                    <!-- Form update jumlah -->
+                    <form action="{{ route('customer.keranjang.update', $keranjang->id) }}"
+                        method="POST" class="flex items-center gap-1"
+                        x-data="{ jumlah: {{ $keranjang->jumlah }} }">
+                        @csrf
+                        @method('PUT')
+
+                        <button type="submit" name="action" value="decrement"
+                            class="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-l transition">
+                            −
+                        </button>
+                        <input type="number" name="jumlah" x-model="jumlah"
+                            class="w-12 text-center border-y border-gray-300 text-sm font-semibold focus:outline-none">
+                        <button type="submit" name="action" value="increment"
+                            class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-r transition">
+                            +
+                        </button>
+                    </form>
+
+                    <!-- Tombol hapus -->
+                    <form action="{{ route('customer.keranjang.delete', $keranjang->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                            class="bg-red-600 hover:bg-red-800 text-white px-3 py-1 rounded-md text-sm transition">
+                            Hapus
+                        </button>
+                    </form>
+                </div>
+            </div>
+        @endforeach
+    </div>
         
 
         <!-- Checkout -->
-        <div class="mt-8">
+        <div class="mt-8 ">
             <form action="{{ route('customer.keranjang.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
                 <div class="mb-5">
