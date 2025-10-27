@@ -128,20 +128,24 @@
             <form action="{{ route('customer.keranjang.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
                 <div class="mb-5">
-                    <label for="nomor_meja" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nomor
-                        Meja</label>
-                    <select name="nomor_meja" id="nomor_meja" required
-                        class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-base focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="">Pilih Nomor Meja</option>
-                        @foreach ($nomor_mejas as $meja)
-                            <option value="{{ $meja->nomor }}" {{ old('nomor_meja') == $meja->nomor ? 'selected' : '' }}>
-                                Meja {{ $meja->nomor }}
-                            </option>
-                        @endforeach
-                    </select>
-
+                    <label for="nomor_meja"
+                        class="block mb-2 text-sm font-bold text-gray-900">Nomor Meja</label>
+                    @if (session('nomor_meja'))
+                        <input type="text" value="Meja {{ session('nomor_meja') }}"
+                            class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled>
+                        <input type="hidden" name="nomor_meja" value="{{ session('nomor_meja') }}">
+                    @else
+                        <select name="nomor_meja" id="nomor_meja"
+                            class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-50">
+                            <option value="">Pilih Nomor Meja</option>
+                            @foreach ($nomor_mejas as $meja)
+                                <option value="{{ $meja->nomor }}">Meja {{ $meja->nomor }}</option>
+                            @endforeach
+                        </select>
+                    @endif
                 </div>
         </div>
+
 
         @if(Auth::check())
             <div class="mb-3">
@@ -150,6 +154,7 @@
                 name="nomor_meja_manual" placeholder="Contoh: 15A">
             </div>
         @endif
+
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
             <div class="max-w-4xl mx-auto flex items-center justify-between">

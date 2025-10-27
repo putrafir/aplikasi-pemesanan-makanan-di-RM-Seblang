@@ -27,7 +27,14 @@ class MenuController extends Controller
 
         $nomorMeja = $request->session()->get('nomor_meja');
 
-        return view('home', compact('kategoris', 'nomorMeja'));
+        // 🟡 Ambil ID menu yang ditandai sebagai Best Seller
+        $bestSellers = Menu::where('is_best_seller', 1)->pluck('id')->toArray();
+        // 🧑‍🍳 Ambil ID menu yang ditandai sebagai Rekomendasi Chef
+        $recommendedMenus = Menu::where('is_recommended', 1)->pluck('id')->toArray();
+
+
+
+        return view('home', compact('kategoris', 'nomorMeja', 'bestSellers', 'recommendedMenus'));
     }
 
     /**
@@ -78,4 +85,14 @@ class MenuController extends Controller
     {
         //
    }
+
+   public function updateRekomendasi($id)
+{
+    $menu = Menu::findOrFail($id);
+    $menu->is_recommended = !$menu->is_recommended;
+    $menu->save();
+
+    return redirect()->back()->with('message', 'Status Rekomendasi Chef berhasil diperbarui!');
+}
+
 }

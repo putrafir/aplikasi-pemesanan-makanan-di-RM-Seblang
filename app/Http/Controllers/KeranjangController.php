@@ -109,7 +109,7 @@ class KeranjangController extends Controller
         if (!$nomorMejaInput) {
             return redirect()->back()->with('error', 'Nomor meja wajib diisi.');
         }
-        }
+
 
         // // ambil nomor mja, prioritas manual
         // $nomorMejaInput = $request->nomor_meja_manual ?: $request->nomor_meja;
@@ -131,6 +131,7 @@ class KeranjangController extends Controller
             if (!$nomorMejaInput) {
             return redirect()->back()->with('error', 'Nomor meja wajib diisi.');
             }
+
 
         $totalBayar = $keranjangs->sum('total_harga');
 
@@ -269,25 +270,25 @@ class KeranjangController extends Controller
 
 
 
-   public function update(Request $request, $id)
-    {
-        $keranjang = Keranjang::findOrFail($id);
+//    public function update(Request $request, $id)
+//     {
+//         $keranjang = Keranjang::findOrFail($id);
 
-        // aksi sesuai tombol
-        if ($request->action === 'increment') {
-            $keranjang->jumlah += 1;
-        } elseif ($request->action === 'decrement' && $keranjang->jumlah > 1) {
-            $keranjang->jumlah -= 1;
-        } else {
-            $keranjang->jumlah = $request->jumlah; // fallback jika user langsung edit input
-        }
+//         // aksi sesuai tombol
+//         if ($request->action === 'increment') {
+//             $keranjang->jumlah += 1;
+//         } elseif ($request->action === 'decrement' && $keranjang->jumlah > 1) {
+//             $keranjang->jumlah -= 1;
+//         } else {
+//             $keranjang->jumlah = $request->jumlah; // fallback jika user langsung edit input
+//         }
 
-        // update total harga
-        $keranjang->total_harga = $keranjang->jumlah * $keranjang->harga_satuan;
-        $keranjang->save();
+//         // update total harga
+//         $keranjang->total_harga = $keranjang->jumlah * $keranjang->harga_satuan;
+//         $keranjang->save();
 
-        return back()->with('success', 'Jumlah keranjang berhasil diperbarui.');
-    }
+//         return back()->with('success', 'Jumlah keranjang berhasil diperbarui.');
+//     }
 
 
 //    public function pesanLagi(Request $request)
@@ -319,16 +320,16 @@ class KeranjangController extends Controller
 //                      ->with('success', 'Silakan pesan lagi untuk Meja ' . $nomorMeja);
 // }
 
-    public function pesanLagi(Request $request)
-    {
-        $nomorMeja = $request->session()->get('nomor_meja');
+    // public function pesanLagi(Request $request)
+    // {
+    //     $nomorMeja = $request->session()->get('nomor_meja');
 
-        if (!$nomorMeja) {
-            return redirect()->route('customer.menu')->with('error', 'Nomor meja tidak ditemukan.');
-        }
+    //     if (!$nomorMeja) {
+    //         return redirect()->route('customer.menu')->with('error', 'Nomor meja tidak ditemukan.');
+    //     }
 
-        return redirect()->route('customer.menu')->with('success', 'Pesan lagi untuk Meja ' . $nomorMeja);
-    }
+    //     return redirect()->route('customer.menu')->with('success', 'Pesan lagi untuk Meja ' . $nomorMeja);
+    // }
 
 
 }
