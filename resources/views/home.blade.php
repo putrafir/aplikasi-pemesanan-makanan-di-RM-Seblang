@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <head>
     <meta charset="UTF-8">
@@ -8,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Warung Seblang | Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Toast Animation */
@@ -122,6 +122,21 @@
                     @foreach ($allMenus as $menu)
                         <div data-nama="{{ strtolower($menu->nama) }}"  
                             class="cursor-pointer menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+
+                            {{-- 🟡 Icon Best Seller --}}
+                            @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
+                                <div class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                     <i class="fas fa-star"></i> Best Seller
+                                </div>
+                            @endif
+
+                            {{-- 🧑‍🍳 Icon Rekomendasi Chef --}}
+                            @if (isset($recommendedMenus) && in_array($menu->id, $recommendedMenus))
+                                <div class="absolute top-3 right-3 bg-orange-500 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                    <i class="fas fa-user-tie"></i> Recomended
+                                </div>
+                            @endif
+
                             <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                 <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
                                     src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
@@ -186,6 +201,21 @@
                     @foreach ($kategori->menus as $menu)
                         <div data-nama="{{ strtolower($menu->nama) }} " 
                             class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+
+                            {{-- 🟡 Icon Best Seller --}}
+                            @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
+                                <div class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                     <i class="fas fa-star"></i> Best Seller
+                                </div>
+                            @endif
+
+                            {{-- 🧑‍🍳 Icon Rekomendasi Chef --}}
+                            @if (isset($recommendedMenus) && in_array($menu->id, $recommendedMenus))
+                                <div class="absolute top-3 right-3 bg-orange-500 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                    <i class="fas fa-user-tie"></i> Recomended
+                                </div>
+                            @endif
+
                             <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                 <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
                                     src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
