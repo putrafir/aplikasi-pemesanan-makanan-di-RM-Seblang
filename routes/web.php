@@ -28,6 +28,7 @@ Route::put('/keranjang/{id}/update', [KeranjangController::class, 'update'])->na
 Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
 Route::get('/pesanan/{id}', [KeranjangController::class, 'detailPesanan'])->name('customer.detailPesanan');
 Route::get('/riwayat/{nomor_meja}', [KeranjangController::class, 'riwayatPesanan'])->name('customer.riwayat');
+Route::get('/menu', [CustomerController::class, 'menu'])->name('customer.menu');
 
 Route::get('/pesanan/{id}', [KeranjangController::class, 'detailPesanan'])->name('customer.detailPesanan');
 Route::get('/riwayat/{nomor_meja}', [KeranjangController::class, 'riwayatPesanan'])->name('customer.riwayat');
@@ -103,8 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/delete/kasir/{id}', [KelolaKasirController::class, 'delete'])->name('admin.delete.kasir');
     Route::put('/admin/update/kasir/{id}', [KelolaKasirController::class, 'update'])->name('admin.update.kasir');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/pesanan/{id}', [KeranjangController::class, 'detailPesanan'])->name('customer.detailPesanan');
-    Route::get('/riwayat/{nomor_meja}', [KeranjangController::class, 'riwayatPesanan'])->name('customer.riwayat');
+    Route::put('/admin/menu/{id}/rekomendasi', [MenuController::class, 'updateRekomendasi'])->name('admin.update.rekomendasi');
 });
 
 

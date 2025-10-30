@@ -55,6 +55,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         <th scope="col" class="px-6 py-3">
                             Stok
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Rekomendasi
+                        </th>
                         <th scope="col" class="px-4 py-3">
                             Aksi
                         </th>
@@ -86,6 +89,18 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                     <button type="submit"
                                         class="px-3 py-1 rounded font-semibold transition {{ $menu->stok === 'habis' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-stok">
                                         {{ $menu->stok === 'habis' ? 'Habis' : 'Tersedia' }}
+                                    </button>
+                                </form>
+                            </td>
+                            <td class="px-6 py-4">
+                                <form action="{{ route('admin.update.rekomendasi', $menu->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="is_recommended_baru" value="{{ $menu->is_recommended ? 0 : 1 }}">
+                                        <button type="submit"
+                                            class="px-3 py-1 rounded font-semibold transition
+                                                {{ $menu->is_recommended ? 'bg-orange-500 hover:bg-orange-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-700' }}">
+                                            {{ $menu->is_recommended ? 'Ya' : 'Tidak' }}
                                     </button>
                                 </form>
                             </td>
