@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('total_harga');
             $table->timestamps();
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
-            
+            $table->text('catatan')->nullable();
         });
     }
 
