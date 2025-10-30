@@ -35,6 +35,7 @@
                     <th class="border px-4 py-2">Harga</th>
                     <th class="border px-4 py-2">Jumlah</th>
                     <th class="border px-4 py-2">Subtotal</th>
+                    <th class="border px-4 py-2">Catatan</th>
                     <th class="border px-4 py-2">Waktu Diantar</th>
                     <th class="border px-4 py-2">Waktu Bayar</th>
                 </tr>
@@ -51,6 +52,7 @@
                         <td class="border px-4 py-2">
                             @php echo number_format($detail['subtotal'], 0, ',', '.'); @endphp
                         </td>
+                        <td>{{ $detail['catatan'] ?? '-' }}</td>
                         <td class="border px-4 py-2">{{ $pesanan->waktu_diantar ?? '-' }}</td>
                         <td class="border px-4 py-2">{{ $pesanan->waktu_bayar ?? '-' }}</td>
                     </tr>

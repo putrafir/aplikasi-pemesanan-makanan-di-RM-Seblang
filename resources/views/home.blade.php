@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <head>
     <meta charset="UTF-8">
@@ -8,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Warung Seblang | Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Toast Animation */
@@ -79,39 +79,42 @@
             </div>
         @endif
 
-        <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 mt-5 mb-5 ml-5">
+        <div class="w-full overflow-x-auto scrollbar-hide scroll-smooth">
+            <ul class="flex flex-nowrap md:flex-wrap text-sm font-medium text-center text-gray-500 mt-4 mb-6 px-4 md:px-6 gap-3 md:gap-4">
 
-            {{-- Tab Semua --}}
-            <li class="me-2">
-                <a href="javascript:void(0)" onclick="showCategory('semua')"
-                    class="kategori-tab block px-6 py-3 rounded-xl shadow-md border border-gray-200
-                        bg-white text-gray-600 font-medium transform transition-all duration-300
-                        hover:scale-105 hover:shadow-lg hover:bg-blue-50 active"
-                    id="tab-semua">
-                    Semua
-                </a>
-            </li>
-
-            {{-- Tab Kategori Dinamis --}}
-
-            @foreach ($kategoris as $index => $kategori)
-                @php $kategoriId = Str::slug($kategori->nama); @endphp
-                <li class="me-2 ">
-                    <a href="javascript:void(0)" onclick="showCategory('{{ $kategoriId }}')"
-                        class="kategori-tab block px-6 py-3 rounded-xl shadow-md border border-gray-200 
+                {{-- Tab Semua --}}
+                <li class="flex-shrink-0">
+                    <a href="javascript:void(0)" onclick="showCategory('semua')"
+                        class="kategori-tab block px-6 py-3 rounded-xl shadow-md border border-gray-200
                             bg-white text-gray-600 font-medium transform transition-all duration-300
-                            hover:scale-105 hover:shadow-lg hover:bg-blue-50 {{ $index == 0 ? 'text-blue-600 bg-gray-100 active' : '' }}"
-                        id="tab-{{ $kategoriId }}">
-                        {{ $kategori->nama }}
+                            hover:scale-105 hover:shadow-lg hover:bg-blue-50 active"
+                        id="tab-semua">
+                        Semua
                     </a>
                 </li>
-            @endforeach
-        </ul>
+
+                {{-- Tab Kategori Dinamis --}}
+
+                @foreach ($kategoris as $index => $kategori)
+                    @php $kategoriId = Str::slug($kategori->nama); @endphp
+                    <li class="flex-shrink-0">
+                        <a href="javascript:void(0)" onclick="showCategory('{{ $kategoriId }}')"
+                            class="kategori-tab block px-6 py-3 rounded-xl shadow-md border border-gray-200 
+                                bg-white text-gray-600 font-medium transform transition-all duration-300
+                                hover:scale-105 hover:shadow-lg hover:bg-blue-50 {{ $index == 0 ? 'text-blue-600 bg-gray-100 active' : '' }}"
+                            id="tab-{{ $kategoriId }}">
+                            {{ $kategori->nama }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+        
 
         <!-- Konten Semua -->
         <div class="kategori-content" id="kategori-semua">
             <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">Semua Menu</h2>
-            <div class="px-4 py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 @php
                     $allMenus = $kategoris->flatMap->menus;
                 @endphp
@@ -119,12 +122,27 @@
                     @foreach ($allMenus as $menu)
                         <div data-nama="{{ strtolower($menu->nama) }}"  
                             class="cursor-pointer menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+
+                            {{-- 🟡 Icon Best Seller --}}
+                            @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
+                                <div class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                     <i class="fas fa-star"></i> Best Seller
+                                </div>
+                            @endif
+
+                            {{-- 🧑‍🍳 Icon Rekomendasi Chef --}}
+                            @if (isset($recommendedMenus) && in_array($menu->id, $recommendedMenus))
+                                <div class="absolute top-3 right-3 bg-orange-500 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                    <i class="fas fa-user-tie"></i> Recomended
+                                </div>
+                            @endif
+
                             <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                 <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
                                     src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
                             </a>
                             <div class="px-5 pb-5">
-                                <div class="flex items-center justify-between mb-5">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
                                     <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                         <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
                                     </a>
@@ -132,8 +150,8 @@
                                     Rp. @php echo number_format($menu->harga, 0, ',', '.'); @endphp
                                     </span>
                                 </div>
-                                <div class="flex items-center justify-between mt-5 mb-5">
-                                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
+                                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
                                         <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
                                         @csrf
                                         <button type="button" onclick="decrementQty()" 
@@ -179,16 +197,31 @@
             @php $kategoriId = Str::slug($kategori->nama); @endphp
             <div class="kategori-content {{ $index == 0 ? '' : 'hidden' }}" id="kategori-{{ $kategoriId }}">
                 <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">{{ $kategori->nama }}</h2>
-                <div class="px-4 py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @foreach ($kategori->menus as $menu)
                         <div data-nama="{{ strtolower($menu->nama) }} " 
                             class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+
+                            {{-- 🟡 Icon Best Seller --}}
+                            @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
+                                <div class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                     <i class="fas fa-star"></i> Best Seller
+                                </div>
+                            @endif
+
+                            {{-- 🧑‍🍳 Icon Rekomendasi Chef --}}
+                            @if (isset($recommendedMenus) && in_array($menu->id, $recommendedMenus))
+                                <div class="absolute top-3 right-3 bg-orange-500 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                    <i class="fas fa-user-tie"></i> Recomended
+                                </div>
+                            @endif
+
                             <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                 <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
                                     src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
                             </a>
                             <div class="px-5 pb-5">
-                                <div class="flex items-center justify-between mb-5">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
                                     <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                         <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
                                     </a>
@@ -196,9 +229,9 @@
                                        Rp. @php echo number_format($menu->harga, 0, ',', '.'); @endphp
                                     </span>
                                 </div>
-                                <div class="flex items-center justify-between mt-5 mb-5">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
                                         <!-- Tombol QTY -->
-                                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
+                                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
                                             <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
                                             @csrf
                                             <button type="button" onclick="decrementQty()" 
