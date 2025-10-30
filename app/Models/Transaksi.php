@@ -13,6 +13,12 @@ class Transaksi extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $casts = [
+        'details' => 'array',
+        'waktu_diantar' => 'datetime',
+        'waktu_bayar' => 'datetime',
+    ];
     /**
      * Get all of the details for the transaksi.
      */

@@ -36,6 +36,8 @@ Route::get('/pesanan/{id}', [KeranjangController::class, 'detailPesanan'])->name
 Route::get('/riwayat/{nomor_meja}', [KeranjangController::class, 'riwayatPesanan'])->name('customer.riwayat');
 Route::get('/menu', [CustomerController::class, 'menu'])->name('customer.menu');
 
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -66,7 +68,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/kasir/pesan-lagi/{id}', [KasirController::class, 'pesanLagi'])->name('kasir.pesan.lagi');
     Route::post('/keranjang/checkout-pesanan', [KeranjangController::class, 'checkoutToPesanan'])->name('keranjang.checkoutPesanan');
     Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('kasir.bayar');
-    // Route::put('/pesanan/{id}/bayar/', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
     Route::put('/pesanan/{id}/bayar/', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
     Route::post('/kasir/pesanan/{id}/konfirmasi', [PesananController::class, 'konfirmasi'])->name('pesanan.konfirmasi');
     Route::get('/kasir/pesanan/{id}/detail', [KasirController::class, 'detail'])->name('kasir.pesanan.detail');
@@ -105,8 +106,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/update/kasir/{id}', [KelolaKasirController::class, 'update'])->name('admin.update.kasir');
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::put('/admin/menu/{id}/rekomendasi', [MenuController::class, 'updateRekomendasi'])->name('admin.update.rekomendasi');
-
-
 });
 
 

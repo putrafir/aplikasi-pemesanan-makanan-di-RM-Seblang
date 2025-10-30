@@ -13,10 +13,11 @@ use App\Models\PesananDetail;
 
 class CustomerController extends Controller
 {
-        /**
+    /**
      * Menampilkan daftar menu untuk pelanggan
      * dengan ikon Best Seller & Rekomendasi Chef
      */
+
     public function menu(Request $request)
     {
         // Ambil semua kategori beserta menu-nya

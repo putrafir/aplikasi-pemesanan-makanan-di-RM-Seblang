@@ -447,155 +447,152 @@ public function tambahKategori()
             $customerData[$item->month - 1] = $item->total;
         }
 
-         // === Tambahan: Menu Best Seller ===
+        // === Tambahan: Menu Best Seller ===
 
 
-    // Ambil semua transaksi yang sudah bayar
-    $transaksiAll = Transaksi::where('status_bayar', 'sudah bayar')->get();
+            // Ambil semua transaksi yang sudah bayar
+            $transaksiAll = Transaksi::where('status_bayar', 'sudah bayar')->get();
 
-    $menuSales = [];
-    foreach ($transaksiAll as $transaksi) {
-        $details = json_decode($transaksi->details, true);
+            $menuSales = [];
+            foreach ($transaksiAll as $transaksi) {
+                $details = json_decode($transaksi->details, true);
 
-        if ($details && is_array($details)) {
-            foreach ($details as $item) {
-                if (!isset($menuSales[$item['nama']])) {
-                    $menuSales[$item['nama']] = 0;
+                if ($details && is_array($details)) {
+                    foreach ($details as $item) {
+                        if (!isset($menuSales[$item['nama']])) {
+                            $menuSales[$item['nama']] = 0;
+                        }
+                        $menuSales[$item['nama']] += $item['jumlah'];
+                    }
                 }
-                $menuSales[$item['nama']] += $item['jumlah'];
+            }
+
+            $bestSeller = null;
+            if (!empty($menuSales)) {
+                arsort($menuSales);
+                $bestSellerName = array_key_first($menuSales);
+                $bestSellerCount = $menuSales[$bestSellerName];
+                $bestSeller = Menu::where('nama', $bestSellerName)->first();
+                if ($bestSeller) {
+                    $bestSeller->jumlah_terjual = $bestSellerCount;
+                }
+            }
+
+            // === Tambahan: Best Seller Per Kategori ===
+        $kategoriCamilan = Category::where('nama', 'Camilan')->first();
+        $kategoriMinuman = Category::where('nama', 'Minuman')->first();
+        $kategoriMakanan = Category::where('nama', 'Makanan')->first();
+
+        $bestSellerCamilan = null;
+        $bestSellerMinuman = null;
+        $bestSellerMakanan = null;
+
+        if ($kategoriMakanan) {
+            $menuSalesMakanan = [];
+            foreach ($transaksiAll as $transaksi) {
+                $details = json_decode($transaksi->details, true);
+                if ($details && is_array($details)) {
+                    foreach ($details as $item) {
+                        $menu = Menu::where('nama', $item['nama'])->first();
+                        if ($menu && $menu->kategori_id == $kategoriMakanan->id) {
+                            if (!isset($menuSalesMakanan[$menu->nama])) {
+                                $menuSalesMakanan[$menu->nama] = 0;
+                            }
+                            $menuSalesMakanan[$menu->nama] += $item['jumlah'];
+                        }
+                    }
+                }
+            }
+
+            if (!empty($menuSalesMakanan)) {
+                arsort($menuSalesMakanan);
+                $bestSellerNameMakanan = array_key_first($menuSalesMakanan);
+                $bestSellerCountMakanan = $menuSalesMakanan[$bestSellerNameMakanan];
+                $bestSellerMakanan = Menu::where('nama', $bestSellerNameMakanan)->first();
+                if ($bestSellerMakanan) {
+                    $bestSellerMakanan->jumlah_terjual = $bestSellerCountMakanan;
+                }
             }
         }
-    }
 
-    $bestSeller = null;
-    if (!empty($menuSales)) {
-        arsort($menuSales);
-        $bestSellerName = array_key_first($menuSales);
-        $bestSellerCount = $menuSales[$bestSellerName];
-        $bestSeller = Menu::where('nama', $bestSellerName)->first();
+        if ($kategoriCamilan) {
+            $menuSalesCamilan = [];
+            foreach ($transaksiAll as $transaksi) {
+                $details = json_decode($transaksi->details, true);
+                if ($details && is_array($details)) {
+                    foreach ($details as $item) {
+                        $menu = Menu::where('nama', $item['nama'])->first();
+                        if ($menu && $menu->kategori_id == $kategoriCamilan->id) {
+                            if (!isset($menuSalesCamilan[$menu->nama])) {
+                                $menuSalesCamilan[$menu->nama] = 0;
+                            }
+                            $menuSalesCamilan[$menu->nama] += $item['jumlah'];
+                        }
+                    }
+                }
+            }
+
+            if (!empty($menuSalesCamilan)) {
+                arsort($menuSalesCamilan);
+                $bestSellerNameCamilan = array_key_first($menuSalesCamilan);
+                $bestSellerCountCamilan = $menuSalesCamilan[$bestSellerNameCamilan];
+                $bestSellerCamilan = Menu::where('nama', $bestSellerNameCamilan)->first();
+                if ($bestSellerCamilan) {
+                    $bestSellerCamilan->jumlah_terjual = $bestSellerCountCamilan;
+                }
+            }
+        }
+
+        if ($kategoriMinuman) {
+            $menuSalesMinuman = [];
+            foreach ($transaksiAll as $transaksi) {
+                $details = json_decode($transaksi->details, true);
+                if ($details && is_array($details)) {
+                    foreach ($details as $item) {
+                        $menu = Menu::where('nama', $item['nama'])->first();
+                        if ($menu && $menu->kategori_id == $kategoriMinuman->id) {
+                            if (!isset($menuSalesMinuman[$menu->nama])) {
+                                $menuSalesMinuman[$menu->nama] = 0;
+                            }
+                            $menuSalesMinuman[$menu->nama] += $item['jumlah'];
+                        }
+                    }
+                }
+            }
+
+            if (!empty($menuSalesMinuman)) {
+                arsort($menuSalesMinuman);
+                $bestSellerNameMinuman = array_key_first($menuSalesMinuman);
+                $bestSellerCountMinuman = $menuSalesMinuman[$bestSellerNameMinuman];
+                $bestSellerMinuman = Menu::where('nama', $bestSellerNameMinuman)->first();
+                if ($bestSellerMinuman) {
+                    $bestSellerMinuman->jumlah_terjual = $bestSellerCountMinuman;
+                }
+            }
+        }
+
+        // Reset semua menu menjadi bukan best seller
+        Menu::query()->update(['is_best_seller' => 0]);
+
+        // Tandai best seller utama
         if ($bestSeller) {
-            $bestSeller->jumlah_terjual = $bestSellerCount;
+            $bestSeller->update(['is_best_seller' => 1]);
         }
-    }
 
-    // === Tambahan: Best Seller Per Kategori ===
-$kategoriCamilan = Category::where('nama', 'Camilan')->first();
-$kategoriMinuman = Category::where('nama', 'Minuman')->first();
-$kategoriMakanan = Category::where('nama', 'Makanan')->first();
-
-$bestSellerCamilan = null;
-$bestSellerMinuman = null;
-$bestSellerMakanan = null;
-
-if ($kategoriMakanan) {
-    $menuSalesMakanan = [];
-    foreach ($transaksiAll as $transaksi) {
-        $details = json_decode($transaksi->details, true);
-        if ($details && is_array($details)) {
-            foreach ($details as $item) {
-                $menu = Menu::where('nama', $item['nama'])->first();
-                if ($menu && $menu->kategori_id == $kategoriMakanan->id) {
-                    if (!isset($menuSalesMakanan[$menu->nama])) {
-                        $menuSalesMakanan[$menu->nama] = 0;
-                    }
-                    $menuSalesMakanan[$menu->nama] += $item['jumlah'];
-                }
-            }
-        }
-    }
-
-    if (!empty($menuSalesMakanan)) {
-        arsort($menuSalesMakanan);
-        $bestSellerNameMakanan = array_key_first($menuSalesMakanan);
-        $bestSellerCountMakanan = $menuSalesMakanan[$bestSellerNameMakanan];
-        $bestSellerMakanan = Menu::where('nama', $bestSellerNameMakanan)->first();
+        // Tandai best seller per kategori
         if ($bestSellerMakanan) {
-            $bestSellerMakanan->jumlah_terjual = $bestSellerCountMakanan;
+            $bestSellerMakanan->update(['is_best_seller' => 1]);
         }
-    }
-}
-
-if ($kategoriCamilan) {
-    $menuSalesCamilan = [];
-    foreach ($transaksiAll as $transaksi) {
-        $details = json_decode($transaksi->details, true);
-        if ($details && is_array($details)) {
-            foreach ($details as $item) {
-                $menu = Menu::where('nama', $item['nama'])->first();
-                if ($menu && $menu->kategori_id == $kategoriCamilan->id) {
-                    if (!isset($menuSalesCamilan[$menu->nama])) {
-                        $menuSalesCamilan[$menu->nama] = 0;
-                    }
-                    $menuSalesCamilan[$menu->nama] += $item['jumlah'];
-                }
-            }
-        }
-    }
-
-    if (!empty($menuSalesCamilan)) {
-        arsort($menuSalesCamilan);
-        $bestSellerNameCamilan = array_key_first($menuSalesCamilan);
-        $bestSellerCountCamilan = $menuSalesCamilan[$bestSellerNameCamilan];
-        $bestSellerCamilan = Menu::where('nama', $bestSellerNameCamilan)->first();
-        if ($bestSellerCamilan) {
-            $bestSellerCamilan->jumlah_terjual = $bestSellerCountCamilan;
-        }
-    }
-}
-
-if ($kategoriMinuman) {
-    $menuSalesMinuman = [];
-    foreach ($transaksiAll as $transaksi) {
-        $details = json_decode($transaksi->details, true);
-        if ($details && is_array($details)) {
-            foreach ($details as $item) {
-                $menu = Menu::where('nama', $item['nama'])->first();
-                if ($menu && $menu->kategori_id == $kategoriMinuman->id) {
-                    if (!isset($menuSalesMinuman[$menu->nama])) {
-                        $menuSalesMinuman[$menu->nama] = 0;
-                    }
-                    $menuSalesMinuman[$menu->nama] += $item['jumlah'];
-                }
-            }
-        }
-    }
-
-    if (!empty($menuSalesMinuman)) {
-        arsort($menuSalesMinuman);
-        $bestSellerNameMinuman = array_key_first($menuSalesMinuman);
-        $bestSellerCountMinuman = $menuSalesMinuman[$bestSellerNameMinuman];
-        $bestSellerMinuman = Menu::where('nama', $bestSellerNameMinuman)->first();
         if ($bestSellerMinuman) {
-            $bestSellerMinuman->jumlah_terjual = $bestSellerCountMinuman;
+            $bestSellerMinuman->update(['is_best_seller' => 1]);
         }
-    }
-}
-
-// Reset semua menu menjadi bukan best seller
-Menu::query()->update(['is_best_seller' => 0]);
-
-// Tandai best seller utama
-if ($bestSeller) {
-    $bestSeller->update(['is_best_seller' => 1]);
-}
-
-// Tandai best seller per kategori
-if ($bestSellerMakanan) {
-    $bestSellerMakanan->update(['is_best_seller' => 1]);
-}
-if ($bestSellerMinuman) {
-    $bestSellerMinuman->update(['is_best_seller' => 1]);
-}
-if ($bestSellerCamilan) {
-    $bestSellerCamilan->update(['is_best_seller' => 1]);
-}
+        if ($bestSellerCamilan) {
+            $bestSellerCamilan->update(['is_best_seller' => 1]);
+        }
 
 
-        return view('admin.dashboard', compact(
-    'todayCustomer', 'customerChange', 'customerData',
-    'todayMenu', 'menuChange', 'todayIncome', 'incomeChange',
-    'incomeData', 'bestSeller', 'bestSellerCamilan', 'bestSellerMinuman', 'bestSellerMakanan'
-));
+
+        return view('admin.dashboard', compact('todayCustomer', 'customerChange', 'customerData', 'todayMenu', 'menuChange', 'todayIncome', 'incomeChange', 'incomeData', 'bestSeller', 'bestSellerMakanan', 'bestSellerMinuman', 'bestSellerCamilan'));
     }
 
     private function calculatePercentage($today, $yesterday)

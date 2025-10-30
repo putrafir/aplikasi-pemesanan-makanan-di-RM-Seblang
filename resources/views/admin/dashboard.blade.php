@@ -242,72 +242,73 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             </div>
                             {{-- end charts --}}
 
-            {{-- 👉 Tambahkan kode Best Seller di sini --}}
-<div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                            {{-- 👉 Tambahkan kode Best Seller di sini --}}
+                            <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                {{-- 🥘 Best Seller Makanan --}}
+                                @if(isset($bestSellerMakanan))
+                                    <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4">
+                                        <h2 class="text-lg font-bold mb-2">Best Seller Makanan</h2>
+                                        <div class="flex items-center space-x-4">
+                                            <img src="{{ asset($bestSellerMakanan->gambar) }}"
+                                                alt="{{ $bestSellerMakanan->nama }}"
+                                                class="w-16 h-16 rounded-lg object-cover">
+                                            <div>
+                                                <p class="font-semibold">{{ $bestSellerMakanan->nama }}</p>
+                                                <p class="text-sm">Terjual {{ $bestSellerMakanan->jumlah_terjual }} kali</p>
+                                            </div>
+                                        </div>
+                                     @else
+                                        <div class="bg-gray-100 text-gray-600 rounded-lg shadow p-4">
+                                            <h2 class="text-lg font-bold mb-2">Best Seller Makanan</h2>
+                                            <p>Belum ada data penjualan.</p>
+                                        </div>
+                                    @endif
 
-    {{-- 🥘 Best Seller Makanan --}}
-    @if(isset($bestSellerMakanan))
-        <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4">
-            <h2 class="text-lg font-bold mb-2">Best Seller Makanan</h2>
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset($bestSellerMakanan->gambar) }}"
-                    alt="{{ $bestSellerMakanan->nama }}"
-                    class="w-16 h-16 rounded-lg object-cover">
-                <div>
-                    <p class="font-semibold">{{ $bestSellerMakanan->nama }}</p>
-                    <p class="text-sm">Terjual {{ $bestSellerMakanan->jumlah_terjual }} kali</p>
-                </div>
-            </div>
-        </div>
-    @else
-        <div class="bg-gray-100 text-gray-600 rounded-lg shadow p-4">
-            <h2 class="text-lg font-bold mb-2">Best Seller Makanan</h2>
-            <p>Belum ada data penjualan.</p>
-        </div>
-    @endif
+                                </div>
 
-    {{-- 🧃 Best Seller Minuman --}}
-    @if(isset($bestSellerMinuman))
-        <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4">
-            <h2 class="text-lg font-bold mb-2">Best Seller Minuman</h2>
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset($bestSellerMinuman->gambar) }}"
-                    alt="{{ $bestSellerMinuman->nama }}"
-                    class="w-16 h-16 rounded-lg object-cover">
-                <div>
-                    <p class="font-semibold">{{ $bestSellerMinuman->nama }}</p>
-                    <p class="text-sm">Terjual {{ $bestSellerMinuman->jumlah_terjual }} kali</p>
-                </div>
-            </div>
-        </div>
-    @else
-        <div class="bg-gray-100 text-gray-600 rounded-lg shadow p-4">
-            <h2 class="text-lg font-bold mb-2">Best Seller Minuman</h2>
-            <p>Belum ada data penjualan.</p>
-        </div>
-    @endif
+                                    {{-- 🍹 Best Seller Minuman --}}
+                                @if(isset($bestSellerMinuman))
+                                <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4">
+                                    <h2 class="text-lg font-bold mb-2">Best Seller Minuman</h2>
+                                    <div class="flex items-center space-x-4">
+                                        <img src="{{ asset($bestSellerMinuman->gambar) }}"
+                                            alt="{{ $bestSellerMinuman->nama }}"
+                                            class="w-16 h-16 rounded-lg object-cover">
+                                        <div>
+                                            <p class="font-semibold">{{ $bestSellerMinuman->nama }}</p>
+                                            <p class="text-sm">Terjual {{ $bestSellerMinuman->jumlah_terjual }} kali</p>
+                                        </div>
+                                    </div>
+                                     @else
+                                        <div class="bg-gray-100 text-gray-600 rounded-lg shadow p-4">
+                                            <h2 class="text-lg font-bold mb-2">Best Seller Minuman</h2>
+                                            <p>Belum ada data penjualan.</p>
+                                        </div>
+                                    @endif
+                            </div>
 
-    {{-- 🍪 Best Seller Camilan --}}
-    @if(isset($bestSellerCamilan))
-        <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4">
-            <h2 class="text-lg font-bold mb-2">Best Seller Camilan</h2>
-            <div class="flex items-center space-x-4">
-                <img src="{{ asset($bestSellerCamilan->gambar) }}"
-                    alt="{{ $bestSellerCamilan->nama }}"
-                    class="w-16 h-16 rounded-lg object-cover">
-                <div>
-                    <p class="font-semibold">{{ $bestSellerCamilan->nama }}</p>
-                    <p class="text-sm">Terjual {{ $bestSellerCamilan->jumlah_terjual }} kali</p>
-                </div>
-            </div>
-        </div>
-    @else
-        <div class="bg-gray-100 text-gray-600 rounded-lg shadow p-4">
-            <h2 class="text-lg font-bold mb-2">Best Seller Camilan</h2>
-            <p>Belum ada data penjualan.</p>
-        </div>
-    @endif
-</div>
+                            {{-- 🍪 Best Seller Camilan --}}
+                            @if(isset($bestSellerCamilan))
+                                <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4">
+                                    <h2 class="text-lg font-bold mb-2">Best Seller Camilan</h2>
+                                    <div class="flex items-center space-x-4">
+                                        <img src="{{ asset($bestSellerCamilan->gambar) }}"
+                                            alt="{{ $bestSellerCamilan->nama }}"
+                                            class="w-16 h-16 rounded-lg object-cover">
+                                        <div>
+                                            <p class="font-semibold">{{ $bestSellerCamilan->nama }}</p>
+                                            <p class="text-sm">Terjual {{ $bestSellerCamilan->jumlah_terjual }} kali</p>
+                                        </div>
+                                    </div>
+                                     @else
+                                        <div class="bg-gray-100 text-gray-600 rounded-lg shadow p-4">
+                                            <h2 class="text-lg font-bold mb-2">Best Seller Camilan</h2>
+                                            <p>Belum ada data penjualan.</p>
+                                        </div>
+                                    @endif
+                                </div>
+
+                        </div>
 
 
             </div> <!-- penutup .p-4 sm:ml-64 -->

@@ -35,17 +35,26 @@
                     <th class="border px-4 py-2">Harga</th>
                     <th class="border px-4 py-2">Jumlah</th>
                     <th class="border px-4 py-2">Subtotal</th>
+                    <th class="border px-4 py-2">Catatan</th>
+                    <th class="border px-4 py-2">Waktu Diantar</th>
+                    <th class="border px-4 py-2">Waktu Bayar</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($pesanan->details as $detail )
+                @foreach ($details as $detail)
                     <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                         <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                        <td class="border px-4 py-2">{{ $detail->nama }}</td>
-
-                        <td class="border px-4 py-2">@php echo number_format($detail->harga, 0, ',', '.'); @endphp</td>
-                        <td class="border px-4 py-2">{{ $detail->jumlah }}</td>
-                        <td class="border px-4 py-2">@php echo number_format($detail->subtotal, 0, ',', '.'); @endphp</td>
+                        <td class="border px-4 py-2">{{ $detail['nama'] ?? '' }}</td>
+                        <td class="border px-4 py-2">
+                            @php echo number_format($detail['harga'], 0, ',', '.'); @endphp
+                        </td>
+                        <td class="border px-4 py-2">{{ $detail['jumlah'] }}</td>
+                        <td class="border px-4 py-2">
+                            @php echo number_format($detail['subtotal'], 0, ',', '.'); @endphp
+                        </td>
+                        <td>{{ $detail['catatan'] ?? '-' }}</td>
+                        <td class="border px-4 py-2">{{ $pesanan->waktu_diantar ?? '-' }}</td>
+                        <td class="border px-4 py-2">{{ $pesanan->waktu_bayar ?? '-' }}</td>
                     </tr>
                     @endforeach
 

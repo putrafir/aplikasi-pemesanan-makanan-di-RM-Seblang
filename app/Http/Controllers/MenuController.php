@@ -58,8 +58,24 @@ class MenuController extends Controller
      */
     public function show($id)
     {
-        $menu = Menu::findOrFail($id); // ambil data menu berdasarkan id
-        return view('customer.menu-detail', compact('menu'));
+        $menu = Menu::with('kategori')->findOrFail($id);
+
+        // Tentukan placeholder sesuai kategori
+        switch (strtolower($menu->kategori->nama)) {
+            case 'makanan':
+                $placeholder = 'Contoh: Sedikit pedas';
+                break;
+            case 'minuman':
+                $placeholder = 'Contoh: Sedikit gula';
+                break;
+            case 'camilan':
+                $placeholder = 'Contoh: Tambahkan coklat';
+                break;
+            default:
+                $placeholder = 'Contoh: Tambahkan catatan sesuai selera';
+                break;
+        }
+        return view('customer.menu-detail', compact('menu', 'placeholder'));
     }
 
     /**
@@ -84,15 +100,14 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         //
-   }
+    }
 
-   public function updateRekomendasi($id)
-{
-    $menu = Menu::findOrFail($id);
-    $menu->is_recommended = !$menu->is_recommended;
-    $menu->save();
+    public function updateRekomendasi($id)
+    {
+        $menu = Menu::findOrFail($id);
+        $menu->is_recommended = !$menu->is_recommended;
+        $menu->save();
 
-    return redirect()->back()->with('message', 'Status Rekomendasi Chef berhasil diperbarui!');
-}
-
+        return redirect()->back()->with('message', 'Status Rekomendasi Chef berhasil diperbarui!');
+    }
 }

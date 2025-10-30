@@ -16,12 +16,12 @@
 
      @include('customer.body.nav')
 
-    <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-10">
+    <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-10 pb-32">
 
     {{-- Gambar --}}
     <img src="{{ asset($menu->gambar) }}"
          alt="{{ $menu->nama }}"
-         class="w-full h-80 object-cover rounded-lg mb-6">
+         class="w-full h-80 object-contain rounded-lg mb-6 bg-gray-100">
 
     {{-- Nama Menu --}}
     <h1 class="text-3xl font-bold text-gray-900 mb-3">{{ $menu->nama }}</h1>
@@ -35,13 +35,24 @@
     <p class="text-gray-700 leading-relaxed mb-6">
         {{ $menu->deskripsi ?? 'Belum ada deskripsi untuk menu ini.' }}
     </p>
+    <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
+        @csrf
+
+    {{-- Catatan (Opsional) --}}
+    <div class="mb-6">
+        <h2 class="text-lg font-semibold text-gray-800 mb-2">
+            Catatan <span class="text-gray-500 text-sm">(Opsional)</span>
+        </h2>
+
+        <textarea name="catatan"  rows="3" placeholder="{{ $placeholder }}"
+            class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 placeholder-gray-400 focus:ring-blue-400 resize-none"></textarea>
+    </div>
 
     <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
             <div class="max-w-4xl mx-auto flex items-center justify-between">
                 
                 {{-- Form Tambah ke Keranjang --}}
-    <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST" class="flex items-center space-x-4">
-        @csrf
+    
         <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
             <button type="button" onclick="decrementQty()"
                 class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
@@ -52,6 +63,8 @@
         </div>
 
         @if(strtolower($menu->stok) === 'tersedia')
+        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        
             <button type="submit"
                 class="text-white bg-blue-500 hover:bg-blue-700 px-6 py-2 rounded-lg shadow transition">
                 Tambah ke Keranjang

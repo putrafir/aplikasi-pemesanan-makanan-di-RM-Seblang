@@ -52,7 +52,8 @@
         <div class="flex justify-between">
             <h1 class="text-2xl font-bold mb-8">Keranjang Anda</h1>
         </div>
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <!-- Versi Tabel (desktop & tablet) -->
+        <div class="hidden md:block relative overflow-x-auto shadow-md sm:rounded-lg">
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
@@ -61,6 +62,7 @@
                         <th scope="col" class="px-4 py-2 text-center">Harga</th>
                         <th scope="col" class="px-4 py-2 text-center">Jumlah</th>
                         <th scope="col" class="px-4 py-2 text-center">Subtotal</th>
+                        <th scope="col" class="px-4 py-2 text-center">Catatan</th>
                         <th scope="col" class="px-4 py-2 text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -108,6 +110,10 @@
                             <td class="px-4 py-2 text-center text-blue-600 font-semibold">
                                 Rp. {{ number_format($keranjang->total_harga, 0, ',', '.') }}
                             </td>
+                            <!-- Kolom Catatan -->
+                            <td class="px-4 py-2 text-center text-gray-700">
+                                {{ $keranjang->catatan ?? '-' }}
+                            </td>
                             <td class="px-4 py-2 text-center">
                                 <form action="{{ route('customer.keranjang.delete', $keranjang->id) }}" method="POST">
                                     @csrf
@@ -124,7 +130,7 @@
 
 
         <!-- Checkout -->
-        <div class="mt-8">
+        <div class="mt-8 ">
             <form action="{{ route('customer.keranjang.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
                 <div class="mb-5">
