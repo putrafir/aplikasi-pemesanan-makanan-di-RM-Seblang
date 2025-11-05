@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/search/bydate', [AdminController::class, 'AdminSearchByDate'])->name('admin.search.bydate');
     Route::get('/admin/pesanan/{id}/detail', [AdminController::class, 'detail'])->name('admin.pesanan.detail');
     Route::get('/admin/invoice/download/{id}', [AdminController::class, 'AdminInvoiceDownload'])->name('admin.invoice.download');
+    Route::get('/admin/laporan/pdf', [AdminController::class, 'generatePDF'])->name('laporan.pdf');
     Route::get('/admin/kategori/menu', [AdminController::class, 'KategoriMenu'])->name('admin.kategori.menu');
     Route::get('/admin/tambah/kategori', [AdminController::class, 'tambahKategori'])->name('admin.tambah.kategori');
     Route::post('/admin/store/kategori', [AdminController::class, 'storeKategori'])->name('admin.store.kategori');

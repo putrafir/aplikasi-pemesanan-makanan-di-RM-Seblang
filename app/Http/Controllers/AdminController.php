@@ -304,6 +304,22 @@ class AdminController extends Controller
 
     }
 
+    public function generatePDF(Request $request)
+{
+     $tanggalAwal = Carbon::parse($request->tanggalAwal)->startOfDay();
+    $tanggalAkhir = Carbon::parse($request->tanggalAkhir)->endOfDay();
+
+    $transaksis = Transaksi::whereBetween('created_at', [$tanggalAwal, $tanggalAkhir])->get();
+    $totalPendapatan = $transaksis->sum('total_bayar');
+
+    if ($transaksis->isEmpty()) {
+        return back()->with('error', 'Tidak ada data transaksi pada rentang tanggal tersebut.');
+    }
+
+    $pdf = Pdf::loadView('admin.pdf', compact('transaksis', 'tanggalAwal', 'tanggalAkhir', 'totalPendapatan'));
+    return $pdf->download('laporan_transaksi.pdf');
+}
+
     public function KategoriMenu(){
      $kategori = Category::all();
         return view('admin.kategoriMenu', compact('kategori'));
