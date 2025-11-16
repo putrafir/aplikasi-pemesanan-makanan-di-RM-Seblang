@@ -275,7 +275,7 @@ class AdminController extends Controller
     public function detail($id)
     {
         $pesanan = Transaksi::with('details.menu')->findOrFail($id);
-        $pesanan->details = json_decode($pesanan->details);
+        $pesanan->details = json_decode($pesanan->details, true);
         return view('admin.detail', compact('pesanan'));
     }
 

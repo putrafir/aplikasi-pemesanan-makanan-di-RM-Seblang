@@ -20,6 +20,7 @@
             border: 1px solid #000;
             padding: 6px;
             text-align: left;
+            vertical-align: top;
         }
 
         th {
@@ -43,29 +44,55 @@
             text-align: right;
             margin-top: 10px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 16px;
+        }
+
+        .detail-item {
+            margin-left: 15px;
+            display: block;
+        }
+
+        .right {
+            text-align: right;
         }
     </style>
 </head>
 
 <body>
     <h2>Laporan Transaksi</h2>
-    <p class="periode">Periode: {{ $tanggalAwal->format('d M Y') }} - {{ $tanggalAkhir->format('d M Y') }}</p>
+    <p class="periode">
+        Periode: {{ $tanggalAwal->format('d M Y') }} - {{ $tanggalAkhir->format('d M Y') }}
+    </p>
 
     <table>
         <thead>
             <tr>
-                <th>Tanggal</th>
-                <th>Nomor Meja</th>
-                <th>Total</th>
+                <th style="width: 25%;">Tanggal</th>
+                <th style="width: 15%;">Nomor Meja</th>
+                <th style="width: 45%;">Detail Pesanan</th>
+                <th style="width: 15%;">Total</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($transaksis as $transaksi)
+                @php
+                    $details = json_decode($transaksi->details, true);
+                @endphp
                 <tr>
                     <td>{{ $transaksi->created_at->format('d M Y H:i') }}</td>
                     <td>{{ $transaksi->nomor_meja }}</td>
-                    <td>Rp{{ number_format($transaksi->total_bayar, 0, ',', '.') }}</td>
+                    <td>
+                        <strong>Detail Pesanan:</strong>
+                        @foreach ($details as $index => $detail)
+                            <span class="detail-item">
+                                {{ $index + 1 }}. {{ $detail['nama'] }} {{ $detail['jumlah'] }} x
+                                Rp{{ number_format($detail['harga'], 0, ',', '.') }}
+                            </span>
+                        @endforeach
+                    </td>
+                    <td class="left">
+                        <strong>Rp{{ number_format($transaksi->total_bayar, 0, ',', '.') }}</strong>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

@@ -53,6 +53,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         <th scope="col" class="px-6 py-3">
                             Total
                         </th>
+                        <th scope="col" class="px-6 py-3">
+                            Action
+                        </th>
 
                     </tr>
                 </thead>
@@ -69,6 +72,11 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             </td>
                             <td class="px-6 py-4">
                                 Rp{{ number_format($transaksi->total_bayar, 0, ',', '.') }}
+                            </td>
+                            <td class="px-6 py-4">
+                                <a href="{{ route('admin.pesanan.detail', ['id' => $transaksi->id]) }}"
+                                    class="font-medium text-red-500 dark:text-blue-500 hover:underline"><i
+                                        class="fas fa-eye  me-1"></i>Detail</a>
                             </td>
 
                         </tr>

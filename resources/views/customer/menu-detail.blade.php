@@ -51,15 +51,6 @@
                 <div class="max-w-4xl mx-auto flex items-center justify-between">
 
                     {{-- Form Tambah ke Keranjang --}}
-
-                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                        <button type="button" onclick="decrementQty()"
-                            class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
-                        <input id="quantity" type="number" name="quantity" value="1" min="1"
-                            class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
-                        <button type="button" onclick="incrementQty()"
-                            class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
-                    </div>
                     <form id="formKeranjang" action="{{ route('customer.keranjang.add') }}" method="POST"
                         class="flex items-center space-x-4">
                         @csrf
