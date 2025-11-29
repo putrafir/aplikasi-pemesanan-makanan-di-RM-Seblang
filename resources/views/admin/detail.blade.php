@@ -36,11 +36,15 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 @foreach ($pesanan->details as $detail)
                     <tr>
                         <td class="border px-4 py-2">{{ $loop->iteration }}</td>
-                        <td class="border px-4 py-2">{{ $detail->nama }}</td>
+                        <td class="border px-4 py-2">{{ $detail['nama'] }}</td>
 
-                        <td class="border px-4 py-2">@php echo number_format($detail->harga, 0, ',', '.'); @endphp</td>
-                        <td class="border px-4 py-2">{{ $detail->jumlah }}</td>
-                        <td class="border px-4 py-2">@php echo number_format($detail->subtotal, 0, ',', '.'); @endphp</td>
+                        <td class="border px-4 py-2">
+                            {{ number_format($detail['harga'], 0, ',', '.') }}
+                        </td>
+                        <td class="border px-4 py-2">{{ $detail['jumlah'] }}</td>
+                        <td class="border px-4 py-2">
+                            {{ number_format($detail['subtotal'], 0, ',', '.') }}
+                        </td>
                     </tr>
                 @endforeach
 

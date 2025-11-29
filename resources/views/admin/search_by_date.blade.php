@@ -22,14 +22,22 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     <div class="p-4 ">
 
         <div class=" overflow-x-auto shadow-md sm:rounded-lg">
-            <h2 class="text-xl text-blue-500 font-bold mb-4">
-                Hasil Pencarian dari {{ $tanggalAwal->format('d M Y') }} sampai {{ $tanggalAkhir->format('d M Y') }}
-            </h2>
+            <div class="mb-4">
+                <h2 class="text-xl text-blue-500 font-bold mb-4">
+                    Hasil Pencarian dari {{ $tanggalAwal->format('d M Y') }} sampai {{ $tanggalAkhir->format('d M Y') }}
+                </h2>
 
-            <h2 class="text-xl text-blue-500 font-bold mb-2">
-                Total Pendapatan: <span class="text-green-600">Rp
-                    {{ number_format($totalPendapatan, 0, ',', '.') }}</span>
-            </h2>
+                <h2 class="text-xl text-blue-500 font-bold mb-2">
+                    Total Pendapatan:
+                    <span class="text-green-600">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</span>
+                </h2>
+
+                <a href="{{ route('laporan.pdf', ['tanggalAwal' => $tanggalAwal->format('Y-m-d'), 'tanggalAkhir' => $tanggalAkhir->format('Y-m-d')]) }}"
+                    class="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow mt-2">
+                    <i class="fa fa-print"></i> Print
+                </a>
+            </div>
+
 
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -38,12 +46,14 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             Tanggal
                         </th>
                         <th scope="col" class="px-6 py-3">
-                            Metode Pembayaran
+                            Meja
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Total
                         </th>
                         <th scope="col" class="px-6 py-3">
                             Action
                         </th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -55,15 +65,15 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                 {{ $transaksi->created_at->format('d M Y H:i') }}
                             </th>
                             <td class="px-6 py-4">
-                                {{ $transaksi->metode_pembayaran }}
+                                {{ $transaksi->nomor_meja }}
+                            </td>
+                            <td class="px-6 py-4">
+                                Rp{{ number_format($transaksi->total_bayar, 0, ',', '.') }}
                             </td>
                             <td class="px-6 py-4">
                                 <a href="{{ route('admin.pesanan.detail', ['id' => $transaksi->id]) }}"
                                     class="font-medium text-red-500 dark:text-blue-500 hover:underline"><i
                                         class="fas fa-eye  me-1"></i>Detail</a>
-                                <a href="{{ route('admin.invoice.download', ['id' => $transaksi->id]) }}"
-                                    class="font-medium text-red-500 dark:text-blue-500 hover:underline">
-                                    <i class="fa fa-download  ms-4"></i>Invoice</a>
                             </td>
 
 
