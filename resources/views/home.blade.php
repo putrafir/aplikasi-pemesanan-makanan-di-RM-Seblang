@@ -113,84 +113,94 @@
 
         <!-- Konten Semua -->
         <div class="kategori-content" id="kategori-semua">
-            <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">Semua Menu</h2>
-            <div class="px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                @php
-                    $allMenus = $kategoris->flatMap->menus;
-                @endphp
-                
-                    @foreach ($allMenus as $menu)
-                        <div data-nama="{{ strtolower($menu->nama) }}"  
-                            class="cursor-pointer menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+    <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">Semua Menu</h2>
+    <div class="px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        @php
+            $allMenus = $kategoris->flatMap->menus;
 
-                            {{-- 🟡 Icon Best Seller --}}
-                            @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
-                                <div class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
-                                     <i class="fas fa-star"></i> Best Seller
-                                </div>
-                            @endif
+            // Urutkan agar stok "tersedia" di atas, dan "habis" di bawah
+            $sortedMenus = $allMenus->sortBy(function ($menu) {
+                return strtolower($menu->stok) === 'tersedia' ? 0 : 1;
+            });
+        @endphp
+        
+        @foreach ($sortedMenus as $menu)
+            <div data-nama="{{ strtolower($menu->nama) }}"  
+                class="cursor-pointer menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
 
-                            {{-- 🧑‍🍳 Icon Rekomendasi Chef --}}
-                            @if (isset($recommendedMenus) && in_array($menu->id, $recommendedMenus))
-                                <div class="absolute top-3 right-3 bg-orange-500 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
-                                    <i class="fas fa-user-tie"></i> Recomended
-                                </div>
-                            @endif
-
-                            <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
-                                <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
-                                    src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
-                            </a>
-                            <div class="px-5 pb-5">
-                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
-                                    <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
-                                        <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
-                                    </a>
-                                    <span class="text-3xl font-bold text-blue-700">
-                                    Rp. @php echo number_format($menu->harga, 0, ',', '.'); @endphp
-                                    </span>
-                                </div>
-                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
-                                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
-                                        <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
-                                        @csrf
-                                        <button type="button" onclick="decrementQty()" 
-                                            class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
-                                        <input id="quantity" type="number" name="quantity" value="1" min="1"
-                                            class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
-                                        <button type="button" onclick="incrementQty()" 
-                                            class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
-                                    </div>
-                                    @if(strtolower($menu->stok) === 'tersedia')
-                                            <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                            <button type="submit"
-                                                class="text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                                Tambah
-                                            </button>
-                                        </form>
-                                    @else
-                                        <button
-                                            class="text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                            disabled>
-                                            Habis
-                                        </button>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-            </div>
-            @if($allMenus->isEmpty())
-                    <div class="flex flex-col w-full items-center justify-center py-10">
-                        <h1 class="text-gray-600 text-xl font-semibold">
-                            Tidak ada menu yang tersedia
-                        </h1>
-                        <img src="{{ asset('src/images/empty-menu.png') }}" 
-                            alt="Tidak ada menu" 
-                            class="w-48 h-48 object-contain mb-4 opacity-80">
+                {{-- 🟡 Icon Best Seller --}}
+                @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
+                    <div class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                         <i class="fas fa-star"></i> Best Seller
                     </div>
                 @endif
+
+                {{-- 🧑‍🍳 Icon Rekomendasi Chef --}}
+                @if (isset($recommendedMenus) && in_array($menu->id, $recommendedMenus))
+                    <div class="absolute top-3 right-3 bg-orange-500 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                        <i class="fas fa-user-tie"></i> Recomended
+                    </div>
+                @endif
+
+                <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
+                    <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
+                        src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
+                </a>
+
+                <div class="px-5 pb-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
+                        <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
+                            <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
+                        </a>
+                        <span class="text-3xl font-bold text-blue-700">
+                            Rp. @php echo number_format($menu->harga, 0, ',', '.'); @endphp
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
+                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
+                            <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
+                                @csrf
+                                <button type="button" onclick="decrementQty()" 
+                                    class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
+                                <input id="quantity" type="number" name="quantity" value="1" min="1"
+                                    class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
+                                <button type="button" onclick="incrementQty()" 
+                                    class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
+                        </div>
+
+                        @if(strtolower($menu->stok) === 'tersedia')
+                            <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                            <button type="submit"
+                                class="text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                Tambah
+                            </button>
+                            </form>
+                        @else
+                            <button
+                                class="text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                disabled>
+                                Habis
+                            </button>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+
+    @if($allMenus->isEmpty())
+        <div class="flex flex-col w-full items-center justify-center py-10">
+            <h1 class="text-gray-600 text-xl font-semibold">
+                Tidak ada menu yang tersedia
+            </h1>
+            <img src="{{ asset('src/images/empty-menu.png') }}" 
+                alt="Tidak ada menu" 
+                class="w-48 h-48 object-contain mb-4 opacity-80">
         </div>
+    @endif
+</div>
+
 
         <!-- Konten per Kategori -->
         @foreach ($kategoris as $index => $kategori)
