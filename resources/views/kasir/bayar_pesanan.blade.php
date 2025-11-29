@@ -7,6 +7,7 @@
     <title>Bayar Pesanan</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body x-data="{ 'darkMode': false, 'sidebarToggle': false}" x-init="
