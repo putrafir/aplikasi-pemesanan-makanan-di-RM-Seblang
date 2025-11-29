@@ -272,7 +272,7 @@ class AdminController extends Controller
     public function detail($id)
     {
         $pesanan = Transaksi::with('details.menu')->findOrFail($id);
-        $pesanan->details = json_decode($pesanan->details);
+        $pesanan->details = json_decode($pesanan->details, true);
         return view('admin.detail', compact('pesanan'));
     }
 
@@ -300,6 +300,22 @@ class AdminController extends Controller
         return $pdf->download('invoice.pdf');
 
     }
+
+    public function generatePDF(Request $request)
+{
+     $tanggalAwal = Carbon::parse($request->tanggalAwal)->startOfDay();
+    $tanggalAkhir = Carbon::parse($request->tanggalAkhir)->endOfDay();
+
+    $transaksis = Transaksi::whereBetween('created_at', [$tanggalAwal, $tanggalAkhir])->get();
+    $totalPendapatan = $transaksis->sum('total_bayar');
+
+    if ($transaksis->isEmpty()) {
+        return back()->with('error', 'Tidak ada data transaksi pada rentang tanggal tersebut.');
+    }
+
+    $pdf = Pdf::loadView('admin.pdf', compact('transaksis', 'tanggalAwal', 'tanggalAkhir', 'totalPendapatan'));
+    return $pdf->download('laporan_transaksi.pdf');
+}
 
     public function KategoriMenu(){
      $kategori = Category::all();
