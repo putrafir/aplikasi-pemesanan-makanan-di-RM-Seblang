@@ -13,15 +13,20 @@ return new class extends Migration
     {
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('session_id');
             $table->unsignedBigInteger('menu_id');
             $table->integer('jumlah');
             $table->decimal('harga_satuan', 10, 2);
             $table->integer('total_harga');
+            $table->text('catatan')->nullable();
             $table->timestamps();
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade');
+            $table->text('catatan')->nullable();
         });
     }
+
+
 
     /**
      * Reverse the migrations.

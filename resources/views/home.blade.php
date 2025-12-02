@@ -1,27 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SelfServe</title>
+    <title>Warung Seblang | Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <style>
+        /* Toast Animation */
+        .toast {
+            animation: slideIn 0.5s, fadeOut 0.5s 3s forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+    </style>
 </head>
 
-<body>
-
-
-    
+<body class="bg-blue-100 dark:bg-gray-900">
 
     <!-- Tab Kategori -->
 
-        <nav class="border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+
+        <nav class="border-blue-200 bg-white dark:bg-gray-800 dark:border-blue-700">
             <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <a href="{{ route('customer.menu') }}"><svg class="w-6 h-6 text-gray-800 dark:text-white"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                {{-- Tombol back --}}
+                <a href="{{ route('customer.menu') }}"
+                class="relative inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full shadow hover:bg-blue-200 transition duration-300"
+                title="Menu">
+                        <!-- Icon -->
+                    <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                         fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
                             d="M13.729 5.575c1.304-1.074 3.27-.146 3.27 1.544v9.762c0 1.69-1.966 2.618-3.27 1.544l-5.927-4.881a2 2 0 0 1 0-3.088l5.927-4.88Z"
@@ -39,29 +72,68 @@
             </button>
         </form>
     </div>
-                <a href="{{ route('customer.keranjang.view') }}">
-                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                        viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
-
-
-
+                {{-- Keranjang ICON --}}
+                <a href="{{ route('customer.keranjang.view') }}"
+                    class="relative inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full shadow hover:bg-blue-200 transition duration-300">
+                        <!-- Icon -->
+                        <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </a>
 
             </div>
-        </nav>
+            {{-- Keranjang ICON --}}
+            <a href="{{ route('customer.keranjang.view') }}"
+                class="relative inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full shadow hover:bg-blue-200 transition duration-300">
+                <!-- Icon -->
+                <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                    viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                        d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"
+                        clip-rule="evenodd" />
+                </svg>
+            </a>
+        </div>
+    </nav>
 
-        <ul class="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200">
+    @if ($nomorMeja)
+        <div class="bg-orange-100 p-3 rounded text-center mx-4 mt-4 shadow">
+            <span class="font-semibold text-black">Nomor Meja:</span>
+            <span class="font-semibold text-black">{{ $nomorMeja }}</span>
+        </div>
+    @endif
+
+
+    <div class="w-full overflow-x-auto scrollbar-hide scroll-smooth">
+        <ul
+            class="flex flex-nowrap md:flex-wrap text-sm font-medium text-center text-gray-500 mt-4 mb-6 px-4 md:px-6 gap-3 md:gap-4">
+
+            {{-- Tab Semua --}}
+            <li class="flex-shrink-0">
+                <a href="javascript:void(0)" onclick="showCategory('semua')"
+                    class="kategori-tab block px-6 py-3 rounded-xl shadow-md border border-gray-200
+                            bg-white text-gray-600 font-medium transform transition-all duration-300
+                            hover:scale-105 hover:shadow-lg hover:bg-blue-50 active"
+                    id="tab-semua">
+                    Semua
+                </a>
+            </li>
+
+            {{-- Tab Kategori Dinamis --}}
 
             @foreach ($kategoris as $index => $kategori)
                 @php $kategoriId = Str::slug($kategori->nama); @endphp
-                <li class="me-2">
+
+                <li class="me-2 ">
                     <a href="javascript:void(0)" onclick="showCategory('{{ $kategoriId }}')"
-                        class="inline-block p-4 rounded-t-lg kategori-tab {{ $index == 0 ? 'text-blue-600 bg-gray-100 active' : '' }}"
+                        class="kategori-tab block px-6 py-3 rounded-xl shadow-md border border-gray-200
+                            bg-white text-gray-600 font-medium transform transition-all duration-300
+                            hover:scale-105 hover:shadow-lg hover:bg-blue-50 {{ $index == 0 ? 'text-blue-600 bg-gray-100 active' : '' }}"
                         id="tab-{{ $kategoriId }}">
                         {{ $kategori->nama }}
                     </a>
@@ -69,67 +141,344 @@
             @endforeach
         </ul>
 
+                @foreach ($kategoris as $index => $kategori)
+                    @php $kategoriId = Str::slug($kategori->nama); @endphp
+                    <li class="flex-shrink-0">
+                        <a href="javascript:void(0)" onclick="showCategory('{{ $kategoriId }}')"
+                            class="kategori-tab block px-6 py-3 rounded-xl shadow-md border border-gray-200
+                                bg-white text-gray-600 font-medium transform transition-all duration-300
+                                hover:scale-105 hover:shadow-lg hover:bg-blue-50 {{ $index == 0 ? 'text-blue-600 bg-gray-100 active' : '' }}"
+                            id="tab-{{ $kategoriId }}">
+                            {{ $kategori->nama }}
+                        </a>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+
+
+
+        <!-- Konten Semua -->
+        <div class="kategori-content" id="kategori-semua">
+            <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">Semua Menu</h2>
+            <div class="px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                @php
+                    $allMenus = $kategoris->flatMap->menus;
+                @endphp
+
+                    @foreach ($allMenus as $menu)
+                        <div data-nama="{{ strtolower($menu->nama) }}"
+                            class="cursor-pointer menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+
+
+                            {{-- 🟡 Icon Best Seller --}}
+                            @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
+                                <div class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                     <i class="fas fa-star"></i> Best Seller
+                                </div>
+                            @endif
+
+
+
+    <!-- Konten Semua -->
+    <div class="kategori-content" id="kategori-semua">
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">Semua Menu</h2>
+        <div class="px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            @php
+                $allMenus = $kategoris->flatMap->menus;
+            @endphp
+
+            @foreach ($allMenus as $menu)
+                <div data-nama="{{ strtolower($menu->nama) }}"
+                    class="cursor-pointer menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+
+                    {{-- 🟡 Icon Best Seller --}}
+                    @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
+                        <div
+                            class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                            <i class="fas fa-star"></i> Best Seller
+                        </div>
+                    @endif
+
+                    {{-- 🧑‍🍳 Icon Rekomendasi Chef --}}
+                    @if (isset($recommendedMenus) && in_array($menu->id, $recommendedMenus))
+                        <div
+                            class="absolute top-3 right-3 bg-orange-500 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                            <i class="fas fa-user-tie"></i> Recomended
+                        </div>
+                    @endif
+
+                    <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
+                        <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
+                            src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
+                    </a>
+                    <div class="px-5 pb-5">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
+
+                            <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
+                                <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
+                            </a>
+
+                            {{-- Detail Menu --}}
+                            <div class="px-5 pb-5">
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
+                                    <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
+                                        <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
+                                    </a>
+                                    <span class="text-3xl font-bold text-blue-700">
+                                        Rp. @php echo number_format($menu->harga, 0, ',', '.'); @endphp
+                                    </span>
+                                </div>
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
+                                    <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
+                                        <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
+
+                                            @csrf
+                                            <button type="button" onclick="decrementQty()"
+                                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
+                                            <input id="quantity" type="number" name="quantity" value="1" min="1"
+                                                class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
+                                            <button type="button" onclick="incrementQty()"
+                                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
+
+                                    </div>
+
+                                    @if(strtolower($menu->stok) === 'tersedia')
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <button type="submit"
+                                            class="text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                            Tambah
+                                        </button>
+                                        </form>
+                                    @else
+                                        <button
+                                            class="text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                            disabled>
+                                            Habis
+                                        </button>
+                                    @endif
+                                </div>
+
+                            </div>
+                            @if (strtolower($menu->stok) === 'tersedia')
+                                <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                <button type="submit"
+                                    class="text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                    Tambah
+                                </button>
+                                </form>
+                            @else
+                                <button
+                                    class="text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                    disabled>
+                                    Habis
+                                </button>
+                            @endif
+                        </div>
+
+                    @endforeach
+            </div>
+            @if($allMenus->isEmpty())
+                    <div class="flex flex-col w-full items-center justify-center py-10">
+                        <h1 class="text-gray-600 text-xl font-semibold">
+                            Tidak ada menu yang tersedia
+                        </h1>
+                        <img src="{{ asset('src/images/empty-menu.png') }}"
+                            alt="Tidak ada menu"
+                            class="w-48 h-48 object-contain mb-4 opacity-80">
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        @if ($allMenus->isEmpty())
+            <div class="flex flex-col w-full items-center justify-center py-10">
+                <h1 class="text-gray-600 text-xl font-semibold">
+                    Tidak ada menu yang tersedia
+                </h1>
+                <img src="{{ asset('src/images/empty-menu.png') }}" alt="Tidak ada menu"
+                    class="w-48 h-48 object-contain mb-4 opacity-80">
+            </div>
+        @endif
+    </div>
+
         <!-- Konten per Kategori -->
         @foreach ($kategoris as $index => $kategori)
             @php $kategoriId = Str::slug($kategori->nama); @endphp
             <div class="kategori-content {{ $index == 0 ? '' : 'hidden' }}" id="kategori-{{ $kategoriId }}">
                 <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">{{ $kategori->nama }}</h2>
-                <div class="px-4 py-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    @if ($kategori->menus->isEmpty())
-                        <p class="text-red-500">Tidak ada menu di kategori ini.</p>
-                    @endif
-
+                <div class="px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     @foreach ($kategori->menus as $menu)
-                        <div data-nama="{{ strtolower($menu->nama) }}"
-                            class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg">
-                            <a href="#">
-                                <img class="p-4 rounded-t-lg w-full h-40 object-cover"
-                                    src="/docs/images/products/apple-watch.png" alt="{{ $menu->nama }}" />
-                            </a>
-                            <div class="px-5 pb-5">
-                                <a href="#">
+                        <div data-nama="{{ strtolower($menu->nama) }} "
+                            class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+
+                            {{-- 🟡 Icon Best Seller --}}
+                            @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
+                                <div class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                     <i class="fas fa-star"></i> Best Seller
+                                </div>
+                            @endif
+
+
+    <!-- Konten per Kategori -->
+    @foreach ($kategoris as $index => $kategori)
+        @php $kategoriId = Str::slug($kategori->nama); @endphp
+        <div class="kategori-content {{ $index == 0 ? '' : 'hidden' }}" id="kategori-{{ $kategoriId }}">
+            <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">{{ $kategori->nama }}</h2>
+            <div class="px-4 py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                @foreach ($kategori->menus as $menu)
+                    <div data-nama="{{ strtolower($menu->nama) }} "
+                        class="menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+
+                        {{-- 🟡 Icon Best Seller --}}
+                        @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
+                            <div
+                                class="absolute top-3 left-3 bg-yellow-400 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                <i class="fas fa-star"></i> Best Seller
+                            </div>
+                        @endif
+
+                        {{-- 🧑‍🍳 Icon Rekomendasi Chef --}}
+                        @if (isset($recommendedMenus) && in_array($menu->id, $recommendedMenus))
+                            <div
+                                class="absolute top-3 right-3 bg-orange-500 text-white text-sm font-semibold px-2 py-1 rounded-full flex items-center gap-1 shadow">
+                                <i class="fas fa-user-tie"></i> Recomended
+                            </div>
+                        @endif
+
+                        <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
+                            <img class="p-4 rounded-3xl w-full h-90 aspect-square object-cover"
+                                src="{{ asset($menu->gambar) }}" alt="{{ $menu->nama }}" />
+                        </a>
+                        <div class="px-5 pb-5">
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
+                                <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                     <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}
                                     </h5>
                                 </a>
-                                <div class="flex items-center mt-2.5 mb-5">
-                                    <span
-                                        class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded-sm">5.0</span>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-3xl font-bold text-gray-900">
-                                        @php echo number_format($menu->harga, 0, ',', '.'); @endphp
-                                    </span>
+                                <span class="text-3xl font-bold text-blue-700">
+                                    Rp. @php echo number_format($menu->harga, 0, ',', '.'); @endphp
+                                </span>
+                            </div>
+                            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
+                                <!-- Tombol QTY -->
+                                <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
                                     <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
                                         @csrf
+                                        <button type="button" onclick="decrementQty()"
+                                            class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
+
+                                        <input id="quantity" type="number" name="quantity" value="1"
+                                            min="1"
+                                            class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
+
+                                        <button type="button" onclick="incrementQty()"
+                                            class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
+                                </div>
+
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
+                                        <!-- Tombol QTY -->
+                                        <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
+                                            <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
+                                            @csrf
+                                            <button type="button" onclick="decrementQty()"
+                                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
+
+                                            <input id="quantity" type="number" name="quantity" value="1" min="1"
+                                                class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
+
+                                            <button type="button" onclick="incrementQty()"
+                                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
+                                        </div>
+                                    @if(strtolower($menu->stok) === 'tersedia')
+
                                         <input type="hidden" name="menu_id" value="{{ $menu->id }}">
                                         <button type="submit"
-                                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                            class="text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
                                             Tambah
                                         </button>
+
                                     </form>
-                                </div>
+                                @else
+                                    <button
+                                        class="text-white bg-gray-400 cursor-not-allowed font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                                        disabled>
+                                        Habis
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     @endforeach
                 </div>
+                @if ($kategori->menus->isEmpty())
+                    <div class="flex flex-col w-full items-center justify-center py-10">
+                        <h1 class="text-gray-600 text-xl font-semibold">
+                            Tidak ada menu yang tersedia
+                        </h1>
+                        <img src="{{ asset('src/images/empty-menu.png') }}"
+                            alt="Tidak ada menu"
+                            class="w-48 h-48 object-contain mb-4 opacity-80">
+
+                    </div>
+                @endforeach
             </div>
-        @endforeach
+            @if ($kategori->menus->isEmpty())
+                <div class="flex flex-col w-full items-center justify-center py-10">
+                    <h1 class="text-gray-600 text-xl font-semibold">
+                        Tidak ada menu yang tersedia
+                    </h1>
+                    <img src="{{ asset('src/images/empty-menu.png') }}" alt="Tidak ada menu"
+                        class="w-48 h-48 object-contain mb-4 opacity-80">
+                </div>
+            @endif
+        </div>
+    @endforeach
 
-        <!-- Script: Pencarian -->
-        <script>
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', function() {
-                const searchValue = this.value.toLowerCase();
-                const menuItems = document.querySelectorAll('.menu-item');
-                menuItems.forEach(item => {
-                    const namaMenu = item.getAttribute('data-nama');
-                    item.style.display = namaMenu.includes(searchValue) ? 'block' : 'none';
-                });
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-5 right-5 space-y-2 z-50"></div>
+
+    <script>
+        function showToast(message, type = 'success') {
+            const container = document.getElementById("toast-container");
+            const toast = document.createElement("div");
+
+            toast.className =
+                "toast px-4 py-2 rounded-lg shadow-md text-white " +
+                (type === 'success' ? "bg-blue-600" : "bg-red-600");
+
+            toast.innerText = message;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 4000);
+        }
+
+        // Panggil sesuai flash message Laravel
+        @if (session('success'))
+            showToast("{{ session('success') }}", "success");
+        @endif
+
+        @if (session('error'))
+            showToast("{{ session('error') }}", "error");
+        @endif
+    </script>
+
+
+    <!-- Script: Pencarian -->
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                const namaMenu = item.getAttribute('data-nama');
+                item.style.display = namaMenu.includes(searchValue) ? 'block' : 'none';
             });
-        </script>
+        });
+    </script>
 
-        <!-- Script: Navigasi Tab -->
-        <script>
+    <!-- Script: Navigasi Tab -->
+    {{-- <script>
             function showCategory(category) {
                 document.querySelectorAll('.kategori-content').forEach(el => el.classList.add('hidden'));
                 const kategoriEl = document.getElementById('kategori-' + category);
@@ -141,7 +490,72 @@
                 const tabEl = document.getElementById('tab-' + category);
                 if (tabEl) tabEl.classList.add('text-blue-600', 'bg-gray-100', 'active');
             }
-        </script>
+        </script> --}}
+
+    <script>
+        function showCategory(category) {
+            // Sembunyikan semua konten kategori
+            document.querySelectorAll('.kategori-content').forEach(el => el.classList.add('hidden'));
+            const kategoriEl = document.getElementById('kategori-' + category);
+            if (kategoriEl) kategoriEl.classList.remove('hidden');
+
+            // Reset semua tab ke default (putih abu-abu)
+            document.querySelectorAll('.kategori-tab').forEach(el => {
+                el.classList.remove('bg-blue-400', 'text-white', 'active');
+                el.classList.add('bg-white', 'text-gray-600');
+            });
+
+            // Aktifkan tab yang dipilih (biru penuh)
+            const tabEl = document.getElementById('tab-' + category);
+            if (tabEl) {
+                tabEl.classList.remove('bg-white', 'text-gray-600');
+                tabEl.classList.add('bg-blue-400', 'text-white', 'active');
+            }
+        }
+
+        // Set tab pertama aktif otomatis saat load
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstTab = document.querySelector('.kategori-tab');
+            if (firstTab) firstTab.click();
+        });
+    </script>
+
+    <!-- Script: Tombol QTY -->
+    <script>
+        function incrementQty() {
+            let qty = document.getElementById('quantity');
+            qty.value = parseInt(qty.value) + 1;
+
+            // Animasi
+            qty.classList.add("flash");
+            qty.previousElementSibling.classList.add("bounce");
+            qty.nextElementSibling.classList.add("bounce");
+
+            setTimeout(() => {
+                qty.classList.remove("flash");
+                qty.previousElementSibling.classList.remove("bounce");
+                qty.nextElementSibling.classList.remove("bounce");
+            }, 400);
+        }
+
+        function decrementQty() {
+            let qty = document.getElementById('quantity');
+            if (parseInt(qty.value) > 1) {
+                qty.value = parseInt(qty.value) - 1;
+
+                // Animasi
+                qty.classList.add("flash");
+                qty.previousElementSibling.classList.add("bounce");
+                qty.nextElementSibling.classList.add("bounce");
+
+                setTimeout(() => {
+                    qty.classList.remove("flash");
+                    qty.previousElementSibling.classList.remove("bounce");
+                    qty.nextElementSibling.classList.remove("bounce");
+                }, 400);
+            }
+        }
+    </script>
 
 </body>
 

@@ -7,8 +7,9 @@ use App\Http\Requests\UpdateKeranjangRequest;
 use App\Models\Keranjang;
 use App\Models\Menu;
 use App\Models\Transaksi;
+use App\Models\NomorMeja;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\Auth;
 
 class KeranjangController extends Controller
 {
@@ -16,36 +17,50 @@ class KeranjangController extends Controller
     public function index(Request $request)
     {
         $sessionId = $request->session()->getId();
+        $nomor_mejas = NomorMeja::where('status', 'tersedia')->orderBy('nomor')->get();
         $keranjangs = Keranjang::where('session_id', $sessionId)->with('menu')->get();
         $totalBayar = $keranjangs->sum('total_harga');
-        return view('customer.keranjang', compact('keranjangs', 'totalBayar'));
+
+        // Tambahan untuk popup detail
+        $pesanan = Transaksi::where('session_id', $sessionId)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return view('customer.keranjang', compact('keranjangs', 'totalBayar', 'nomor_mejas', 'pesanan'));
     }
-    
+
     public function addToCart(Request $request)
     {
         $request->validate([
             'menu_id' => 'required|exists:menus,id',
+            'quantity' => 'nullable|integer|min:1',
+            'catatan' => 'nullable|string|max:255',
         ]);
 
         $menu = Menu::findOrFail($request->menu_id);
 
         $sessionId = $request->session()->getId();
 
+        // ambil quantity dari request, default = 1
+        $jumlah = $request->input('quantity', 1);
+
         $keranjang = Keranjang::where('menu_id', $request->menu_id)
             ->where('session_id', $sessionId)
             ->first();
 
         if ($keranjang) {
-            $keranjang->jumlah += 1;
+            $keranjang->jumlah += $jumlah;
             $keranjang->total_harga = $keranjang->jumlah * $menu->harga;
+            $keranjang->catatan = $request->catatan ?? $keranjang->catatan;
             $keranjang->save();
         } else {
             Keranjang::create([
                 'session_id' => $sessionId,
                 'menu_id' => $request->menu_id,
                 'harga_satuan' => $menu->harga,
-                'jumlah' => 1,
-                'total_harga' => $menu->harga,
+                'jumlah' => $jumlah,
+                'total_harga' => $menu->harga * $jumlah,
+                'catatan' => $request->catatan,
             ]);
         }
 
@@ -58,47 +73,48 @@ class KeranjangController extends Controller
         $keranjang->delete();
 
         return redirect()->back()->with('success', 'Produk berhasil dihapus dari keranjang.');
+
     }
+
+
 
     public function checkout(Request $request)
     {
 
         $sessionId = $request->session()->getId();
-
-
         $keranjangs = Keranjang::where('session_id', $sessionId)->get();
-        $request->validate([
-            "nomor_meja"=>"unique:transaksis,nomor_meja,required",
-        ]);
+
+
+
+
+
+        // $request->validate([
+        //     'nomor_meja' => 'nullable|string|max:10',
+        //     'nomor_meja_manual' => 'nullable|string|max:10',
+        // ]);
+
         if ($keranjangs->isEmpty()) {
             return redirect()->back()->with('error', 'Keranjang kosong, tidak ada yang bisa dibayar.');
         }
 
-        $totalBayar = $keranjangs->sum('total_harga');
+        if (auth()->check() && auth()->user()->role == 'kasir') {
+            $request->validate([
+                'nomor_meja' => 'nullable|string|max:10',
+                'nomor_meja_manual' => 'nullable|string|max:10',
+            ]);
+            $nomorMejaInput = $request->nomor_meja_manual ?: $request->nomor_meja;
+        } else {
+            $request->validate([
+                'nomor_meja' => 'required|exists:nomor_mejas,nomor',
+            ]);
+            $nomorMejaInput = $request->nomor_meja;
+        }
+
+        if (!$nomorMejaInput) {
+            return redirect()->back()->with('error', 'Nomor meja wajib diisi.');
+        }
 
 
 
-
-
-        $details = $keranjangs->map(function ($keranjang) {
-            return [
-                'menu_id' => $keranjang->menu_id,
-                'nama' => $keranjang->menu->nama,
-                'jumlah' => $keranjang->jumlah,
-                'harga' => $keranjang->harga_satuan,
-                'subtotal' => $keranjang->total_harga,
-            ];
-        });
-
-        $transaksi = Transaksi::create([
-            'total_bayar' => $totalBayar,
-            'nomor_meja' => $request->nomor_meja,
-            'session_id' => $sessionId,
-            'details' => $details->toJson(),
-        ]);
-
-        Keranjang::where('session_id', $sessionId)->delete();
-
-        return redirect()->back()->with('success', "Pemesanan berhasil, silakan bayar nanti sebesar Rp. $totalBayar");
-    }
 }
+

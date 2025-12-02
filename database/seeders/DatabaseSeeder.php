@@ -30,12 +30,12 @@ class DatabaseSeeder extends Seeder
             'password' => 'kasir',
         ]);
 
-        $categories = ['Makanan', 'Minuman', 'Dessert'];
+        $categories = ['Makanan', 'Minuman', 'Camilan'];
 
         foreach ($categories as $category) {
             Category::create(['nama' => $category]);
         }
 
-        Menu::factory()->count(10)->create();
+        //Menu::factory()->count(10)->create();
     }
 }
