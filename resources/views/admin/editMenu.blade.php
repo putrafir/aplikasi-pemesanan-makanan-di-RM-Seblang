@@ -39,8 +39,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         </div>
         <div class="mb-3">
 
-            <img id="showImage" src="{{ asset($menu->gambar) }}" alt=""
-                class="rounded-circle p-1 bg-primary" width="110">
+            <img id="showImage" src="{{ asset($menu->gambar) }}" alt="" class="rounded-circle p-1 bg-primary"
+                width="110">
         </div>
 
 

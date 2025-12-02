@@ -14,9 +14,10 @@
 
 <body class="bg-blue-100" x-data="{ toast: '', showToast: false }">
 
-     @include('customer.body.nav')
+    @include('customer.body.nav')
 
     <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-10 pb-32">
+
 
     {{-- Gambar --}}
     <img src="{{ asset($menu->gambar) }}"
@@ -80,3 +81,4 @@
     }
 </script>
 @endsection
+

@@ -29,11 +29,14 @@
     :class="{ 'dark bg-gray-900': darkMode === true }"
     class="relative min-w-screen overflow-x-hidden">
 
+
     <!-- Sidebar -->
+
     @include('admin.body.sidebar')
 
     <!-- Header -->
     @include('admin.body.header')
+
 
     <!-- MAIN CONTENT -->
     <main
@@ -89,6 +92,7 @@
                                 <!-- Stok -->
                                 <td class="px-4 sm:px-6 py-4">
                                     <form action="{{ route('admin.update.stok', $menu->id) }}" method="POST">
+
                                         @csrf
                                         @method('PUT')
                                         <input type="hidden" name="stok_baru"

@@ -17,13 +17,26 @@
         }
 
         @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fadeOut {
-            from { opacity: 1; }
-            to { opacity: 0; transform: translateX(100%); }
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
         }
 
         /* Footer animation */
@@ -36,6 +49,7 @@
                 transform: translateY(100%);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -46,7 +60,7 @@
 
 <body class="bg-blue-100" x-data="{ toast: '', showToast: false }">
 
-     @include('customer.body.nav')
+    @include('customer.body.nav')
 
     <div class="container mx-auto mt-6 p-4 bg-white rounded-lg shadow-md">
         <div class="flex justify-between">
@@ -70,7 +84,8 @@
                     @foreach ($keranjangs as $keranjang)
                         <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200">
                             <td class="px-4 py-2">{{ $loop->iteration }}</td>
-                            <td scope="row" class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            <td scope="row"
+                                class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $keranjang->menu->nama }}
                                 @if ($keranjang->ukuran)
                                     <div class="text-xs text-gray-500">(Ukuran: {{ $keranjang->ukuran }})</div>
@@ -82,9 +97,8 @@
 
                             {{-- QTY Buttons --}}
                             <td class="px-2 py-2 text-center">
-                                <form action="{{ route('customer.keranjang.update', $keranjang->id) }}"
-                                    method="POST" class="inline-flex items-center"
-                                    x-data="{ jumlah: {{ $keranjang->jumlah }} }">
+                                <form action="{{ route('customer.keranjang.update', $keranjang->id) }}" method="POST"
+                                    class="inline-flex items-center" x-data="{ jumlah: {{ $keranjang->jumlah }} }">
                                     @csrf
                                     @method('PUT')
 
@@ -129,75 +143,73 @@
         </div>
 
         <!-- 🔹 Versi Card (mobile only) -->
-    <div class="md:hidden space-y-4 mt-4">
-        @foreach ($keranjangs as $keranjang)
-            <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <h3 class="font-semibold text-gray-900">{{ $keranjang->menu->nama }}</h3>
-                        @if ($keranjang->ukuran)
-                            <p class="text-xs text-gray-500 mt-0.5">Ukuran: {{ $keranjang->ukuran }}</p>
-                        @endif
+        <div class="md:hidden space-y-4 mt-4">
+            @foreach ($keranjangs as $keranjang)
+                <div class="bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-semibold text-gray-900">{{ $keranjang->menu->nama }}</h3>
+                            @if ($keranjang->ukuran)
+                                <p class="text-xs text-gray-500 mt-0.5">Ukuran: {{ $keranjang->ukuran }}</p>
+                            @endif
+                        </div>
+                        <p class="text-blue-600 font-semibold">
+                            Rp {{ number_format($keranjang->total_harga, 0, ',', '.') }}
+                        </p>
                     </div>
-                    <p class="text-blue-600 font-semibold">
-                        Rp {{ number_format($keranjang->total_harga, 0, ',', '.') }}
-                    </p>
+
+                    <div class="mt-3 text-sm text-gray-600 space-y-1">
+                        <p>Harga: Rp {{ number_format($keranjang->harga_satuan, 0, ',', '.') }}</p>
+                        <p>Jumlah: {{ $keranjang->jumlah }}</p>
+                        <p>Catatan: {{ $keranjang->catatan ?? '-' }}</p>
+                    </div>
+
+                    <div class="flex items-center justify-between mt-3">
+                        <!-- Form update jumlah -->
+                        <form action="{{ route('customer.keranjang.update', $keranjang->id) }}" method="POST"
+                            class="flex items-center gap-1" x-data="{ jumlah: {{ $keranjang->jumlah }} }">
+                            @csrf
+                            @method('PUT')
+
+                            <button type="submit" name="action" value="decrement"
+                                class="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-l transition">
+                                −
+                            </button>
+                            <input type="number" name="jumlah" x-model="jumlah"
+                                class="w-12 text-center border-y border-gray-300 text-sm font-semibold focus:outline-none">
+                            <button type="submit" name="action" value="increment"
+                                class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-r transition">
+                                +
+                            </button>
+                        </form>
+
+                        <!-- Tombol hapus -->
+                        <form action="{{ route('customer.keranjang.delete', $keranjang->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="bg-red-600 hover:bg-red-800 text-white px-3 py-1 rounded-md text-sm transition">
+                                Hapus
+                            </button>
+                        </form>
+                    </div>
                 </div>
+            @endforeach
+        </div>
 
-                <div class="mt-3 text-sm text-gray-600 space-y-1">
-                    <p>Harga: Rp {{ number_format($keranjang->harga_satuan, 0, ',', '.') }}</p>
-                    <p>Jumlah: {{ $keranjang->jumlah }}</p>
-                    <p>Catatan: {{ $keranjang->catatan ?? '-' }}</p>
-                </div>
-
-                <div class="flex items-center justify-between mt-3">
-                    <!-- Form update jumlah -->
-                    <form action="{{ route('customer.keranjang.update', $keranjang->id) }}"
-                        method="POST" class="flex items-center gap-1"
-                        x-data="{ jumlah: {{ $keranjang->jumlah }} }">
-                        @csrf
-                        @method('PUT')
-
-                        <button type="submit" name="action" value="decrement"
-                            class="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-l transition">
-                            −
-                        </button>
-                        <input type="number" name="jumlah" x-model="jumlah"
-                            class="w-12 text-center border-y border-gray-300 text-sm font-semibold focus:outline-none">
-                        <button type="submit" name="action" value="increment"
-                            class="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-r transition">
-                            +
-                        </button>
-                    </form>
-
-                    <!-- Tombol hapus -->
-                    <form action="{{ route('customer.keranjang.delete', $keranjang->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit"
-                            class="bg-red-600 hover:bg-red-800 text-white px-3 py-1 rounded-md text-sm transition">
-                            Hapus
-                        </button>
-                    </form>
-                </div>
-            </div>
-        @endforeach
-    </div>
-        
 
         <!-- Checkout -->
         <div class="mt-8 ">
             <form action="{{ route('customer.keranjang.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
                 <div class="mb-5">
-                    <label for="nomor_meja"
-                        class="block mb-2 text-sm font-bold text-gray-900">Nomor Meja</label>
+                    <label for="nomor_meja" class="block mb-2 text-sm font-bold text-gray-900">Nomor Meja</label>
                     @if (session('nomor_meja'))
                         <input type="text" value="Meja {{ session('nomor_meja') }}"
                             class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-100" disabled>
                         <input type="hidden" name="nomor_meja" value="{{ session('nomor_meja') }}">
                     @else
-                        <select name="nomor_meja" id="nomor_meja" 
+                        <select name="nomor_meja" id="nomor_meja"
                             class="block w-full p-3 border border-gray-300 rounded-lg bg-gray-50">
                             <option value="">Pilih Nomor Meja</option>
                             @foreach ($nomor_mejas as $meja)
@@ -208,19 +220,17 @@
                 </div>
         </div>
 
-        
-        @if(Auth::check())
+        @if (Auth::check())
             <div class="mb-3">
                 <label for="nomor_meja_manual">Atau Masukkan Nomor Meja Manual</label>
-                <input type="text" class="form-control" id="nomor_meja_manual"
-                name="nomor_meja_manual" placeholder="Contoh: 15A">
+                <input type="text" class="form-control" id="nomor_meja_manual" name="nomor_meja_manual"
+                    placeholder="Contoh: 15A">
             </div>
         @endif
-       
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
             <div class="max-w-4xl mx-auto flex items-center justify-between">
-                
+
                 <!-- Harga -->
                 <span class="text-2xl md:text-3xl font-bold text-blue-600">
                     Total Rp. {{ number_format($totalBayar, 0, ',', '.') }}
@@ -230,31 +240,31 @@
                         class="w-20 text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3">
                         Pesan
                     </button>
-                </form>
+                    </form>
 
-                @if(auth()->check() && auth()->user()->role === 'kasir')
-                    {{-- Tombol untuk kasir --}}
-                    <a href="{{ route('kasir.pesanan') }}"
-                    class="px-4 py-2 border-2 border-gray-600 text-black rounded-lg hover:bg-gray-100 transition">
-                    Kembali
-                    </a>
-                @else
-                    {{-- Tombol untuk customer --}}
-                    <a href="{{ $pesanan ? route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) : '#' }}"
-                    class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">
-                    List Pesanan
-                    </a>
-                @endif
+                    @if (auth()->check() && auth()->user()->role === 'kasir')
+                        {{-- Tombol untuk kasir --}}
+                        <a href="{{ route('kasir.pesanan') }}"
+                            class="px-4 py-2 border-2 border-gray-600 text-black rounded-lg hover:bg-gray-100 transition">
+                            Kembali
+                        </a>
+                    @else
+                        {{-- Tombol untuk customer --}}
+                        <a href="{{ $pesanan ? route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) : '#' }}"
+                            class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">
+                            List Pesanan
+                        </a>
+                    @endif
 
-                
 
-                    
+
+
                 </div>
             </div>
         </div>
     </div>
 
-    
+
 
     <!-- Toast Notification -->
     <!-- Toast Container -->
@@ -298,13 +308,13 @@
             }
 
             // cek apakah ada session flash dari Laravel
-            @if(session('success'))
+            @if (session('success'))
                 showToast("{{ session('success') }}");
             @endif
         @endif
 
         @if (session('error'))
-                function showToast(message) {
+            function showToast(message) {
                 const container = document.getElementById("toast-container");
                 const toast = document.createElement("div");
                 toast.className = "toast bg-red-600 text-white px-4 py-2 rounded-lg shadow-md";
@@ -318,7 +328,7 @@
             }
 
             // cek apakah ada session flash dari Laravel
-            @if(session('error'))
+            @if (session('error'))
                 showToast("{{ session('error') }}");
             @endif
         @endif

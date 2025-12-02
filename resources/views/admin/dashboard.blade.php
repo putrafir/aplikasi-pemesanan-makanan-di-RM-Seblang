@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -141,6 +142,7 @@
             </div>
           </div>
           @endif
+
         </div>
 
       </div>
@@ -154,9 +156,11 @@
 
   <script type="module">
     import chart01 from '/js/chart/chart-one.js';
+
     document.addEventListener('DOMContentLoaded', () => chart01());
   </script>
 
 </body>
 
 </html>
+

@@ -15,5 +15,4 @@ class MenuFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    
 }

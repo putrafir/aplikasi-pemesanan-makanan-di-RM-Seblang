@@ -18,6 +18,7 @@
   <script src="{{ asset('backend/js/code.js') }}"></script>
 </head>
 
+
 <body
   x-data="{ darkMode: false, sidebarToggle: false }"
   x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
@@ -95,6 +96,7 @@
           </tbody>
         </table>
       </div>
+
     </div>
   </main>
 
@@ -112,4 +114,6 @@
   </script>
 
 </body>
+
+
 </html>

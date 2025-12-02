@@ -28,7 +28,7 @@
             <p class="font-medium text-gray-700 dark:text-gray-300">Bapak</p>
             <p class="text-sm text-gray-500 dark:text-gray-400">admin@gmail.com</p>
           </div>
-          <ul class="mt-3 border-t border-gray-200 pt-3 dark:border-gray-700">
+
             <li>
               <a href="profile.html" class="block rounded-md px-3 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
                 Edit Profile
@@ -39,11 +39,13 @@
                 Pengaturan
               </a>
             </li>
+
           </ul>
           <button
             class="mt-3 w-full rounded-md px-3 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700">
             Sign Out
           </button>
+
         </div>
       </div>
     </div>
