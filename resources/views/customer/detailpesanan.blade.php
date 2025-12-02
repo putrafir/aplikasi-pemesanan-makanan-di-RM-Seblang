@@ -68,7 +68,8 @@
         <!-- Tombol Riwayat & Pesan Lagi -->
         <div class="mt-6 flex justify-between">
             <a href="{{ route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) }}"
-                class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">List Pesanan</a>
+                class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">List
+                Pesanan</a>
 
             <a href="{{ route('customer.menu') }}" id="pesanLagiBtn"
                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">Pesan Lagi</a>

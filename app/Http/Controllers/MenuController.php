@@ -13,17 +13,33 @@ class MenuController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $kategori = $request->query('kategori');
 
-        $kategoris = Category::with(['menus' => function ($query) use ($kategori) {
-            if ($kategori) {
-                $query->where('kategori_id', function ($q) use ($kategori) {
-                    $q->select('id')->from('categories')->where('nama', $kategori);
-                });
-            }
-        }])->get();
+    // public function index(Request $request)
+    // {
+    //     $kategori = $request->query('kategori');
+
+    //     $kategoris = Category::with(['menus' => function ($query) use ($kategori) {
+    //         if ($kategori) {
+    //             $query->where('kategori_id', function ($q) use ($kategori) {
+    //                 $q->select('id')->from('categories')->where('nama', $kategori);
+    //             });
+    //         }
+    //     }])->get();
+
+    //     return view('home', compact('kategoris'));
+    // }
+
+    public function index(Request $request)
+{
+    $kategori = $request->query('kategori');
+
+    $kategoris = Category::with(['menus' => function ($query) use ($kategori) {
+        if ($kategori) {
+            $query->where('kategori_id', function ($q) use ($kategori) {
+                $q->select('id')->from('categories')->where('nama', $kategori);
+            });
+        }
+    }])->get();
 
         $nomorMeja = $request->session()->get('nomor_meja');
 

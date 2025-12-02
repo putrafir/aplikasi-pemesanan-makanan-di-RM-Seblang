@@ -2,25 +2,26 @@
 
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\KasirController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\TransaksiController;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\KelolaKasirController;
 use Illuminate\Support\Facades\Route;
 
-Route::get(
-    '/menu',
-    [MenuController::class, 'index']
-)->name('customer.menu');
-Route::get(
-    '/',
-    function () {
-        return view('auth.login');
-    }
-);
+
+// Route customer melihat daftar menu
+Route::get('/menu', [MenuController::class, 'index'])->name('customer.menu');
+
+// Route customer melihat detail menu
+Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+
 
 Route::middleware(['auth'])->group(function () {
 });
@@ -36,7 +37,8 @@ Route::get('/pesanan/{id}', [KeranjangController::class, 'detailPesanan'])->name
 Route::get('/riwayat/{nomor_meja}', [KeranjangController::class, 'riwayatPesanan'])->name('customer.riwayat');
 Route::get('/menu', [CustomerController::class, 'menu'])->name('customer.menu');
 
-
+Route::get('/pesanan/{id}', [KeranjangController::class, 'detailPesanan'])->name('customer.detailPesanan');
+Route::get('/riwayat/{nomor_meja}', [KeranjangController::class, 'riwayatPesanan'])->name('customer.riwayat');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -52,14 +54,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/kasir/dashboard', function () {
         return view('kasir.dashboard');
     })->name('kasir.dashboard');
+
+    Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
+
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 
+    Route::get('/admin/menu', [AdminController::class, 'index'])->name('admin.menu');
+
+
     // Pesanan Kasir
     // Route::get('/kasir/pesanan', [KasirController::class, 'index'])->name('kasir.pesanan');
-    // Route::get('/kasir/pesanan/{id}/bayar', [PesananController::class, 'showBayar'])->name('pesanan.bayar');
-    // Route::post('/kasir/pesanan/{id}/bayar', [PesananController::class, 'prosesBayar'])->name('pesanan.bayar.proses');
 
 });
 
@@ -93,6 +99,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/admin/search/bydate', [AdminController::class, 'AdminSearchByDate'])->name('admin.search.bydate');
     Route::get('/admin/pesanan/{id}/detail', [AdminController::class, 'detail'])->name('admin.pesanan.detail');
     Route::get('/admin/invoice/download/{id}', [AdminController::class, 'AdminInvoiceDownload'])->name('admin.invoice.download');
+    Route::get('/admin/laporan/pdf', [AdminController::class, 'generatePDF'])->name('laporan.pdf');
     Route::get('/admin/kategori/menu', [AdminController::class, 'KategoriMenu'])->name('admin.kategori.menu');
     Route::get('/admin/tambah/kategori', [AdminController::class, 'tambahKategori'])->name('admin.tambah.kategori');
     Route::post('/admin/store/kategori', [AdminController::class, 'storeKategori'])->name('admin.store.kategori');

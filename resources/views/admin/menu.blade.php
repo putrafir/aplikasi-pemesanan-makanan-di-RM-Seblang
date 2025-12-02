@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
     <!-- Toastr CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
 
@@ -15,18 +16,27 @@
     <!-- Toastr JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
-    <title>Document</title>
+    <title>Daftar Menu</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="{{ asset('backend/js/code.js') }}"></script>
 </head>
 
-<body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
+<body x-data="{ 'darkMode': false, 'sidebarToggle': false }"
+    x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+    $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
+    :class="{ 'dark bg-gray-900': darkMode === true }"
+    class="relative min-w-screen overflow-x-hidden">
+
+
+    <!-- Sidebar -->
 
     @include('admin.body.sidebar')
+
+    <!-- Header -->
     @include('admin.body.header')
+
 
     <div class="p-4 ">
         <div class=" overflow-x-auto shadow-md sm:rounded-lg">
@@ -94,56 +104,63 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             </td>
                             <td class="px-6 py-4">
                                 <form action="{{ route('admin.update.rekomendasi', $menu->id) }}" method="POST">
+
                                         @csrf
                                         @method('PUT')
-                                        <input type="hidden" name="is_recommended_baru" value="{{ $menu->is_recommended ? 0 : 1 }}">
+                                        <input type="hidden" name="stok_baru"
+                                            value="{{ $menu->stok === 'habis' ? 'tersedia' : 'habis' }}">
                                         <button type="submit"
-                                            class="px-3 py-1 rounded font-semibold transition
+                                            class="px-3 py-1 rounded text-xs sm:text-sm font-semibold transition
+                                                {{ $menu->stok === 'habis' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }}">
+                                            {{ ucfirst($menu->stok) }}
+                                        </button>
+                                    </form>
+                                </td>
+
+                                <!-- Rekomendasi -->
+                                <td class="px-4 sm:px-6 py-4">
+                                    <form action="{{ route('admin.update.rekomendasi', $menu->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="is_recommended_baru"
+                                            value="{{ $menu->is_recommended ? 0 : 1 }}">
+                                        <button type="submit"
+                                            class="px-3 py-1 rounded text-xs sm:text-sm font-semibold transition
                                                 {{ $menu->is_recommended ? 'bg-orange-500 hover:bg-orange-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-700' }}">
                                             {{ $menu->is_recommended ? 'Ya' : 'Tidak' }}
-                                    </button>
-                                </form>
-                            </td>
+                                        </button>
+                                    </form>
+                                </td>
 
-                            <td class="px-6 py-4">
-
-                                <a href="{{ route('admin.edit.menu', $menu->id) }}"
-                                    class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded">
-                                    Edit </a>
-                                <a href="{{ route('admin.delete.menu', $menu->id) }}"
-                                    class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-1 rounded"
-                                    id="delete">
-                                    Hapus </a>
-                            </td>
-                        </tr>
-                    @endforeach
-
-
-                </tbody>
-            </table>
+                                <!-- Aksi -->
+                                <td class="px-4 sm:px-6 py-4 text-center space-x-2 whitespace-nowrap">
+                                    <a href="{{ route('admin.edit.menu', $menu->id) }}"
+                                        class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-2 rounded text-xs sm:text-sm">
+                                        Edit
+                                    </a>
+                                    <a href="{{ route('admin.delete.menu', $menu->id) }}"
+                                        class="inline-block bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded text-xs sm:text-sm"
+                                        id="delete">
+                                        Hapus
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
+    </main>
 
-    </div>
-
+    <!-- TOASTR NOTIFICATION -->
     <script>
         @if (Session::has('message'))
-            var type = "{{ Session::get('alert-type', 'info') }}"
+            var type = "{{ Session::get('alert-type', 'info') }}";
             switch (type) {
-                case 'info':
-                    toastr.info(" {{ Session::get('message') }} ");
-                    break;
-
-                case 'success':
-                    toastr.success(" {{ Session::get('message') }} ");
-                    break;
-
-                case 'warning':
-                    toastr.warning(" {{ Session::get('message') }} ");
-                    break;
-
-                case 'error':
-                    toastr.error(" {{ Session::get('message') }} ");
-                    break;
+                case 'info': toastr.info("{{ Session::get('message') }}"); break;
+                case 'success': toastr.success("{{ Session::get('message') }}"); break;
+                case 'warning': toastr.warning("{{ Session::get('message') }}"); break;
+                case 'error': toastr.error("{{ Session::get('message') }}"); break;
             }
         @endif
     </script>
@@ -153,6 +170,8 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
 
 
+
 </body>
+
 
 </html>
