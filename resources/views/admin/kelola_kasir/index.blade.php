@@ -15,8 +15,7 @@
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
     @include('admin.body.sidebar')
-    @include('admin.body.header')
-    
+
 
     <div class="p-4 ">
         <div class=" py-2 overflow-x-auto shadow-md sm:rounded-lg">
@@ -68,6 +67,22 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     </div>
 
 
+        </div>
+    </div>
+
+    <script>
+        @if (Session::has('message'))
+            var type = "{{ Session::get('alert-type', 'info') }}"
+            switch (type) {
+                case 'info': toastr.info(" {{ Session::get('message') }} "); break;
+                case 'success': toastr.success(" {{ Session::get('message') }} "); break;
+                case 'warning': toastr.warning(" {{ Session::get('message') }} "); break;
+                case 'error': toastr.error(" {{ Session::get('message') }} "); break;
+            }
+        @endif
+    </script>
+
+
 
    <div id="popUpAdd" class="hidden fixed inset-0 z-50 flex items-center justify-center">
     <!-- Overlay -->
@@ -110,7 +125,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
             <button type="submit"
                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg text-sm transition duration-300">
-                Tambah 
+                Tambah
             </button>
         </form>
     </div>
@@ -171,7 +186,6 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         function showPopUpAdd() {
             document.getElementById('popUpAdd').classList.remove('hidden');
         }
-
         function hidePopUpAdd() {
             document.getElementById('popUpAdd').classList.add('hidden');
         }
@@ -188,5 +202,4 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
     </script>
 
 </body>
-
 </html>

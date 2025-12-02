@@ -11,13 +11,17 @@ use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\KelolaKasirController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/menu',[MenuController::class, 'index'])->name('customer.menu');
-Route::get(
-    '/',
-    function () {
-        return view('auth.login');
-    }
-);
+
+// Route customer melihat daftar menu
+Route::get('/menu', [MenuController::class, 'index'])->name('customer.menu');
+
+// Route customer melihat detail menu
+Route::get('/menu/{id}', [MenuController::class, 'show'])->name('menu.show');
+
+Route::get('/', function () {
+    return view('auth.login');
+});
+
 
 Route::get('customer/keranjang', [KeranjangController::class, 'index'])->name('customer.keranjang.view');
 Route::post('/customer/keranjang/add', [KeranjangController::class, 'addToCart'])->name('customer.keranjang.add');
