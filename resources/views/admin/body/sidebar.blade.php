@@ -48,6 +48,7 @@
                             class="inline-flex items-center justify-center px-2 ms-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">Pro</span>
                     </a>
                 </li> --}}
+
             <li>
                 <a href="{{ route('admin.menu') }}"
                     class="flex items-center p-2 text-gray-900 rounded-lg group {{ request()->routeIs('admin.menu')
@@ -157,3 +158,4 @@
         </ul>
     </div>
 </aside>
+

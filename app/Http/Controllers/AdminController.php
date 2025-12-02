@@ -37,8 +37,8 @@ class AdminController extends Controller
         $request->validate([
             'nama_menu' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'deskripsi' => 'nullable|string',
-            'harga' => 'required|numeric|min:0',
+            'deskripsi' => 'nullable|string|min:10',
+            'harga' => 'required|numeric|min:1000|max:1000000',
             'kategori' => 'required|exists:categories,id',
             //'stok' => 'required|in:habis,tersedia',
             ]);

@@ -126,6 +126,7 @@
     </div>
 
 
+
     <!-- Konten Semua -->
     <div class="kategori-content" id="kategori-semua">
         <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">Semua Menu</h2>
@@ -207,6 +208,7 @@
             </div>
         @endif
     </div>
+
 
     <!-- Konten per Kategori -->
     @foreach ($kategoris as $index => $kategori)
