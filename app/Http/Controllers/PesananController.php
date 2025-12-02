@@ -132,7 +132,7 @@ class PesananController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Pesanan gagal.');
 
-            }
         }
-
     }
+
+}

@@ -8,6 +8,7 @@
     <title>Warung Seblang | Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         /* Toast Animation */
@@ -139,6 +140,7 @@
                 </li>
             @endforeach
         </ul>
+
                 @foreach ($kategoris as $index => $kategori)
                     @php $kategoriId = Str::slug($kategori->nama); @endphp
                     <li class="flex-shrink-0">
@@ -155,6 +157,7 @@
         </div>
 
 
+
         <!-- Konten Semua -->
         <div class="kategori-content" id="kategori-semua">
             <h2 class="text-2xl font-bold text-gray-900 mt-8 ml-4">Semua Menu</h2>
@@ -166,6 +169,7 @@
                     @foreach ($allMenus as $menu)
                         <div data-nama="{{ strtolower($menu->nama) }}"
                             class="cursor-pointer menu-item w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transform transition duration-300 hover:scale-105 hover:-translate-y-1">
+
 
                             {{-- 🟡 Icon Best Seller --}}
                             @if (isset($bestSellers) && in_array($menu->id, $bestSellers))
@@ -210,35 +214,41 @@
                     </a>
                     <div class="px-5 pb-5">
                         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
+
                             <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                 <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
                             </a>
+
+                            {{-- Detail Menu --}}
                             <div class="px-5 pb-5">
                                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-5">
                                     <a href="{{ route('menu.show', $menu->id) }}" class="cursor-pointer">
                                         <h5 class="text-xl font-semibold tracking-tight text-gray-900">{{ $menu->nama }}</h5>
                                     </a>
                                     <span class="text-3xl font-bold text-blue-700">
-                                    Rp. @php echo number_format($menu->harga, 0, ',', '.'); @endphp
+                                        Rp. @php echo number_format($menu->harga, 0, ',', '.'); @endphp
                                     </span>
                                 </div>
                                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mt-4">
                                     <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
                                         <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
-                                        @csrf
-                                        <button type="button" onclick="decrementQty()"
-                                            class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
-                                        <input id="quantity" type="number" name="quantity" value="1" min="1"
-                                            class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
-                                        <button type="button" onclick="incrementQty()"
-                                            class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
+
+                                            @csrf
+                                            <button type="button" onclick="decrementQty()"
+                                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
+                                            <input id="quantity" type="number" name="quantity" value="1" min="1"
+                                                class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
+                                            <button type="button" onclick="incrementQty()"
+                                                class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
+
                                     </div>
+
                                     @if(strtolower($menu->stok) === 'tersedia')
-                                            <input type="hidden" name="menu_id" value="{{ $menu->id }}">
-                                            <button type="submit"
-                                                class="text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
-                                                Tambah
-                                            </button>
+                                        <input type="hidden" name="menu_id" value="{{ $menu->id }}">
+                                        <button type="submit"
+                                            class="text-white bg-blue-400 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                            Tambah
+                                        </button>
                                         </form>
                                     @else
                                         <button
@@ -265,6 +275,7 @@
                                 </button>
                             @endif
                         </div>
+
                     @endforeach
             </div>
             @if($allMenus->isEmpty())

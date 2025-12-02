@@ -142,6 +142,7 @@
             </table>
         </div>
 
+
         <!-- 🔹 Versi Card (mobile only) -->
         <div class="md:hidden space-y-4 mt-4">
             @foreach ($keranjangs as $keranjang)
@@ -198,6 +199,7 @@
         </div>
 
 
+
         <!-- Checkout -->
         <div class="mt-8 ">
             <form action="{{ route('customer.keranjang.checkout') }}" method="POST" id="checkoutForm">
@@ -220,13 +222,20 @@
                 </div>
         </div>
 
-        @if (Auth::check())
+
+
+        @if(Auth::check())
+      
+
             <div class="mb-3">
                 <label for="nomor_meja_manual">Atau Masukkan Nomor Meja Manual</label>
                 <input type="text" class="form-control" id="nomor_meja_manual" name="nomor_meja_manual"
                     placeholder="Contoh: 15A">
             </div>
         @endif
+
+
+
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
             <div class="max-w-4xl mx-auto flex items-center justify-between">
@@ -240,21 +249,23 @@
                         class="w-20 text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-3">
                         Pesan
                     </button>
-                    </form>
 
-                    @if (auth()->check() && auth()->user()->role === 'kasir')
-                        {{-- Tombol untuk kasir --}}
-                        <a href="{{ route('kasir.pesanan') }}"
-                            class="px-4 py-2 border-2 border-gray-600 text-black rounded-lg hover:bg-gray-100 transition">
-                            Kembali
-                        </a>
-                    @else
-                        {{-- Tombol untuk customer --}}
-                        <a href="{{ $pesanan ? route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) : '#' }}"
-                            class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">
-                            List Pesanan
-                        </a>
-                    @endif
+                </form>
+
+                @if(auth()->check() && auth()->user()->role === 'kasir')
+                    {{-- Tombol untuk kasir --}}
+                    <a href="{{ route('kasir.pesanan') }}"
+                    class="px-4 py-2 border-2 border-gray-600 text-black rounded-lg hover:bg-gray-100 transition">
+                    Kembali
+                    </a>
+                @else
+                    {{-- Tombol untuk customer --}}
+                    <a href="{{ $pesanan ? route('customer.riwayat', ['nomor_meja' => $pesanan->nomor_meja]) : '#' }}"
+                    class="px-4 py-2 border-2 border-blue-600 text-black rounded-lg hover:bg-blue-50 transition">
+                    List Pesanan
+                    </a>
+                @endif
+
 
 
 

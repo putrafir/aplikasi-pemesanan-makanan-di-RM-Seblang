@@ -48,6 +48,8 @@ class MenuController extends Controller
         // 🧑‍🍳 Ambil ID menu yang ditandai sebagai Rekomendasi Chef
         $recommendedMenus = Menu::where('is_recommended', 1)->pluck('id')->toArray();
 
+
+
         return view('home', compact('kategoris', 'nomorMeja', 'bestSellers', 'recommendedMenus'));
     }
 

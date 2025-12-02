@@ -17,6 +17,16 @@ return new class extends Migration
             $table->enum('status', ['tersedia', 'terisi', 'reservasi', 'rusak'])->default('tersedia');
             $table->timestamps();
         });
+
+        // Schema::create('pesanans', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('nomor_meja_id')->nullable()->constrained('nomor_mejas')->onDelete('set null');
+        //     $table->enum('status', ['belum dibayar', 'dibayar', 'keranjang'])->default('belum dibayar');
+        //     $table->decimal('total_harga', 10, 2);
+        //     $table->string('metode_pembayaran')->nullable();
+        //     $table->timestamps();
+        // });
+
     }
 
     /**

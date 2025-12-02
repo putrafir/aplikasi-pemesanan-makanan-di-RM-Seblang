@@ -23,6 +23,9 @@ Route::get('/', function () {
 });
 
 
+Route::middleware(['auth'])->group(function () {
+});
+
 Route::get('customer/keranjang', [KeranjangController::class, 'index'])->name('customer.keranjang.view');
 Route::post('/customer/keranjang/add', [KeranjangController::class, 'addToCart'])->name('customer.keranjang.add');
 Route::delete('/customer/keranjang/{id}', [KeranjangController::class, 'destroy'])->name('customer.keranjang.delete');
