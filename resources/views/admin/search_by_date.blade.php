@@ -11,7 +11,8 @@
 </head>
 
 <body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
+$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }"
+    class=" relative min-w-screen">
 
 
 
@@ -37,6 +38,9 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     <i class="fa fa-print"></i> Print
                 </a>
             </div>
+
+
+
 
 
             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -75,7 +79,6 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                     class="font-medium text-red-500 dark:text-blue-500 hover:underline"><i
                                         class="fas fa-eye  me-1"></i>Detail</a>
                             </td>
-
 
                         </tr>
                     @endforeach

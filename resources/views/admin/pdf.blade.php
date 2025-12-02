@@ -60,7 +60,11 @@
 
 <body>
     <h2>Laporan Transaksi</h2>
-    <p class="periode">Periode: {{ $tanggalAwal->format('d M Y') }} - {{ $tanggalAkhir->format('d M Y') }}</p>
+
+    <p class="periode">
+        Periode: {{ $tanggalAwal->format('d M Y') }} - {{ $tanggalAkhir->format('d M Y') }}
+    </p>
+
 
     <table>
         <thead>
@@ -73,7 +77,9 @@
         </thead>
         <tbody>
             @foreach ($transaksis as $transaksi)
-                 @php
+
+                @php
+
                     $details = json_decode($transaksi->details, true);
                 @endphp
                 <tr>
@@ -101,4 +107,6 @@
     </p>
 </body>
 
+
 </html>
+

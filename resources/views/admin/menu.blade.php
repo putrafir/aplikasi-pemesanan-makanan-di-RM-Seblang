@@ -25,6 +25,7 @@
 <body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
+
     @include('admin.body.sidebar')
     @include('admin.body.header')
 
@@ -83,8 +84,10 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                                 <form action="{{ route('admin.update.stok', $menu->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name="stok_baru" value="{{ $menu->stok === 'habis' ? 'tersedia' : 'habis' }}">
-                                    <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $menu->stok === 'habis' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-stok">
+                                    <input type="hidden" name="stok_baru"
+                                        value="{{ $menu->stok === 'habis' ? 'tersedia' : 'habis' }}">
+                                    <button type="submit"
+                                        class="px-3 py-1 rounded font-semibold transition {{ $menu->stok === 'habis' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-stok">
                                         {{ $menu->stok === 'habis' ? 'Habis' : 'Tersedia' }}
                                     </button>
                                 </form>
@@ -144,11 +147,6 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
             }
         @endif
     </script>
-
-</body>
-
-
-
 
 </body>
 

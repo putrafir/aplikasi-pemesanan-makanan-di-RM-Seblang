@@ -5,12 +5,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Menu;
 use App\Models\Category;
+use App\Models\Transaksi;
+use App\Models\Pesanan;
 use App\Models\NomorMeja;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
-use App\Models\Transaksi;
 use App\Models\PesananDetail;
-use App\Models\Pesanan;
 use Carbon\Carbon;
 use DateTime;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -242,7 +242,7 @@ class AdminController extends Controller
 
     public function deleteNomorMeja($id){
         $item = NomorMeja::find($id);
-        
+
     $item->delete();
 
         $notification = array(
@@ -265,6 +265,9 @@ class AdminController extends Controller
 
         $transaksis = Transaksi::whereBetween('created_at', [$tanggalAwal, $tanggalAkhir])->get();
         $totalPendapatan = $transaksis->sum('total_bayar');
+
+        return view('admin.search_by_date', compact('transaksis', 'tanggalAwal', 'tanggalAkhir', 'totalPendapatan'));
+
 
         return view('admin.search_by_date', compact('transaksis', 'tanggalAwal', 'tanggalAkhir', 'totalPendapatan'));
     }
@@ -423,7 +426,7 @@ public function tambahKategori()
 
         //Income
         $todayIncome = Transaksi::whereDate('created_at', Carbon::today())
-                            ->where('status_bayar', 'sudah bayar') 
+                            ->where('status_bayar', 'sudah bayar')
                             ->sum('total_bayar');
         $yesterdayIncome = Transaksi::whereDate('created_at', Carbon::yesterday())
                     ->where('status_bayar', 'sudah bayar')
