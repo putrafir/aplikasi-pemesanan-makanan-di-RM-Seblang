@@ -33,9 +33,9 @@ class KasirController extends Controller
             $data = $transaksis->status == 'belum diantar' ? 'sudah diantar' : 'belum diantar';
             $transaksis->status = $data;
             $transaksis->save();
-            return redirect()->back()->with('success','status berhasil diubah');
+            return redirect()->back()->with('success', 'status berhasil diubah');
         } catch (\Throwable $th) {
-            return redirect()->back()->with('error','status gagal diubah');
+            return redirect()->back()->with('error', 'status gagal diubah');
         }
     }
     public function prosesBayar(Request $request, $id)

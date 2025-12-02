@@ -27,7 +27,7 @@ return new class extends Migration
             $table->timestamp('waktu_bayar')->nullable();
 
             // kolom baru untuk kasir
-            $table->unsignedBigInteger('kasir_id')->nullable(); 
+            $table->unsignedBigInteger('kasir_id')->nullable();
             $table->foreign('kasir_id')->references('id')->on('users')->onDelete('set null');
 
             $table->timestamps();

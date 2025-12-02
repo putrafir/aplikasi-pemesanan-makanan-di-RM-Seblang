@@ -164,13 +164,35 @@
                                     </button>
                                 </form>
                             </td>
-                            <td class="px-6 py-4">
+                            <td>
+
+                                <form action="{{ route('kasir.transaksi.updateStatusBayar', $transaksi->id) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('PUT')
+
+                                    <input type="hidden" name="statusbayar_baru"
+                                        value="{{ $transaksi->status_bayar === 'belum bayar' ? 'sudah bayar' : 'belum bayar' }}">
+
+                                    @php
+                                        $isBayar = $transaksi->status_bayar === 'sudah bayar';
+                                        $bgColor = $isBayar ? 'bg-green-600' : 'bg-blue-600';
+                                    @endphp
+
+                                    <button type="submit" id="btn-status"
+                                        class="px-3 py-2 rounded font-semibold transition  {{ $bgColor }} text-white  ">
+                                        {{ $transaksi->status_bayar }}
+                                    </button>
+                                </form>
+                            </td>
+
+                            {{-- <td class="px-6 py-4">
                                 @if($transaksi->kasir)
                                     {{ $transaksi->kasir->id }} - {{ $transaksi->kasir->name }}
                                 @else
                                     Kasir tidak ada
                                 @endif
-                            </td>
+                            </td> --}}
                         </tr>
                     @endforeach
 

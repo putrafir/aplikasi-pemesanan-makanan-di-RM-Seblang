@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Pesanan;
 use App\Http\Requests\StorePesananRequest;
 use App\Http\Requests\UpdatePesananRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Transaksi;
 
@@ -80,9 +81,10 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Pesanan telah dibayar.');
         }
 
-            $pesanan = json_decode($transaksis->details, true);
-            return view('kasir.bayar_pesanan', compact('transaksis', 'pesanan'));
-        }
+        $pesanan = json_decode($transaksis->details, true);
+;
+        return view('kasir.bayar_pesanan', compact('transaksis', 'pesanan'));
+    }
 
     public function prosesBayar($id, Request $request)
     {
@@ -98,10 +100,10 @@ class PesananController extends Controller
             return redirect()->back()->with('error', 'Pesanan telah dibayar.');
         }
 
-            $transaksiDetail = json_decode($pesanan->details, true);
-            $total = array_sum(array_column($transaksiDetail, 'subtotal'));
-            ;
-            if ($total > $validate['uang_dibayarkan']) {
+        $transaksiDetail = json_decode($pesanan->details, true);
+        $total = array_sum(array_column($transaksiDetail, 'subtotal'));
+        ;
+        if ($total > $validate['uang_dibayarkan']) {
 
             return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
         }

@@ -21,10 +21,14 @@ return new class extends Migration
             $table->decimal('total_harga', 10, 2); // Menambahkan kolom total_harga
             $table->timestamps();
 
+
             // Foreign key constraints
             $table->foreign('pesanan_id')->references('id')->on('pesanans')->onDelete('cascade');
             $table->foreign('menu_id')->references('id')->on('menus')->onDelete('cascade'); // Menambahkan foreign key ke tabel menus
+
         });
+
+
     }
 
     /**
