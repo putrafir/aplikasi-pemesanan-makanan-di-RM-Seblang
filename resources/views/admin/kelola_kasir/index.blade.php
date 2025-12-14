@@ -15,10 +15,18 @@
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
     @include('admin.body.sidebar')
+    <!-- OVERLAY (klik → tutup sidebar) -->
+  <div
+    x-show="sidebarToggle"
+    @click="sidebarToggle = false"
+    class="fixed inset-0 z-40 bg-black/50 lg:hidden"
+    x-transition.opacity
+  ></div>
     @include('admin.body.header')
-    
 
-    <div class="p-4 ">
+    <main class="pt-16 transition-all duration-300 p-4
+    dark:bg-gray-900
+    lg:ml-64 z-10">
         <div class=" py-2 overflow-x-auto shadow-md sm:rounded-lg">
             <h2 class="text-center mb-5 font-bold dark:text-white">Daftar Akun Kasir</h2>
             <button onclick="showPopUpAdd()" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded mb-5 ml-5">
@@ -153,7 +161,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                 </button>
             </form>
         </div>
-    </div>
+    </main>
 
 <script>
         @if (Session::has('message'))

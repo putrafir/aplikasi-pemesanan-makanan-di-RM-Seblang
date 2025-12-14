@@ -7,17 +7,34 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Dashboard</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     
 
 </head>
 
-<body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
+<body x-data="{ darkMode: false, sidebarToggle: false }"
+  x-init="
+    darkMode = JSON.parse(localStorage.getItem('darkMode')) ?? false;
+    $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))
+  "
+  :class="{
+    'dark bg-gray-900': darkMode,
+    'bg-gray-100': !darkMode
+  }" class=" relative min-w-screen">
 
     @include('admin.body.sidebar')
+    <!-- OVERLAY (klik → tutup sidebar) -->
+  <div
+    x-show="sidebarToggle"
+    @click="sidebarToggle = false"
+    class="fixed inset-0 z-40 bg-black/50 lg:hidden"
+    x-transition.opacity
+  ></div>
     @include('admin.body.header')
 
-    <main>
+    <main class="pt-16 min-h-screen transition-all duration-300
+    dark:bg-gray-900
+    lg:ml-64 z-10">
         <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
             <div class="grid grid-cols-12 gap-4 md:gap-6">
                 <div class="col-span-12 space-y-6">
@@ -194,7 +211,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                     {{-- metric grup end --}}
 
                     {{-- charts  --}}
-                            <div class="grid grid-cols-2 gap-4">
+                            <div class="grid grid-cols-1 gap-4 lg:grid-cols-2 md:gap-6 mt-6">
                                 {{-- Chart 1 --}}
                                 <div
                                 class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6" 
@@ -246,7 +263,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                             <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                                 {{-- 🥘 Best Seller Makanan --}}
                                 @if(isset($bestSellerMakanan))
-                                    <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4">
+                                    <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4 dark:border-gray-800 dark:bg-gray-400  hover:shadow-xl transform transition duration-300 hover:scale-105 hover:-translate-y-1">
                                         <h2 class="text-lg font-bold mb-2">Best Seller Makanan</h2>
                                         <div class="flex items-center space-x-4">
                                             <img src="{{ asset($bestSellerMakanan->gambar) }}"
@@ -268,7 +285,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                                     {{-- 🍹 Best Seller Minuman --}}
                                 @if(isset($bestSellerMinuman))
-                                <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4">
+                                <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4 dark:border-gray-800 dark:bg-gray-400 hover:shadow-xl transform transition duration-300 hover:scale-105 hover:-translate-y-1">
                                     <h2 class="text-lg font-bold mb-2">Best Seller Minuman</h2>
                                     <div class="flex items-center space-x-4">
                                         <img src="{{ asset($bestSellerMinuman->gambar) }}"
@@ -289,7 +306,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                             {{-- 🍪 Best Seller Camilan --}}
                             @if(isset($bestSellerCamilan))
-                                <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4">
+                                <div class="bg-blue-400 text-white rounded-lg shadow-lg p-4 dark:border-gray-800 dark:bg-gray-400  hover:shadow-xl transform transition duration-300 hover:scale-105 hover:-translate-y-1">
                                     <h2 class="text-lg font-bold mb-2">Best Seller Camilan</h2>
                                     <div class="flex items-center space-x-4">
                                         <img src="{{ asset($bestSellerCamilan->gambar) }}"

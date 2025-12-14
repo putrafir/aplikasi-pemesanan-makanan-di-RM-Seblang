@@ -161,11 +161,11 @@
                         <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
                             <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
                                 @csrf
-                                <button type="button" onclick="decrementQty()" 
+                                <button type="button" onclick="decrementQty(this)" 
                                     class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
-                                <input id="quantity" type="number" name="quantity" value="1" min="1"
-                                    class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
-                                <button type="button" onclick="incrementQty()" 
+                                <input  type="number" name="quantity" value="1" min="1"
+                                    class="qty-input w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
+                                <button type="button" onclick="incrementQty(this)" 
                                     class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
                         </div>
 
@@ -244,13 +244,13 @@
                                         <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden w-fit">
                                             <form action="{{ route('customer.keranjang.add', $menu->id) }}" method="POST">
                                             @csrf
-                                            <button type="button" onclick="decrementQty()" 
+                                            <button type="button" onclick="decrementQty(this)" 
                                                 class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">-</button>
                                             
-                                            <input id="quantity" type="number" name="quantity" value="1" min="1"
-                                                class="w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
+                                            <input  type="number" name="quantity" value="1" min="1"
+                                                class="qty-input w-12 text-center border-0 focus:ring-0 focus:outline-none text-gray-900">
                                             
-                                            <button type="button" onclick="incrementQty()" 
+                                            <button type="button" onclick="incrementQty(this)" 
                                                 class="px-3 py-2 text-lg font-bold text-gray-600 hover:bg-gray-200 transition">+</button>
                                         </div>
                                     @if(strtolower($menu->stok) === 'tersedia')
@@ -391,40 +391,23 @@
 
     <!-- Script: Tombol QTY -->
 <script>
-    function incrementQty() {
-        let qty = document.getElementById('quantity');
-        qty.value = parseInt(qty.value) + 1;
+function incrementQty(btn) {
+    let wrapper = btn.parentElement; 
+    let qty = wrapper.querySelector(".qty-input");
 
-        // Animasi
-        qty.classList.add("flash");
-        qty.previousElementSibling.classList.add("bounce");
-        qty.nextElementSibling.classList.add("bounce");
+    qty.value = parseInt(qty.value) + 1;
+}
 
-        setTimeout(() => {
-            qty.classList.remove("flash");
-            qty.previousElementSibling.classList.remove("bounce");
-            qty.nextElementSibling.classList.remove("bounce");
-        }, 400);
+function decrementQty(btn) {
+    let wrapper = btn.parentElement;
+    let qty = wrapper.querySelector(".qty-input");
+
+    if (parseInt(qty.value) > 1) {
+        qty.value = parseInt(qty.value) - 1;
     }
-
-    function decrementQty() {
-        let qty = document.getElementById('quantity');
-        if (parseInt(qty.value) > 1) {
-            qty.value = parseInt(qty.value) - 1;
-
-            // Animasi
-            qty.classList.add("flash");
-            qty.previousElementSibling.classList.add("bounce");
-            qty.nextElementSibling.classList.add("bounce");
-
-            setTimeout(() => {
-                qty.classList.remove("flash");
-                qty.previousElementSibling.classList.remove("bounce");
-                qty.nextElementSibling.classList.remove("bounce");
-            }, 400);
-        }
-    }
+}
 </script>
+
 
 </body>
 

@@ -26,16 +26,25 @@
 <body x-data="{ 'darkMode': false, 'sidebarToggle': false }" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
     @include('admin.body.sidebar')
+    <!-- OVERLAY (klik → tutup sidebar) -->
+  <div
+    x-show="sidebarToggle"
+    @click="sidebarToggle = false"
+    class="fixed inset-0 z-40 bg-black/50 lg:hidden"
+    x-transition.opacity
+  ></div>
     @include('admin.body.header')
 
-    <div class="p-4 ">
+    <main class="pt-16 transition-all duration-300 p-4
+    dark:bg-gray-900
+    lg:ml-64 z-10">
         <div class=" overflow-x-auto shadow-md sm:rounded-lg">
-            <h2 class="text-center mb-5 font-bold">Kategori Menu </h2>
+            <h2 class="text-center mb-5 font-bold dark:text-white">Kategori Menu </h2>
             <a href="{{ route('admin.tambah.kategori') }}"
-                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded mb-3"> <i
+                class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded mb-3 "> <i
                     class="fas fa-plus px-1"></i>Tambah kategori</a>
 
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <table class="w-full text-sm mt-5 text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                         <th scope="col" class="px-6 py-3">
@@ -70,7 +79,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
             </table>
         </div>
 
-    </div>
+    </main>
     <script>
         @if (Session::has('message'))
             var type = "{{ Session::get('alert-type', 'info') }}"

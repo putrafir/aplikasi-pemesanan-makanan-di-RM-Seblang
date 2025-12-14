@@ -1,18 +1,47 @@
 <aside id="default-sidebar"
-        class="sidebar fixed top-0 left-0 z-9999 w-64 h-screen border-r border-gray-200 bg-white transition-transform -translate-x-full sm:translate-x-0 dark:border-gray-800 dark:bg-gray-900"
+        class="sidebar fixed inset-y-0 top-0 left-0 z-50 w-64 h-screen border-r border-gray-200 bg-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 dark:border-gray-800 dark:bg-gray-900" :class="{
+    '-translate-x-full': !sidebarToggle,
+    'translate-x-0': sidebarToggle,
+    'lg:translate-x-0': true
+  }"
         aria-label="Sidebar">
 
-        {{-- sidebar header --}}
-         <div class="sidebar-header flex items-center px-3 pt-5 pb-2 ">
-            <a href="{{ route('admin.dashboard') }}">
-            <span class="logo" >
-                {{-- <img class="dark:hidden" src="{{ asset('src/logo/logo-admin.png')}}" alt="Logo">
-                <img class="hidden dark:block" src="{{ asset('src/logo/logoadmin-dark.png')}}" alt="Logo"> --}}
-                <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Admin Seblang</h1>
-            </span>
 
-            </a>
-        </div>
+        {{-- sidebar header --}}
+         {{-- sidebar header --}}
+<div class="sidebar-header relative px-3 pt-5 pb-2">
+
+    <!-- ❌ TOMBOL CLOSE (POJOK KANAN ATAS) -->
+    <button
+        @click="sidebarToggle = false"
+        class="absolute top-2 right-2
+               lg:hidden
+               flex h-9 w-9 items-center justify-center
+               rounded-full
+               text-gray-500 hover:bg-gray-100
+               dark:text-gray-400 dark:hover:bg-gray-800"
+        aria-label="Close sidebar"
+    >
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M6.225 6.225a.75.75 0 011.06 0L12 10.94l4.715-4.715a.75.75 0 111.06 1.06L13.06 12l4.715 4.715a.75.75 0 11-1.06 1.06L12 13.06l-4.715 4.715a.75.75 0 11-1.06-1.06L10.94 12 6.225 7.285a.75.75 0 010-1.06z"
+            />
+        </svg>
+    </button>
+
+    <!-- LOGO / TITLE -->
+    <a href="{{ route('admin.dashboard') }}">
+        <span class="logo block mt-6">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-white">
+                Admin Seblang
+            </h1>
+        </span>
+    </a>
+
+</div>
+
         {{-- end sidebar header --}}
 
         <div class="h-full px-3 py-4 overflow-y-auto">

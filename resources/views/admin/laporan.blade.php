@@ -16,11 +16,20 @@
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
     @include('admin.body.sidebar')
+    <!-- OVERLAY (klik → tutup sidebar) -->
+  <div
+    x-show="sidebarToggle"
+    @click="sidebarToggle = false"
+    class="fixed inset-0 z-40 bg-black/50 lg:hidden"
+    x-transition.opacity
+  ></div>
     @include('admin.body.header')
 
-    <div class="p-6">
-        <h1 class="text-center mb-4 font-bold">Laporan Transaksi</h1>
-        <h3 class="mb-5">Gunakan filter untuk melihat laporan transaksi berdasarkan rentang tanggal</h3>
+    <main class="pt-16 transition-all duration-300 p-6
+    dark:bg-gray-900
+    lg:ml-64 z-10">
+        <h1 class="text-center mb-4 font-bold dark:text-white">Laporan Transaksi</h1>
+        <h3 class="mb-5 dark:text-white">Gunakan filter untuk melihat laporan transaksi berdasarkan rentang tanggal</h3>
 
         <div class="row">
             <div class="col">
@@ -34,14 +43,14 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
 
                                 <!-- Tanggal Mulai -->
                                 <div>
-                                    <label for="tanggal_mulai" class="block mb-1 font-medium">Tanggal Mulai</label>
+                                    <label for="tanggal_mulai" class="block mb-1 font-medium dark:text-white">Tanggal Mulai</label>
                                     <input class="form-control" type="date" name="tanggal_awal"
                                         id="example-text-input">
                                 </div>
 
                                 <!-- Tanggal Akhir -->
                                 <div>
-                                    <label for="tanggal_akhir" class="block mb-1 font-medium">Tanggal Akhir</label>
+                                    <label for="tanggal_akhir" class="block mb-1 font-medium dark:text-white">Tanggal Akhir</label>
                                     <input class="form-control" type="date" name="tanggal_akhir"
                                         id="example-text-input">
                                 </div>
@@ -61,7 +70,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
             </div>
         </div>
 
-    </div>
+    </main>
 </body>
 
 </html>
