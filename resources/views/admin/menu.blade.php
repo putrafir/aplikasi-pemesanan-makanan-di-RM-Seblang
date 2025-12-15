@@ -76,54 +76,82 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
                         <tr
                             class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 border-gray-200">
                             <th scope="row"
-                                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {{ $menu->nama }}
                             </th>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3">
                                 <div
                                     class="
-                                    max-w-[160px]
-                                    sm:max-w-[240px]
-                                    md:max-w-[320px]
-                                    lg:max-w-none
+                                    max-w-[50px]
+                                    sm:max-w-[80px]
+                                    md:max-w-[100px]
+                                    lg:max-w-[200px]
                                     truncate
-                                    lg:whitespace-normal
                                     "
                                     title="{{ $menu->deskripsi }}"
                                 >
                                     {{ $menu->deskripsi }}
                                 </div>
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3">
                                 {{ $menu->harga }}
                             </td>
-                            <td class="px-6 py-4">
+                            <td class="px-4 py-3">
                                 {{ $menu->kategori->nama }}
                             </td>
-                            <td class="px-6 py-4">
-                                <form action="{{ route('admin.update.stok', $menu->id) }}" method="POST">
+                            <td class="px-4 py-3">
+                                <form action="{{ route('admin.update.stok', $menu->id) }}"
+                                    method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <input type="hidden" name="stok_baru" value="{{ $menu->stok === 'habis' ? 'tersedia' : 'habis' }}">
-                                    <button type="submit" class="px-3 py-1 rounded font-semibold transition {{ $menu->stok === 'habis' ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-green-500 hover:bg-green-600 text-white' }} btn-stok">
-                                        {{ $menu->stok === 'habis' ? 'Habis' : 'Tersedia' }}
+
+                                    <input type="hidden" name="stok_baru"
+                                        value="{{ $menu->stok === 'habis' ? 'tersedia' : 'habis' }}">
+
+                                    <button type="submit"
+                                        class="relative inline-flex h-6 w-11 items-center rounded-full
+                                        {{ $menu->stok === 'habis' ? 'bg-red-500' : 'bg-green-500' }} btn-stok">
+                                        <span
+                                            class="inline-block h-4 w-4 transform rounded-full bg-white transition
+                                            {{ $menu->stok === 'habis' ? 'translate-x-1' : 'translate-x-6' }}">
+                                        </span>
                                     </button>
-                                </form>
-                            </td>
-                            <td class="px-6 py-4">
-                                <form action="{{ route('admin.update.rekomendasi', $menu->id) }}" method="POST">
-                                        @csrf
-                                        @method('PUT')
-                                        <input type="hidden" name="is_recommended_baru" value="{{ $menu->is_recommended ? 0 : 1 }}">
-                                        <button type="submit"
-                                            class="px-3 py-1 rounded font-semibold transition
-                                                {{ $menu->is_recommended ? 'bg-orange-500 hover:bg-orange-600 text-white' : 'bg-gray-300 hover:bg-gray-400 text-gray-700' }}">
-                                            {{ $menu->is_recommended ? 'Ya' : 'Tidak' }}
-                                    </button>
+
+                                    <span class="ml-2 text-sm font-semibold">
+                                        {{ ucfirst($menu->stok) }}
+                                    </span>
                                 </form>
                             </td>
 
-                            <td class="px-6 py-4">
+
+                            <td class="px-4 py-3">
+                                <form action="{{ route('admin.update.rekomendasi', $menu->id) }}"
+                                    method="POST"
+                                    >
+                                    @csrf
+                                    @method('PUT')
+
+                                    <input type="hidden" name="is_recommended_baru"
+                                        value="{{ $menu->is_recommended ? 0 : 1 }}">
+
+                                    <button type="submit"
+                                        class="relative inline-flex h-6 w-11 items-center rounded-full
+                                        {{ $menu->is_recommended ? 'bg-orange-500' : 'bg-gray-400' }} btn-rekomendasi">
+                                        <span
+                                            class="inline-block h-4 w-4 transform rounded-full bg-white transition
+                                            {{ $menu->is_recommended ? 'translate-x-6' : 'translate-x-1' }}">
+                                        </span>
+                                    </button>
+
+                                    <span class="ml-2 text-sm font-semibold">
+                                        {{ $menu->is_recommended ? 'Ya' : 'Tidak' }}
+                                    </span>
+                                </form>
+                            </td>
+
+
+
+                            <td class="px-4 py-3">
 
                                 <a href="{{ route('admin.edit.menu', $menu->id) }}"
                                     class="inline-block bg-blue-500 hover:bg-blue-600 text-white font-semibold py-1 px-1 rounded">
@@ -142,6 +170,28 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         </div>
 
     </main>
+
+    {{-- <script>
+function confirmAction(form, title, text, confirmText = 'Ya, Lanjutkan') {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#2563eb', // blue
+        cancelButtonColor: '#6b7280', // gray
+        confirmButtonText: confirmText,
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+}
+</script> --}}
+
+
 
     <script>
         @if (Session::has('message'))
@@ -166,7 +216,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         @endif
     </script>
 
-</body>
+
 
 
 

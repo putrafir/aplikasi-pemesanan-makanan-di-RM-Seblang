@@ -16,8 +16,41 @@
 $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark bg-gray-900': darkMode === true }" class=" relative min-w-screen">
 
     @include('admin.body.sidebar')
+    <!-- OVERLAY (klik → tutup sidebar) -->
+  <div
+    x-show="sidebarToggle"
+    @click="sidebarToggle = false"
+    class="fixed inset-0 z-40 bg-black/50 lg:hidden"
+    x-transition.opacity
+  ></div>
     @include('admin.body.header')
 
+<main class="pt-16 transition-all duration-300 p-4
+    dark:bg-gray-900
+    lg:ml-64 z-10">
+
+    <nav class="flex text-gray-500 mb-5 mt-5 ml-5" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+        <li class="inline-flex items-center">
+        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center text-sm font-medium text-body hover:text-fg-brand">
+            <svg class="w-4 h-4 me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m4 12 8-8 8 8M6 10.5V19a1 1 0 0 0 1 1h3v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h3a1 1 0 0 0 1-1v-8.5"/></svg>
+            Dashboard
+        </a>
+        </li>
+        <li>
+        <div class="flex items-center space-x-1.5">
+            <svg class="w-3.5 h-3.5 rtl:rotate-180 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/></svg>
+            <a href="{{ route('admin.nomormeja') }}" class="inline-flex items-center text-sm font-medium text-body hover:text-fg-brand">Daftar Nomor Meja</a>
+        </div>
+        </li>
+        <li aria-current="page">
+        <div class="flex items-center space-x-1.5">
+            <svg class="w-3.5 h-3.5 rtl:rotate-180 text-body" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m9 5 7 7-7 7"/></svg>
+            <span class="inline-flex items-center text-sm font-medium text-body-subtle">Tambah Nomor Meja</span>
+        </div>
+        </li>
+    </ol>
+    </nav>
 
     <form id="myForm" action="{{ route('admin.store.nomormeja') }}" method="POST" enctype="multipart/form-data"
         class="max-w-md mx-auto mt-8 p-6 bg-white rounded-md shadow-md">
@@ -55,7 +88,7 @@ $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(valu
         </div>
     </form>
 
-
+</main>
 
     <script type="text/javascript">
         $(document).ready(function() {
