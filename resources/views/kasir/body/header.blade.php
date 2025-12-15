@@ -1,17 +1,58 @@
-<div class="ml-64">
+<div class="ml-0 lg:ml-64">
 <header
-  class="top-0 z-99999 flex w-full border-gray-200 bg-white lg:border-b dark:border-gray-700 dark:bg-gray-800 sticky"
+  class="sticky top-0 z-30 lg:left-64 flex w-full
+         bg-white border-b border-gray-200
+         dark:border-gray-700 dark:bg-gray-800"
 >
   <div
-    class="flex grow flex-col items-center justify-between lg:flex-row lg:px-6"
+    class="flex w-full flex-col
+           lg:flex-row
+           lg:items-center
+           lg:justify-between
+           px-4 lg:px-6"
   >
     
 
+    <!-- ================= LEFT HEADER ================= -->
     <div
-      :class="menuToggle ? 'flex' : 'hidden'"
-      class="shadow-theme-md w-full items-center justify-between gap-4 px-5 py-4 lg:flex lg:justify-end lg:px-0 lg:shadow-none"
+      class="flex w-full items-center justify-between
+             gap-2 px-3 py-3
+             border-b border-gray-200
+             lg:border-b-0 lg:px-0 lg:py-4
+             dark:border-gray-800"
     >
-      <div class="2xsm:gap-3 flex items-center gap-2">
+
+      
+
+      <!-- JUDUL / LOGO -->
+      {{-- <span class="text-lg font-semibold text-gray-800 dark:text-white">
+        Dashboard
+      </span> --}}
+
+    </div>
+
+    <!-- ================= RIGHT HEADER ================= -->
+    <div
+      class="shadow-theme-md w-full items-center justify-between
+             gap-4 px-5 py-4
+             flex
+             lg:flex lg:justify-end lg:px-0 lg:shadow-none"
+    >
+    <!-- 🍔 BURGER BUTTON (MOBILE & TABLET) -->
+      <button
+        @click="sidebarToggle = !sidebarToggle"
+        class="lg:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+             viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+
+      <div class="flex items-center gap-2">
+
+        <!-- 🌙 DARK MODE -->
         <!-- Dark Mode Toggler -->
         <button
           class="hover:text-dark-900 relative flex h-11 w-11 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
@@ -47,8 +88,6 @@
           </svg>
         </button>
 
-      </div>
-
       <!-- User Area -->
       <div
         class="relative"
@@ -60,15 +99,15 @@
           href="#"
           @click.prevent="dropdownOpen = ! dropdownOpen"
         >
-          <span class="mr-3 h-11 w-11 overflow-hidden rounded-full">
+          <span class="mr-2 h-9 w-9 overflow-hidden rounded-full">
             <img src="{{asset('src/avatar/avatar.jpg')}}" alt="User" />
           </span>
 
-          <span class="text-theme-sm mr-1 block font-medium"> {{ ucwords(Auth::user()->role) }} </span>
+          <span class="hidden sm:block mr-1 font-medium"> {{ ucwords(Auth::user()->role) }} </span>
 
           <svg
             :class="dropdownOpen && 'rotate-180'"
-            class="stroke-gray-500 dark:stroke-gray-400"
+            class="transition-transform stroke-gray-500 dark:stroke-gray-400"
             width="18"
             height="20"
             viewBox="0 0 18 20"
@@ -88,7 +127,10 @@
         <!-- Dropdown Start -->
         <div
           x-show="dropdownOpen"
-          class="shadow-theme-lg dark:bg-gray-dark absolute right-0 mt-[17px] flex w-[260px] flex-col rounded-2xl border border-gray-200 bg-white p-3 dark:border-gray-800"
+          class="absolute right-0 mt-4 w-[260px]
+                 rounded-2xl border border-gray-200
+                 bg-white p-3 shadow-lg
+                 dark:border-gray-800 dark:bg-gray-900"
         >
           <div>
             <span
@@ -223,3 +265,4 @@ document.getElementById("signoutBtn").addEventListener("click", function () {
 
 
 </header>
+</div>

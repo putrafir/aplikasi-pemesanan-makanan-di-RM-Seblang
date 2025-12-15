@@ -6,6 +6,7 @@ use App\Http\Requests\StoreMenuRequest;
 use App\Http\Requests\UpdateMenuRequest;
 use App\Models\Category;
 use App\Models\Menu;
+// use App\Models\Keranjang;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -27,10 +28,12 @@ class MenuController extends Controller
 
         $nomorMeja = $request->session()->get('nomor_meja');
 
+
         // 🟡 Ambil ID menu yang ditandai sebagai Best Seller
         $bestSellers = Menu::where('is_best_seller', 1)->pluck('id')->toArray();
         // 🧑‍🍳 Ambil ID menu yang ditandai sebagai Rekomendasi Chef
         $recommendedMenus = Menu::where('is_recommended', 1)->pluck('id')->toArray();
+
 
         return view('home', compact('kategoris', 'nomorMeja', 'bestSellers', 'recommendedMenus'));
     }

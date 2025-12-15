@@ -76,13 +76,11 @@ class PesananController extends Controller
     {
 
         $transaksis = Transaksi::find($id);
-        if ($transaksis->status_bayar == 'sudah bayar') {
-            return redirect()->back()->with('error', 'Pesanan telah dibayar.');
-        }
+        
 
             $pesanan = json_decode($transaksis->details, true);
             return view('kasir.bayar_pesanan', compact('transaksis', 'pesanan'));
-        }
+    }
 
     public function prosesBayar($id, Request $request)
     {
@@ -100,10 +98,10 @@ class PesananController extends Controller
 
             $transaksiDetail = json_decode($pesanan->details, true);
             $total = array_sum(array_column($transaksiDetail, 'subtotal'));
-            ;
+            
             if ($total > $validate['uang_dibayarkan']) {
 
-            return redirect()->back()->with('error', 'Pesanan tidak ditemukan.');
+            return redirect()->back()->with('error', 'Uang yang dibayar kurang.');
         }
 
         $kembalian = $validate['uang_dibayarkan'] - $total;
@@ -128,11 +126,19 @@ class PesananController extends Controller
             }
 
 
-            return redirect()->route('kasir.pesanan')->with('success', 'Pembayaran berhasil dilakukan.');
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('error', 'Pesanan gagal.');
+            return redirect()
+    ->route('kasir.bayar', $pesanan->id)
+    ->with([
+        'popup_bayar' => true,
+        'kembalian' => $kembalian,
+        'total' => $total
+    ]);
 
-            }
+
+
+    } catch (\Throwable $th) {
+        return redirect()->back()->with('error', 'Pembayaran gagal.');
+    }
         }
 
     }

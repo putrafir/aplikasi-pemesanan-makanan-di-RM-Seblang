@@ -12,18 +12,29 @@ class KasirController extends Controller
 
         $query = Transaksi::query();
 
+        // TAB FILTER
+        if ($request->tab === 'baru') {
+            $query->where('status', 'aktif')
+                ->where('status_bayar', 'belum bayar');
+        }
+
+        if ($request->tab === 'belum-bayar') {
+            $query->where('status', 'nonaktif')
+                ->where('status_bayar', 'belum bayar');
+        }
+
+        if ($request->tab === 'selesai') {
+            $query->where('status', 'nonaktif')
+                ->where('status_bayar', 'sudah bayar');
+        }
+
+        // FILTER TANGGAL (tetap jalan)
         if ($request->date) {
             $query->whereDate('created_at', $request->date);
         }
 
-        if ($request->status) {
-            $query->where('status', $request->status);
-        }
-        if ($request->status_bayar) {
-            $query->where('status_bayar', $request->status_bayar);
-        }
-
-        $transaksis  = $query->get();
+        $transaksis = $query->latest()->get();
+        session()->forget(['from_kasir', 'nomor_meja']);
         return view('kasir.pesanan', compact('transaksis'));
     }
     public function updateStatusPesanan($id)
@@ -86,10 +97,55 @@ class KasirController extends Controller
         // Simpan nomor_meja ke session customer
         //
         // simpan nomor meja ke session
-        session(['nomor_meja' => $transaksi->nomor_meja]);
+        session(['from_kasir' => true, 'nomor_meja' => $transaksi->nomor_meja]);
 
         // Arahkan customer langsung ke menu
         return redirect()->route('customer.menu')
                         ->with('success', 'Silakan pilih menu untuk pesan lagi di Meja ' . $transaksi->nomor_meja);
     }
+
+    public function cetakStruk($id)
+    {
+        $pesanan = Transaksi::findOrFail($id);
+
+        // 🔒 Proteksi: hanya boleh jika sudah bayar
+        if ($pesanan->status_bayar !== 'sudah bayar') {
+            abort(403, 'Pesanan belum dibayar');
+        }
+
+        $details = json_decode($pesanan->details, true);
+
+        return view('kasir.struk', compact('pesanan', 'details'));
+    }
+
+
+    // public function update(Request $request, $id)
+    // {
+    //     $pesanan = Transaksi::findOrFail($id);
+
+    //     $total = 0;
+
+    //     foreach ($request->items as $itemId => $item) {
+    //         $detail = Transaksi::where('pesanan_id', $id)
+    //                     ->where('id', $itemId)
+    //                     ->first();
+
+    //         if ($detail) {
+    //             $detail->jumlah = $item['jumlah'];
+    //             $detail->catatan = $item['catatan'];
+    //             $detail->subtotal = $detail->harga * $item['jumlah'];
+    //             $detail->save();
+
+    //             $total += $detail->subtotal;
+    //         }
+    //     }
+
+    //     $pesanan->total_bayar = $total;
+    //     $pesanan->save();
+
+    //     return redirect()
+    //         ->route('kasir.detail', $id)
+    //         ->with('success', 'Pesanan berhasil diperbarui');
+    // }
+
 }

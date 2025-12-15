@@ -70,8 +70,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/kasir/pesanan/{id}/detail', [KasirController::class, 'detail'])->name('kasir.pesanan.detail');
     Route::put('/kasir/pesanan/status/{id}', [KasirController::class, 'updateStatusPesanan'])->name('pesanan.update.status');
     Route::delete('/kasir/pesanan/{id}', [KasirController::class, 'destroy'])->name('kasir.destroy');
+    // Route::put('/kasir/pesanan/update/{id}', [KasirController::class, 'update'])->name('kasir.update');
     Route::put('/kasir/transaksi/{id}/status', [TransaksiController::class, 'updateStatus'])->name('kasir.transaksi.updateStatus');
     Route::put('/kasir/transaksi/{id}/status/bayar', [TransaksiController::class, 'updateStatusBayar'])->name('kasir.transaksi.updateStatusBayar');
+    Route::get('/kasir/pesanan/{id}/cetak-struk', [KasirController::class, 'cetakStruk'])->name('kasir.pesanan.cetak');
+
     Route::get('/admin/menu', [AdminController::class, 'index'])->name('admin.menu');
     Route::get('/admin/nomormeja', [AdminController::class, 'nomorMeja'])->name('admin.nomormeja');
 

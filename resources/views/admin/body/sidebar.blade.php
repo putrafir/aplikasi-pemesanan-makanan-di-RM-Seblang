@@ -1,5 +1,5 @@
 <aside id="default-sidebar"
-        class="sidebar fixed inset-y-0 top-0 left-0 z-50 w-64 h-screen border-r border-gray-200 bg-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 dark:border-gray-800 dark:bg-gray-900" :class="{
+        class="sidebar fixed inset-y-0 top-0 left-0 z-50 w-64 h-screen border-r border-gray-200 bg-white transform transition-transform duration-300 ease-in-out lg:translate-x-0 dark:border-gray-700 dark:bg-gray-800" :class="{
     '-translate-x-full': !sidebarToggle,
     'translate-x-0': sidebarToggle,
     'lg:translate-x-0': true

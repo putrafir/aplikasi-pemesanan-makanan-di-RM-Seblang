@@ -26,6 +26,10 @@ class KeranjangController extends Controller
             ->orderBy('created_at', 'desc')
             ->first();
 
+        if ($request->from === 'kasir') {
+            session(['from_kasir' => true]);
+        }
+
         return view('customer.keranjang', compact('keranjangs', 'totalBayar', 'nomor_mejas', 'pesanan'));
     }
 
@@ -146,7 +150,7 @@ class KeranjangController extends Controller
 
         Keranjang::where('session_id', $sessionId)->delete();
 
-        return redirect()->route('customer.detailPesanan', $transaksi->id)->with('success', "Pemesanan berhasil, silakan bayar nanti sebesar Rp. $totalBayar");
+        return redirect()->route('customer.detailPesanan', $transaksi->id)->with('success', "Pesanan berhasil dibuat. Pesanan Anda akan segera diantarkan, silakan bayar nanti sebesar Rp. $totalBayar");
     }
 
     public function detailPesanan($id)

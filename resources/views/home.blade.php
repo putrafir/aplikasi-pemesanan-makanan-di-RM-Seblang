@@ -31,46 +31,28 @@
 
     <!-- Tab Kategori -->
 
-        <nav class="border-blue-200 bg-white dark:bg-gray-800 dark:border-blue-700">
-            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                {{-- Tombol back --}}
-                <a href="{{ route('customer.menu') }}" 
-                class="relative inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full shadow hover:bg-blue-200 transition duration-300"
-                title="Menu">
-                        <!-- Icon -->
-                    <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                        fill="currentColor" viewBox="0 0 24 24">
-                        <path fill-rule="evenodd"
-                            d="M13.729 5.575c1.304-1.074 3.27-.146 3.27 1.544v9.762c0 1.69-1.966 2.618-3.27 1.544l-5.927-4.881a2 2 0 0 1 0-3.088l5.927-4.88Z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
-                <!-- Form Pencarian -->
-    <div class="relative max-w-md ml-4 mt-4">
-        <form method="GET" action="{{ url('/menu') }}" class="relative">
-            <input id="searchInput" type="text" name="search" placeholder="Cari Menu ..."
-                class="w-full pl-4 pr-12 py-2 text-left border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <button type="submit"
-                class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center transition duration-200 hover:bg-white hover:text-blue-500">
-                <i class="fas fa-arrow-right text-sm"></i>
-            </button>
-        </form>
+        <nav class="border-blue-200 bg-white dark:bg-gray-800 dark:border-blue-700 shadow-md rounded-b-lg">
+    <div class="max-w-screen-xl mx-auto p-4 flex justify-center items-center">
+
+        <!-- Form Pencarian -->
+        <div class="relative w-full max-w-md">
+            <form method="GET" action="{{ url('/menu') }}" class="relative">
+                <input id="searchInput" type="text" name="search" placeholder="Cari Menu ..."
+                    class="w-full pl-4 pr-12 py-2 text-left border rounded-full
+                           focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <button type="submit"
+                    class="absolute right-2 top-1/2 -translate-y-1/2
+                           bg-blue-500 text-white rounded-full
+                           w-8 h-8 flex items-center justify-center
+                           transition duration-200 hover:bg-white hover:text-blue-500">
+                    <i class="fas fa-arrow-right text-sm"></i>
+                </button>
+            </form>
+        </div>
+
     </div>
-                {{-- Keranjang ICON --}}
-                <a href="{{ route('customer.keranjang.view') }}" 
-                    class="relative inline-flex items-center justify-center w-12 h-12 bg-gray-100 rounded-full shadow hover:bg-blue-200 transition duration-300">
-                        <!-- Icon -->
-                        <svg class="w-6 h-6 text-gray-700 dark:text-gray-300" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                            viewBox="0 0 24 24">
-                            <path fill-rule="evenodd"
-                                d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </a>
-            </div>
-        </nav>
+</nav>
+
 
         @if ($nomorMeja)
             <div class="bg-orange-100 p-3 rounded text-center mx-4 mt-4 shadow">
@@ -407,6 +389,36 @@ function decrementQty(btn) {
     }
 }
 </script>
+
+{{-- @php
+    $cart = session('cart', []);
+    $cartCount = is_array($cart) ? count($cart) : 0;
+@endphp
+
+{{ $cartCount }} --}}
+
+
+<a href="{{ route('customer.keranjang.view') }}"
+   class="fixed bottom-6 right-6 z-50
+          flex items-center justify-center
+          w-20 h-20
+          bg-blue-600 hover:bg-blue-700
+          text-white
+          rounded-full
+          shadow-2xl
+          transition-transform duration-300
+          hover:scale-110">
+
+    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24">
+        <path fill-rule="evenodd"
+            d="M4 4a1 1 0 0 1 1-1h1.5a1 1 0 0 1 .979.796L7.939 6H19a1 1 0 0 1 .979 1.204l-1.25 6a1 1 0 0 1-.979.796H9.605l.208 1H17a3 3 0 1 1-2.83 2h-2.34a3 3 0 1 1-4.009-1.76L5.686 5H5a1 1 0 0 1-1-1Z"
+            clip-rule="evenodd" />
+    </svg>
+
+    
+</a>
+
+
 
 
 </body>

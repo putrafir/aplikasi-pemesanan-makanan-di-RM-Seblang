@@ -3,7 +3,7 @@
 <header
   class="sticky top-0 z-30 lg:left-64 flex w-full
          bg-white border-b border-gray-200
-         dark:bg-gray-900 dark:border-gray-800"
+         dark:border-gray-700 dark:bg-gray-800"
 >
   <div
     class="flex w-full flex-col

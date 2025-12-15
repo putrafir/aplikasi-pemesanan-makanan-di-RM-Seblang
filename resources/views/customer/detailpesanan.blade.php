@@ -117,6 +117,34 @@
         });
     </script>
 
+    @if(session('success'))
+<div id="successModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
+        <h3 class="text-lg font-semibold text-green-600 mb-2">
+            ✅ Pesanan Berhasil
+        </h3>
+
+        <p class="text-gray-700 mb-4">
+            {{ session('success') }}
+        </p>
+
+        <button onclick="closeModal()"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            OK
+        </button>
+    </div>
+</div>
+
+<script>
+function closeModal() {
+    document.getElementById('successModal')?.remove();
+}
+</script>
+@endif
+
+
 
 
 </body>

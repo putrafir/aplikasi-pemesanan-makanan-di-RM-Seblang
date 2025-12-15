@@ -209,13 +209,13 @@
         </div>
 
         
-        @if(Auth::check())
+        {{-- @if(Auth::check())
             <div class="mb-3">
                 <label for="nomor_meja_manual">Atau Masukkan Nomor Meja Manual</label>
                 <input type="text" class="form-control" id="nomor_meja_manual"
                 name="nomor_meja_manual" placeholder="Contoh: 15A">
             </div>
-        @endif
+        @endif --}}
        
 
         <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg p-4 footer-anim">
@@ -232,7 +232,7 @@
                     </button>
                 </form>
 
-                @if(auth()->check() && auth()->user()->role === 'kasir')
+                @if(session('from_kasir'))
                     {{-- Tombol untuk kasir --}}
                     <a href="{{ route('kasir.pesanan') }}"
                     class="px-4 py-2 border-2 border-gray-600 text-black rounded-lg hover:bg-gray-100 transition">
@@ -323,6 +323,34 @@
             @endif
         @endif
     </script>
+
+    @if(session('success'))
+<div id="successModal"
+    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+
+    <div class="bg-white rounded-lg shadow-lg p-6 max-w-sm w-full text-center">
+        <h3 class="text-lg font-semibold text-green-600 mb-2">
+            ✅ Pesanan Berhasil
+        </h3>
+
+        <p class="text-gray-700 mb-4">
+            {{ session('success') }}
+        </p>
+
+        <button onclick="closeModal()"
+            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            OK
+        </button>
+    </div>
+</div>
+
+<script>
+    function closeModal() {
+        document.getElementById('successModal').remove();
+    }
+</script>
+@endif
+
 
 </body>
 
